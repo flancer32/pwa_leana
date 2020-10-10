@@ -1,0 +1,19 @@
+{
+  "app": {},
+  "db": {
+    "main": {
+      "client": "mysql",
+      "connection": {
+        "host": "127.0.0.1",
+        "user": "www",
+        "password": "...",
+        "database": "teq_leana"
+      }
+    }
+  },
+  "service": {
+  },
+  "web": {
+    "urlBase": "leana.home.teqfw.com"
+  }
+}

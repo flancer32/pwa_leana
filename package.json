@@ -1,0 +1,39 @@
+{
+  "name": "@flancer32/pwa_lean",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Pet project to add appointment service for hairdressing salon SIA 'Leana'.",
+  "homepage": "http://leanafrizetava.lv/",
+  "bugs": {
+    "url": "https://github.com/flancer32/pwa_leana/issues",
+    "email": "alex@flancer32.com"
+  },
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Alex Gusev",
+    "email": "alex@flancer64.com",
+    "url": "https://github.com/flancer64"
+  },
+  "repository": "github:flancer32/pwa_leana",
+  "scripts": {
+    "start": "node --experimental-modules ./bin/tequila.mjs start",
+    "stop": "node --experimental-modules ./bin/tequila.mjs stop"
+  },
+  "dependencies": {
+    "@teqfw/di": "teqfw/di#master",
+    "commander": "^6.0.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.2",
+    "mime-types": "^2.1.27",
+    "mysql2": "^2.1.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.10.0",
+    "esm": "^3.2.25",
+    "jsdoc": "^3.6.6",
+    "mocha": "^8.1.3"
+  }
+}
