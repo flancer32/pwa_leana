@@ -40,4 +40,5 @@ jobs:
             mv ./leana.new ./leana
             cd ./leana/
             cp ~/cfg/leana.local.json ./cfg/local.json
+            npm install
             nohup npm start > ./output.log 2>&1 &
