@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Leana Hairdresser Salon.">
+    <title>SSK</title>
+    <link rel="manifest" href="pwa.webmanifest">
+    <script>
+        function bootstrap() {
+            // load all libraries then create & start application
+            Promise.all([
+                // keep the order of the imports and params below
+                // import("./lib/vue_esm_browser.js"),
+                // import("./js/app/idb.js"),
+                // import("./js/app/api/manager.js"),
+                // import("./lib/http_vue_loader.js"),
+                // import("./lib/vue_router.js"),
+                // import("./lib/vuex.js"),
+            ]).then(([modVue, modIdb, modApiManager, ...other]) => {
+                // // httpVueLoader & VueRouter and others are added to 'window' (self) on import
+                // self.Vue = modVue.default;
+                // // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
+                // self.Vue.use(self.VueRouter);
+                // self.Vue.use(self.Vuex);
+                // // add loader plugin to Vue ('url:' prefix to load *.vue files)
+                // self.httpVueLoader.install(self.Vue);
+                // create 'app' object in globals
+                self.app = {};
+                // pin IDBs, API Manager to globals
+                // self.app.bases = modIdb;
+                /** @type {Fl32_First_Pwa_Api_Manager} */
+                    // self.app.apiManager = new modApiManager.default();
+
+                    // load frontend configuration and user profile
+                const specCfg = {
+                        url: "./api/app/config/get",
+                        payload: {},
+                        injector: (resp) => {
+                            self.app.config = resp.response.config;
+                        }
+                    };
+                Promise.all([
+                    // self.app.apiManager.request(specCfg)
+                ])
+                    .then(([respCfg]) => {
+                        // create new Vue component (app) and load files with all components starting from root
+                        // self.app.comp = new self.Vue({
+                        //     el: "BODY > DIV",
+                        //     store: new self.Vuex.Store({}),
+                        //     components: {
+                        //         "app_root": self.httpVueLoader("./js/comp/app.vue")
+                        //     }
+                        // });
+                    });
+            });
+        }
+
+        if ("serviceWorker" in navigator) { // if browser supports service workers
+            // ... then add event handler to run script after window will be loaded
+            // (https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event)
+            self.addEventListener("load", () => {
+                const container = navigator.serviceWorker;
+                if (container.controller === null) {
+                    // ... to load "sw.js" script and register service worker in navigator
+                    container.register("sw.js")
+                        .then(
+                            (reg) => {
+                                if (reg.active) {
+                                    console.log("SW is registered and is active.", reg);
+                                    bootstrap();
+                                } else {
+                                    console.log("SW is registered but is not activated yet.", reg);
+                                    // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
+                                    container.addEventListener("controllerchange", () => {
+                                        // SW just installed (page's first load).
+                                        bootstrap();
+                                    });
+                                }
+                            },
+                            (err) => console.log("SW registration is failed: ", err)
+                        );
+
+                } else {
+                    // SW already installed before (repeated loading of the page).
+                    console.log("SW is already running for this app.");
+                    bootstrap();
+                }
+
+            });
+        }
+    </script>
+</head>
+<body>
+<div style="height: 100%; background-color: yellow">
+    <app_root>Here we are!</app_root>
+</div>
+<!--<link rel="stylesheet" href="css/styles.css">-->
+<!--<link rel="stylesheet" href="fontawesome/css/all.min.css">-->
+</body>
+</html>

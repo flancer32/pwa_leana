@@ -1,0 +1,11 @@
+{
+  "name": "Leana SIA",
+  "short_name": "Leana",
+  "theme_color": "#D3E987",
+  "background_color": "#D3E987",
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [],
+  "splash_pages": null
+}
