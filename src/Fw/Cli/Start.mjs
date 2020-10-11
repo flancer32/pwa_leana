@@ -36,7 +36,8 @@ export default class Fl32_Leana_Fw_Cli_Start {
             await _server.init();
             _logger.info('Web server is initialized.');
             // collect startup configuration then compose path to PID file
-            const port = _defaults.SERVER_DEFAULT_PORT;
+            const portCfg = _config.get('local/server/port');
+            const port = portCfg || _defaults.SERVER_DEFAULT_PORT;
             const pid = process.pid.toString();
             const pathRoot = _config.get('path/root');
             const pidPath = $path.join(pathRoot, _defaults.PID_FILE_NAME);
