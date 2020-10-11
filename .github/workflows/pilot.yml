@@ -2,7 +2,7 @@ name: Deploy PWA to pilot
 
 on:
   push:
-    branches: [ main, LEAN-5 ]
+    branches: [ main ]
 
 jobs:
   test_and_deploy:
