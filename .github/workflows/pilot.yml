@@ -33,12 +33,13 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            cd /home/github/leana.new/
+            cp ~/cfg/leana.local.json ./cfg/local.json
+            npm install
             cd /home/github/leana/
             npm stop
             cd /home/github/
             rm -fr ./leana
             mv ./leana.new ./leana
             cd ./leana/
-            cp ~/cfg/leana.local.json ./cfg/local.json
-            npm install
             nohup npm start > ./output.log 2>&1 &
