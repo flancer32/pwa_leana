@@ -11,53 +11,36 @@
             // load all libraries then create & start application
             Promise.all([
                 // keep the order of the imports and params below
-                import("./src/@teqfw/di/Container.mjs"),
                 import("./lib/vue_esm_browser.js"),
-                // import("./js/app/idb.js"),
-                // import("./js/app/api/manager.js"),
                 import("./lib/vue_router.js"),
                 import("./lib/vuex.js"),
-            ]).then(([modContainer, modVue, modIdb, modApiManager, ...other]) => {
+            ]).then(async ([modVue, ...other]) => {
+                // VueRouter and others are added to 'window' (self) on import
+                self.Vue = modVue.default;
+                // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
+                self.Vue.use(self.VueRouter);
+                self.Vue.use(self.Vuex);
+                // create 'app' object in globals
+                self.app = {};
+                // load frontend configuration and user profile
+                const res = await fetch('./api/app/config/get');
+                const json = await res.json();
+                self.app.config = json.response.config;
+                const base = window.location.protocol + '//' + self.app.config.web.urlBase;
                 // create and setup DI Container
+                const modContainer = await import('./src/@teqfw/di/Container.mjs');
                 /** @type {TeqFw_Di_Container} */
                 const container = new modContainer.default();
-                container.addSourceMapping('Fl32_Leana', 'https://leana.home.teqfw.com/src/mod/leana', true, 'mjs');
+                container.addSourceMapping('Fl32_Leana', base + '/src/mod/leana', true, 'mjs');
                 // load frontend application
-                container.get('Fl32_Leana_Front_App').then((appRoot) => {
-                    // VueRouter and others are added to 'window' (self) on import
-                    self.Vue = modVue.default;
-                    // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
-                    self.Vue.use(self.VueRouter);
-                    self.Vue.use(self.Vuex);
-                    // create 'app' object in globals
-                    self.app = {};
-                    // pin IDBs, API Manager to globals
-                    // self.app.bases = modIdb;
-                    /** @type {Fl32_First_Pwa_Api_Manager} */
-                        // self.app.apiManager = new modApiManager.default();
-
-                        // load frontend configuration and user profile
-                    const specCfg = {
-                            url: "./api/app/config/get",
-                            payload: {},
-                            injector: (resp) => {
-                                self.app.config = resp.response.config;
-                            }
-                        };
-                    Promise.all([
-                        // self.app.apiManager.request(specCfg)
-                        import('./comp/app.js')
-                    ])
-                        .then(([modApp]) => {
-                            // create new Vue component (app) and load files with all components starting from root
-                            self.app.comp = new self.Vue({
-                                el: "BODY > DIV",
-                                store: new self.Vuex.Store({}),
-                                components: {
-                                    "app_root": appRoot
-                                }
-                            });
-                        });
+                const appRoot = await container.get('Fl32_Leana_Front_App');
+                // create new Vue component (app) and load files with all components starting from root
+                self.app.comp = new self.Vue({
+                    el: "BODY > DIV",
+                    store: new self.Vuex.Store({}),
+                    components: {
+                        "app_root": appRoot
+                    }
                 });
             });
         }
@@ -65,28 +48,26 @@
         if ("serviceWorker" in navigator) { // if browser supports service workers
             // ... then add event handler to run script after window will be loaded
             // (https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event)
-            self.addEventListener("load", () => {
+            self.addEventListener("load", async () => {
                 const container = navigator.serviceWorker;
                 if (container.controller === null) {
                     // ... to load "sw.js" script and register service worker in navigator
-                    container.register("sw.js")
-                        .then(
-                            (reg) => {
-                                if (reg.active) {
-                                    console.log("SW is registered and is active.", reg);
-                                    bootstrap();
-                                } else {
-                                    console.log("SW is registered but is not activated yet.", reg);
-                                    // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
-                                    container.addEventListener("controllerchange", () => {
-                                        // SW just installed (page's first load).
-                                        bootstrap();
-                                    });
-                                }
-                            },
-                            (err) => console.log("SW registration is failed: ", err)
-                        );
-
+                    try {
+                        const reg = await container.register("sw.js");
+                        if (reg.active) {
+                            console.log("SW is registered and is active.", reg);
+                            bootstrap();
+                        } else {
+                            console.log("SW is registered but is not activated yet.", reg);
+                            // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
+                            container.addEventListener("controllerchange", () => {
+                                // SW just installed (page's first load).
+                                bootstrap();
+                            });
+                        }
+                    } catch (e) {
+                        console.log("SW registration is failed: ", e)
+                    }
                 } else {
                     // SW already installed before (repeated loading of the page).
                     console.log("SW is already running for this app.");
@@ -97,11 +78,11 @@
         }
     </script>
 </head>
-<body style="background-color: #f1e7e4;">
+<body>
 <div style="height: 100%;">
     <app_root></app_root>
 </div>
-<!--<link rel="stylesheet" href="css/styles.css">-->
+<link rel="stylesheet" href="static/mod/leana/css/styles.css">
 <!--<link rel="stylesheet" href="fontawesome/css/all.min.css">-->
 </body>
 </html>

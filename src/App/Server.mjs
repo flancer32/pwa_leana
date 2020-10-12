@@ -9,6 +9,8 @@ import $serveStatic from 'serve-static';
 
 // MODULE'S EXPORT
 export default class Fl32_Leana_App_Server {
+    /** @type {TeqFw_Di_Container} */
+    _container
     /** @type {Fl32_Leana_App_Config} */
     _config
     /** @type {Fl32_Leana_App_Logger} */
@@ -22,10 +24,16 @@ export default class Fl32_Leana_App_Server {
 
 
     constructor(spec) {
+        this._container = spec.TeqFw_Di_Container$;
         this._config = spec.Fl32_Leana_App_Config$;
         this._logger = spec.Fl32_Leana_App_Logger$;
         this._serverLog = spec.Fl32_Leana_App_Server_Log$;
         this._routeStatic = spec.Fl32_Leana_App_Server_Route_Static$;
+    }
+
+    async addApiRoute(route, dependencyId) {
+        const handler = await this._container.get(dependencyId);
+        this._server.all(route, handler.handle);
     }
 
     async init() {
@@ -35,6 +43,7 @@ export default class Fl32_Leana_App_Server {
         this._server.use($express.json({limit: '50mb'}));
         this._server.use(me._serverLog.handle);
         // API routes
+        await this.addApiRoute('/api/app/config/get', 'Fl32_Leana_Fw_Route_Config_Get$');
         // static resources in project
         const pathRoot = this._config.get('path/root');
         const pathPub = $path.join(pathRoot, 'web');

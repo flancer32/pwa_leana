@@ -36,8 +36,8 @@ export default class Fl32_Leana_App_Server_Route_Static {
                 if (url.startsWith('/src/@teqfw/di/')) {
                     const tail = url.replace('/src/@teqfw/di/', '/node_modules/@teqfw/di/src/');
                     result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/web/mod/leana/')) {
-                    const tail = url.replace('/web/mod/leana/', '/src/web/');
+                } else if (url.startsWith('/static/mod/leana/')) {
+                    const tail = url.replace('/static/mod/leana/', '/src/web/');
                     result = $path.join(pathRoot, tail);
                 } else if (url.startsWith('/src/mod/leana/')) {
                     const tail = url.replace('/src/mod/leana/', '/src/');
