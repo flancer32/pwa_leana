@@ -13,12 +13,19 @@ export default class Fl32_Leana_App_Server {
     _config
     /** @type {Fl32_Leana_App_Logger} */
     _logger
+    /** @type {Fl32_Leana_App_Server_Log} */
+    _serverLog
+    /** @type {Fl32_Leana_App_Server_Route_Static} */
+    _routeStatic
+
     _server = $express();
 
 
     constructor(spec) {
         this._config = spec.Fl32_Leana_App_Config$;
         this._logger = spec.Fl32_Leana_App_Logger$;
+        this._serverLog = spec.Fl32_Leana_App_Server_Log$;
+        this._routeStatic = spec.Fl32_Leana_App_Server_Route_Static$;
     }
 
     async init() {
@@ -26,11 +33,14 @@ export default class Fl32_Leana_App_Server {
         // setup order is important
         this._server.use($cookieParser());
         this._server.use($express.json({limit: '50mb'}));
+        this._server.use(me._serverLog.handle);
         // API routes
-        // static resources
+        // static resources in project
         const pathRoot = this._config.get('path/root');
-        const pathPub = $path.join(pathRoot, 'pub');
+        const pathPub = $path.join(pathRoot, 'web');
         this._server.use($serveStatic(pathPub));
+        // static resources in modules
+        this._server.get('*', this._routeStatic.handle);
         // default route
         this._server.all('*', function (req, res) {
             me._logger.debug(`${req.method} ${req.url}`);
