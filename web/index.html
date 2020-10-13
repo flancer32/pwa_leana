@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Leana Hairdresser Salon.">
-    <title>SSK</title>
+    <title>Leana</title>
     <link rel="manifest" href="pwa.webmanifest">
     <script>
         function bootstrap() {
@@ -14,12 +14,16 @@
                 import("./lib/vue_esm_browser.js"),
                 import("./lib/vue_router.js"),
                 import("./lib/vuex.js"),
+                import("./lib/vue-i18next.js"),
+                import("./lib/i18next.js"),
+                import("./lib/i18nextBrowserLanguageDetector.js"),
             ]).then(async ([modVue, ...other]) => {
                 // VueRouter and others are added to 'window' (self) on import
                 self.Vue = modVue.default;
                 // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
                 self.Vue.use(self.VueRouter);
                 self.Vue.use(self.Vuex);
+                self.Vue.use(self.VueI18next);
                 // create 'app' object in globals
                 self.app = {};
                 // load frontend configuration and user profile
@@ -32,6 +36,20 @@
                 /** @type {TeqFw_Di_Container} */
                 const container = new modContainer.default();
                 container.addSourceMapping('Fl32_Leana', base + '/src/mod/leana', true, 'mjs');
+                // init i18n
+                self.i18next.use(self.i18nextBrowserLanguageDetector).init({
+                    detection: {
+                        lookupQuerystring: 'lng',
+                    },
+                });
+                self.i18next.changeLanguage();
+                const lang = self.i18next.language;
+                const langs = self.i18next.languages;
+
+                await self.i18next.init({
+                    lng: 'en'
+                });
+                self.i18n = new self.VueI18next(self.i18next);
                 // load frontend application
                 const appRoot = await container.get('Fl32_Leana_Front_App');
                 // create new Vue component (app) and load files with all components starting from root
@@ -40,7 +58,8 @@
                     store: new self.Vuex.Store({}),
                     components: {
                         "app_root": appRoot
-                    }
+                    },
+                    i18n: self.i18n,
                 });
             });
         }
