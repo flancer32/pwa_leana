@@ -42,10 +42,10 @@ const template = `
         <span style="text-transform: uppercase">{{lang}}</span>
         <div id="menu_right" v-show="menuRightOpened">
             <div>
-                <span v-on:click="changeLang('lv')">{{$t("app-navBar:lv")}}</span>
+                <span v-on:click="changeLang('lv-LV')">{{$t("app-navBar:lv")}}</span>
             </div>
             <div>
-                <span v-on:click="changeLang('ru')">{{$t("app-navBar:ru")}}</span>
+                <span v-on:click="changeLang('ru-RU')">{{$t("app-navBar:ru")}}</span>
             </div>
         </div>
     </div>
@@ -64,9 +64,8 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
         },
         methods: {
             changeLang(lang) {
-                this.lang = lang;
-                // this.menuRightOpened = false;
-                this._i18n.i18next.changeLanguage(this.lang);
+                this.lang = lang.substr(0, 2);
+                this._i18n.i18next.changeLanguage(lang);
             },
             controlMenus(evt) {
                 const path = evt.path;
@@ -85,6 +84,10 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
                     this.menuRightOpened = false;
                 }
             }
-        }
+        },
+        created() {
+            const savedLang = this._i18n.i18next.language;
+            this.lang = (savedLang.substring(0, 2) === 'ru') ? 'ru' : 'lv';
+        },
     };
 }

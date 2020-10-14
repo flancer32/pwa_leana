@@ -37,14 +37,8 @@
                 const container = new modContainer.default();
                 container.addSourceMapping('Fl32_Leana', base + '/src/mod/leana', true, 'mjs');
                 // init i18n
-                self.i18next.use(self.i18nextBrowserLanguageDetector).init({
-                    detection: {
-                        lookupQuerystring: 'lng',
-                    },
-                });
-                await self.i18next.init({
-                    lng: 'lv'
-                });
+                self.i18next.use(self.i18nextBrowserLanguageDetector);
+                await self.i18next.init({});
                 self.i18n = new self.VueI18next(self.i18next);
                 // load frontend application
                 const appRoot = await container.get('Fl32_Leana_Front_App');
