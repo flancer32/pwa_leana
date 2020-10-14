@@ -2,7 +2,7 @@
  * Get frontend configuration.
  */
 // MODULE'S EXPORT
-export default class Fl32_Leana_Fw_Route_Config_Get {
+export default class Fl32_Leana_Fw_Route_App_Config_Get {
     /** @type {Fl32_Leana_App_Config} */
     _config
 

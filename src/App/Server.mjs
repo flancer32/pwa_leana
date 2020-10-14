@@ -43,7 +43,7 @@ export default class Fl32_Leana_App_Server {
         this._server.use($express.json({limit: '50mb'}));
         this._server.use(me._serverLog.handle);
         // API routes
-        await this.addApiRoute('/api/app/config/get', 'Fl32_Leana_Fw_Route_Config_Get$');
+        await this.addApiRoute('/api/app/config/get', 'Fl32_Leana_Fw_Route_App_Config_Get$');
         // static resources in project
         const pathRoot = this._config.get('path/root');
         const pathPub = $path.join(pathRoot, 'web');
