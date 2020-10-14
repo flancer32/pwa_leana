@@ -1,0 +1,5 @@
+/* Define default values for CSS variables */
+:root {
+    --layout-navbar-height: 70px;
+    --font-size-large: 20px;
+}

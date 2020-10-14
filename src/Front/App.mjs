@@ -10,13 +10,38 @@ i18next.addResources('ru', 'app', {
 
 const template = `
 <div>
-<button v-on:click="count++">{{ $t("app:msg", {count}) }}</button>
-<button v-on:click="changeLang">{{ $t("app:lang") }}</button>
+    <div id='app'>
+        <div id='layer_base'>
+            <main>
+                <router-view></router-view>
+            </main>
+        </div>
+        <div id="layer_nav_bar">
+            <app-nav-bar></app-nav-bar>
+        </div>
+        <div id="layer_overlay">
+<!--            <app_display_image></app_display_image>-->
+        </div>
+        <div id="layer_notification">
+<!--            <app_notification></app_notification>-->
+        </div>
+    </div>
 </div>
 `;
 
 export default function Fl32_Leana_Front_App(spec) {
     const foo = spec.Fl32_Leana_Front_Foo$;
+    const appNavBar = spec.Fl32_Leana_Front_App_NavBar$;
+
+    const routes = [
+        {path: '/', component: foo}
+    ];
+
+    const router = new self.VueRouter({
+        // mode: 'history',
+        routes
+    });
+
     return {
         template,
         data: function () {
@@ -31,6 +56,11 @@ export default function Fl32_Leana_Front_App(spec) {
                 this._i18n.i18next.changeLanguage(next);
             }
         },
-        i18n: self.i18n
+        i18n: self.i18n,
+        router,
+        components: {
+            'foo': foo,
+            'AppNavBar': appNavBar
+        }
     };
 }

@@ -42,12 +42,8 @@
                         lookupQuerystring: 'lng',
                     },
                 });
-                self.i18next.changeLanguage();
-                const lang = self.i18next.language;
-                const langs = self.i18next.languages;
-
                 await self.i18next.init({
-                    lng: 'en'
+                    lng: 'lv'
                 });
                 self.i18n = new self.VueI18next(self.i18next);
                 // load frontend application
@@ -101,7 +97,8 @@
 <div style="height: 100%;">
     <app_root></app_root>
 </div>
-<link rel="stylesheet" href="static/mod/leana/css/styles.css">
+<!--<link rel="stylesheet" href="static/mod/leana/css/styles.css">-->
+<link rel="stylesheet" href="css/styles.css">
 <!--<link rel="stylesheet" href="fontawesome/css/all.min.css">-->
 </body>
 </html>
