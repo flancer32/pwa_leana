@@ -65,5 +65,5 @@ BUTTON {
 }
 
 INPUT, TEXTAREA {
-    background-color: var(--color-back-dark);
+    background-color: var(--color-back-main);
 }

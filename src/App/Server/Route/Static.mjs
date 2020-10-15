@@ -55,6 +55,9 @@ export default class Fl32_Leana_App_Server_Route_Static {
                 } else if (url.startsWith('/src/mod/leana/')) {
                     const tail = url.replace('/src/mod/leana/', '/src/');
                     result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/static/vuejs-datepicker/')) {
+                    const tail = url.replace('/static/vuejs-datepicker/', '/node_modules/vuejs-datepicker/dist/');
+                    result = $path.join(pathRoot, tail);
                 } else {
                     result = $path.join(pathWeb, url);
                 }

@@ -7,50 +7,54 @@
     <title>Leana</title>
     <link rel="manifest" href="pwa.webmanifest">
     <script>
-        function bootstrap() {
-            // load all libraries then create & start application
-            Promise.all([
-                // keep the order of the imports and params below
+        /**
+         * Asynchronously load required libraries using ES6 'import', add loaded objects to globals,
+         * create root Vue component then start application.
+         */
+        async function bootstrap() {
+            // load all libraries
+            const [modVue, ...other] = await Promise.all([
+                // keep the order of the imports and destructed params above
                 import("./lib/vue_esm_browser.js"),
                 import("./lib/vue_router.js"),
                 import("./lib/vuex.js"),
                 import("./lib/vue-i18next.js"),
                 import("./lib/i18next.js"),
                 import("./lib/i18nextBrowserLanguageDetector.js"),
-            ]).then(async ([modVue, ...other]) => {
-                // VueRouter and others are added to 'window' (self) on import
-                self.Vue = modVue.default;
-                // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
-                self.Vue.use(self.VueRouter);
-                self.Vue.use(self.Vuex);
-                self.Vue.use(self.VueI18next);
-                // create 'app' object in globals
-                self.app = {};
-                // load frontend configuration and user profile
-                const res = await fetch('./api/app/config/get');
-                const json = await res.json();
-                self.app.config = json.response.config;
-                const base = window.location.protocol + '//' + self.app.config.web.urlBase;
-                // create and setup DI Container
-                const modContainer = await import('./src/@teqfw/di/Container.mjs');
-                /** @type {TeqFw_Di_Container} */
-                const container = new modContainer.default();
-                container.addSourceMapping('Fl32_Leana', base + '/src/mod/leana', true, 'mjs');
-                // init i18n
-                self.i18next.use(self.i18nextBrowserLanguageDetector);
-                await self.i18next.init({});
-                self.i18n = new self.VueI18next(self.i18next);
-                // load frontend application
-                const appRoot = await container.get('Fl32_Leana_Front_App');
-                // create new Vue component (app) and load files with all components starting from root
-                self.app.comp = new self.Vue({
-                    el: "BODY > DIV",
-                    store: new self.Vuex.Store({}),
-                    components: {
-                        "app_root": appRoot
-                    },
-                    i18n: self.i18n,
-                });
+                import("./static/vuejs-datepicker/vuejs-datepicker.min.js"),
+            ]);
+            // VueRouter and others are added to 'window' (self) on import
+            self.Vue = modVue.default;
+            // register Vue Router/Vuex (Router/Vuex are added to globals (window/self) on import)
+            self.Vue.use(self.VueRouter);
+            self.Vue.use(self.Vuex);
+            self.Vue.use(self.VueI18next);
+            // create 'app' object in globals
+            self.app = {};
+            // load frontend configuration and user profile
+            const res = await fetch('./api/app/config/get');
+            const json = await res.json();
+            self.app.config = json.response.config;
+            const base = window.location.protocol + '//' + self.app.config.web.urlBase;
+            // create and setup DI Container
+            const modContainer = await import('./src/@teqfw/di/Container.mjs');
+            /** @type {TeqFw_Di_Container} */
+            const container = new modContainer.default();
+            container.addSourceMapping('Fl32_Leana', base + '/src/mod/leana', true, 'mjs');
+            // init i18n
+            self.i18next.use(self.i18nextBrowserLanguageDetector);
+            await self.i18next.init({});
+            self.i18n = new self.VueI18next(self.i18next);
+            // load frontend application
+            const appRoot = await container.get('Fl32_Leana_Front_App');
+            // create new Vue component (app) and load files with all components starting from root
+            self.app.comp = new self.Vue({
+                el: "BODY > DIV",
+                store: new self.Vuex.Store({}),
+                components: {
+                    "app_root": appRoot
+                },
+                i18n: self.i18n,
             });
         }
 
@@ -93,6 +97,5 @@
 </div>
 <!--<link rel="stylesheet" href="static/mod/leana/css/styles.css">-->
 <link rel="stylesheet" href="css/styles.css">
-<!--<link rel="stylesheet" href="fontawesome/css/all.min.css">-->
 </body>
 </html>

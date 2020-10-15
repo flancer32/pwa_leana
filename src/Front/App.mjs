@@ -26,10 +26,12 @@ const template = `
 export default function Fl32_Leana_Front_App(spec) {
     const appNavBar = spec.Fl32_Leana_Front_App_NavBar$;
     const routeAbout = spec.Fl32_Leana_Front_Route_About$;
+    const routeBook = spec.Fl32_Leana_Front_Route_Book$;
 
     const routes = [
         {path: '/', component: routeAbout},
-        {path: '/about', component: routeAbout}
+        {path: '/about', component: routeAbout},
+        {path: '/book', component: routeBook},
     ];
 
     const router = new self.VueRouter({
