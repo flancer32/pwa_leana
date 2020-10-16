@@ -1,5 +1,5 @@
 const i18next = self.i18n.i18next;
-i18next.addResources('en', 'route-about', {});
+i18next.addResources('lv', 'route-about', {});
 i18next.addResources('ru', 'route-about', {});
 
 const template = `

@@ -3,11 +3,12 @@
     --color-back-dark: #422c2a;
     --color-back-light: #c1433b;
     --color-back-main: #f9efed;
-    --color-back-top: #f1e7e4;
     --color-back-top-dark: #e6d6d3;
-    --color-front-dark: #422c2a;
+    --color-back-top: #f1e7e4;
     --color-front-light: #f1e7e4;
-    --color-front-main: #c1433b;
+    --color-front-main: #422c2a;
+    --color-front-placeholder: #c1807c;
+    --color-front-top: #c1433b;
 }
 
 /* Filter generator: https://codepen.io/sosuke/pen/Pjoqqp */
@@ -56,7 +57,7 @@ A, A:visited {
 }
 
 ::placeholder {
-    color: var(--color-front-light);
+    color: var(--color-front-placeholder);
 }
 
 BUTTON {
@@ -64,6 +65,7 @@ BUTTON {
     color: var(--color-front-light);
 }
 
-INPUT, TEXTAREA {
+INPUT, SELECT, TEXTAREA {
     background-color: var(--color-back-main);
+    color: var(--color-front-main);
 }

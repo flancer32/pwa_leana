@@ -1,5 +1,5 @@
 const i18next = self.i18n.i18next;
-i18next.addResources('en', 'app', {});
+i18next.addResources('lv', 'app', {});
 i18next.addResources('ru', 'app', {});
 
 const template = `

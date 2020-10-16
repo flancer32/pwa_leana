@@ -73,6 +73,7 @@ export default class Fl32_Leana_App_Server_Route_Static {
             async function processRegular(path) {
                 const mimeType = $mimeTypes.lookup(path);
                 if (mimeType) {
+                    res.setHeader('Access-Control-Allow-Origin', '*');
                     res.setHeader('Content-Type', mimeType);
                     res.sendFile(path);
                 } else {
