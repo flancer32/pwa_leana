@@ -156,12 +156,13 @@ const template = `
 <!--                <button v-on:click="boo">Disable</button>   -->
             </div>
         </div>
-        <div class="form_row" v-show="date">
+        <div class="form_row" v-show="!date">
             <div class="form_label">
                 <span>{{$t('route-book:time')}}:</span>
             </div>
             <div class="form_field">
-                <input type="text" name="time" v-model="time" :placeholder="$t('route-book:timePH')"></input>
+<!--                <input type="text" name="time" v-model="time" :placeholder="$t('route-book:timePH')"></input>-->
+                <time-picker begin="10:00" end="18:00" step="45"></time-picker>
             </div>       
         </div>
         
@@ -174,11 +175,12 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_Route_Book() {
-
+export default function Fl32_Leana_Front_Route_Book(spec) {
+    const timePicker = spec.Fl32_Leana_Front_Widget_TimePicker$;
     return {
         template,
         components: {
+            timePicker,
             vuejsDatepicker
         },
         data: function () {

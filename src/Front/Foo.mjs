@@ -10,12 +10,13 @@ i18next.addResources('ru', 'foo', {
 
 const template = `
 <div>
+    <span>Foo</span>
 <!--    <button v-on:click="count++">{{ $t("foo:msg", {count}) }}</button>-->
 <!--    <button v-on:click="changeLang">{{ $t("foo:lang") }}</button>-->
 </div>
 `;
 
-export default function Fl32_Leana_Front_Foo(spec) {
+export default function Fl32_Leana_Front_Foo() {
     return {
         template,
         data: function () {
@@ -24,12 +25,12 @@ export default function Fl32_Leana_Front_Foo(spec) {
             };
         },
         methods: {
-            changeLang() {
-                const current = this._i18n.i18next.language;
-                const next = (current === 'en') ? 'ru' : 'en';
-                this._i18n.i18next.changeLanguage(next);
-            }
+            // changeLang() {
+            //     const current = this._i18n.i18next.language;
+            //     const next = (current === 'en') ? 'ru' : 'en';
+            //     this._i18n.i18next.changeLanguage(next);
+            // }
         },
-        i18n: self.i18n
+        // i18n: self.i18n
     };
 }
