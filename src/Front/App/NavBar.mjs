@@ -63,9 +63,9 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
             };
         },
         methods: {
-            changeLang(lang) {
+            async changeLang(lang) {
                 this.lang = lang.substr(0, 2);
-                i18next.changeLanguage(lang);
+                await i18next.changeLanguage(lang);
             },
             controlMenus(evt) {
                 const path = evt.path;

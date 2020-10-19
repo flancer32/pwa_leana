@@ -1,17 +1,24 @@
 const i18next = self.teqfw.i18next;
-i18next.addResourceBundle('lv', 'widget_timePicker', {}, true);
-i18next.addResourceBundle('ru', 'widget_timePicker', {}, true);
+i18next.addResourceBundle('lv', 'widget_timePicker', {
+    timePicker: 'Выберите дату'
+}, true);
+i18next.addResourceBundle('ru', 'widget_timePicker', {
+    timePicker: 'Выберите дату'
+}, true);
 
 const template = `
-<div>
-    <span>TimePicker ({{begin}} - {{end}} / {{step}} min.)</span>
-    <time-picker-entry
-            v-for="one in entries"
-            :key="one.id"
-            :label="one.label"
-            :inactive="one.inactive"
-            @selected="entryIsSelected"
-    ></time-picker-entry>
+<div class="timepicker">
+    <span>{{$t('widget_timePicker:timePicker')}} ({{begin}} - {{end}} / {{step}} min.)</span>
+    <div class="entries">
+        <time-picker-entry
+                v-for="one in entries"
+                :key="one.id"
+                :id="one.id"
+                :label="one.label"
+                :inactive="one.inactive"
+                @selected="entryIsSelected"
+        ></time-picker-entry>
+    </div>
 </div>
 `;
 
@@ -54,6 +61,7 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
             timePickerEntry: entry
         },
         props: ['begin', 'end', 'step'],
+        emits: ['selected'],
         data: function () {
             return {
                 selected: null
@@ -77,15 +85,9 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
             }
         },
         methods: {
-            changeLang() {
-                const current = i18next.language;
-                const next = (current === 'en') ? 'ru' : 'en';
-                i18next.changeLanguage(next);
-            },
-            entryIsSelected(a, b, c, d) {
-                debugger
+            entryIsSelected(label) {
+                this.$emit('selected', label);
             }
-        },
-        i18n: self.i18n
+        }
     };
 }

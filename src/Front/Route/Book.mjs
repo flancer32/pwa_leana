@@ -157,7 +157,12 @@ const template = `
                 <span>{{$t('route-book:time')}}:</span>
             </div>
             <div class="form_field">
-                <time-picker begin="10:00" end="18:00" step="45"></time-picker>
+                <time-picker 
+                    begin="10:00" 
+                    end="18:00" 
+                    step="45"
+                     @selected="setTime"
+                ></time-picker>
             </div>       
         </div>
         
@@ -206,8 +211,8 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
             };
         },
         methods: {
-            boo() {
-                this.state.disabledDates.daysOfMonth = [28, 29, 30];
+            setTime(label) {
+                this.time = label;
             },
             send() {
                 console.log('send data to server');

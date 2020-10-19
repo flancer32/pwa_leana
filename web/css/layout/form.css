@@ -31,3 +31,7 @@
 DIV.form_label {
     display: none;
 }
+
+.form_actions BUTTON {
+    min-height: 40px;
+}
