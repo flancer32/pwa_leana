@@ -111,20 +111,20 @@ const template = `
             </div>
             <div class="form_field">
                 <select name="category" v-model="category">
-                    <option disabled value="">{{$t('route-book:categorySelect')}}</option>
+                    <option disabled value="null">{{$t('route-book:categorySelect')}}</option>
                     <option v-for="one in categoryOptions" :value="one.id" :disabled="one.disabled">
                         {{ $t('route-book:categoryLabel.' + one.id) }}
                     </option>
                 </select>
             </div>       
         </div>
-        <div class="form_row" v-show="category">
+        <div class="form_row" v-show="category && name && (phone || email)">
             <div class="form_label">
                 <span>{{$t('route-book:service')}}:</span>
             </div>
             <div class="form_field">
                 <select name="service" v-model="service">
-                    <option disabled value="">{{$t('route-book:serviceSelect')}}</option>
+                    <option disabled value="null">{{$t('route-book:serviceSelect')}}</option>
                     <option v-for="one in serviceOptions" :value="one.id" :disabled="one.disabled">
                         {{ $t('route-book:serviceLabel.' + one.id) }}
                     </option>
@@ -137,7 +137,7 @@ const template = `
             </div>
             <div class="form_field">
                 <select name="master" v-model="master">
-                    <option disabled value="">{{$t('route-book:masterSelect')}}</option>
+                    <option disabled value="null">{{$t('route-book:masterSelect')}}</option>
                     <option v-for="one in masterOptions" :value="one.id" :disabled="one.disabled">
                         {{ $t('route-book:masterLabel.' + one.id) }}
                     </option>
@@ -149,7 +149,7 @@ const template = `
                 <span>{{$t('route-book:date')}}:</span>
             </div>
             <div class="form_field">
-                <input id="pick" type="text">
+                <input id="bookDate" type="text" autocomplete="off" :placeholder="$t('route-book:datePH')">
             </div>
         </div>
         <div class="form_row" v-show="date">
@@ -185,37 +185,66 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         },
         data: function () {
             return {
-                name: '',
-                date: null,
-                time: null,
-                phone: null,
-                email: null,
-                category: '',
+                category: null,
                 categoryOptions: [
                     {id: 1},
                     {id: 2},
                 ],
-                service: '',
+                date: null,
+                email: null,
+                master: null,
+                masterOptions: [
+                    {id: 1},
+                    {id: 2, disabled: true},
+                    {id: 3}
+                ],
+                name: null,
+                phone: null,
+                service: null,
                 serviceOptions: [
                     {id: 1},
                     {id: 2},
                     {id: 3},
                     {id: 4}
                 ],
-                master: '',
-                masterOptions: [
-                    {id: 1},
-                    {id: 2, disabled: true},
-                    {id: 3}
-                ],
+                time: null,
             };
         },
         methods: {
             setTime(label) {
                 this.time = label;
             },
-            send() {
-                console.log('send data to server');
+            async send() {
+                const data = {
+                    category: this.category,
+                    date: this.date,
+                    duration: 45,
+                    email: this.email,
+                    master: this.master,
+                    name: this.name,
+                    phone: this.phone,
+                    service: this.service,
+                    time: this.time,
+                };
+                const res = await fetch('./api/book/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({data})
+                });
+                const result = await res.json();
+                // result in the response is the same data if succeed
+                if (result.data.name === this.name) {
+                    this.name = null;
+                    this.email = null;
+                    this.phone = null;
+                    this.category = null;
+                    this.service = null;
+                    this.master = null;
+                    this.date = null;
+                    this.time = null;
+                }
             }
         },
         mounted() {
@@ -223,7 +252,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 d.setDate(d.getDate() + 21);
                 return d;
             })(new Date);
-            self.datepicker('#pick', {
+            self.datepicker('#bookDate', {
                 disableYearOverlay: true,
                 maxDate: week3Forward,
                 minDate: new Date(),
