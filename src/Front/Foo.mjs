@@ -1,36 +1,43 @@
-const i18next = self.i18n.i18next;
-i18next.addResources('en', 'foo', {
-    msg: 'You clicked me {{ count }} times.',
-    lang: 'Change language.',
+const router = self.teqfw.router;
+const i18next = self.teqfw.i18next;
+
+i18next.addResources('en', 'app', {
+    home: 'HOme'
 });
-i18next.addResources('ru', 'foo', {
-    msg: 'Ты кликнул по мне {{ count }} раз.',
-    lang: 'Сменить язык.',
+i18next.addResources('ru', 'app', {
+    home: 'homE'
 });
 
 const template = `
 <div>
-    <span>Foo</span>
-<!--    <button v-on:click="count++">{{ $t("foo:msg", {count}) }}</button>-->
-<!--    <button v-on:click="changeLang">{{ $t("foo:lang") }}</button>-->
+    <p>
+        <router-link to="/">Go to Home</router-link>
+        <router-link to="/about">Go to About</router-link>
+    </p>
+    <div>Counter: {{counter}}</div>
+    <router-view></router-view>
 </div>
 `;
+
+const Home = {template: '<div>Home: {{$t("app:home")}}</div>'};
+const About = {template: '<div>About</div>'};
+
+
+router.addRoute({path: '/', component: Home});
+router.addRoute({path: '/about', component: About});
 
 export default function Fl32_Leana_Front_Foo() {
     return {
         template,
-        data: function () {
+        data() {
             return {
-                count: 0
+                counter: 0
             };
         },
-        methods: {
-            // changeLang() {
-            //     const current = this._i18n.i18next.language;
-            //     const next = (current === 'en') ? 'ru' : 'en';
-            //     this._i18n.i18next.changeLanguage(next);
-            // }
-        },
-        // i18n: self.i18n
+        mounted() {
+            setInterval(() => {
+                this.counter++;
+            }, 1000);
+        }
     };
 }

@@ -1,6 +1,6 @@
+const i18next = self.teqfw.i18next;
 // see index.html
 const vuejsDatepicker = self.vuejsDatepicker;
-const i18next = self.i18n.i18next;
 
 i18next.addResourceBundle('lv', 'route-book', {
     action: {
@@ -86,7 +86,7 @@ const template = `
                 <span>{{$t('route-book:name')}}:</span>
             </div>
             <div class="form_field">
-                <input type="text" name="name" v-model="name" :placeholder="$t('route-book:namePH')"></input>
+                <input type="text" name="name" v-model="name" :placeholder="$t('route-book:namePH')">
             </div>       
         </div>
         <div class="form_row">
@@ -94,7 +94,7 @@ const template = `
                 <span>{{$t('route-book:phone')}}:</span>
             </div>
             <div class="form_field">
-                <input type="text" name="phone" v-model="phone" :placeholder="$t('route-book:phonePH')"></input>
+                <input type="text" name="phone" v-model="phone" :placeholder="$t('route-book:phonePH')">
             </div>       
         </div>
         <div class="form_row">
@@ -102,7 +102,7 @@ const template = `
                 <span>{{$t('route-book:email')}}:</span>
             </div>
             <div class="form_field">
-                <input type="text" name="email" v-model="email" :placeholder="$t('route-book:emailPH')"></input>
+                <input type="text" name="email" v-model="email" :placeholder="$t('route-book:emailPH')">
             </div>       
         </div>
         <div class="form_row">
@@ -149,19 +149,14 @@ const template = `
                 <span>{{$t('route-book:date')}}:</span>
             </div>
             <div class="form_field">
-                <vuejs-datepicker v-model="date" 
-                    :monday-first="true"
-                    :placeholder="$t('route-book:datePH')"
-                    :disabled-dates="state.disabledDates"></vuejs-datepicker>
-<!--                <button v-on:click="boo">Disable</button>   -->
+                <input id="pick" type="text">
             </div>
         </div>
-        <div class="form_row" v-show="!date">
+        <div class="form_row" v-show="date">
             <div class="form_label">
                 <span>{{$t('route-book:time')}}:</span>
             </div>
             <div class="form_field">
-<!--                <input type="text" name="time" v-model="time" :placeholder="$t('route-book:timePH')"></input>-->
                 <time-picker begin="10:00" end="18:00" step="45"></time-picker>
             </div>       
         </div>
@@ -208,36 +203,6 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                     {id: 2, disabled: true},
                     {id: 3}
                 ],
-                state: {
-                    disabledDates: {
-                        to: new Date(2020, 9, 15), // Disable all dates up to specific date
-                        from: new Date(2020, 11, 1), // Disable all dates after specific date
-                        days: [6, 0], // Disable Saturday's and Sunday's
-                        daysOfMonth: [29, 30, 31], // Disable 29th, 30th and 31st of each month
-                        // dates: [ // Disable an array of dates
-                        //     new Date(2016, 9, 16),
-                        //     new Date(2016, 9, 17),
-                        //     new Date(2016, 9, 18)
-                        // ],
-                        // ranges: [{ // Disable dates in given ranges (exclusive).
-                        //     from: new Date(2016, 11, 25),
-                        //     to: new Date(2016, 11, 30)
-                        // }, {
-                        //     from: new Date(2017, 1, 12),
-                        //     to: new Date(2017, 2, 25)
-                        // }],
-                        // a custom function that returns true if the date is disabled
-                        // this can be used for wiring you own logic to disable a date if none
-                        // of the above conditions serve your purpose
-                        // this function should accept a date and return true if is disabled
-                        customPredictor: function (date) {
-                            // disables the date if it is a multiple of 5
-                            if (date.getDate() % 5 == 0) {
-                                return true;
-                            }
-                        }
-                    }
-                }
             };
         },
         methods: {
@@ -248,9 +213,21 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 console.log('send data to server');
             }
         },
-        created() {
-            // const me = this;
-
+        mounted() {
+            const week3Forward = ((d) => {
+                d.setDate(d.getDate() + 21);
+                return d;
+            })(new Date);
+            self.datepicker('#pick', {
+                disableYearOverlay: true,
+                maxDate: week3Forward,
+                minDate: new Date(),
+                showAllDates: true,
+                disabledDates: [new Date(2020, 9, 20), new Date(2020, 9, 22), new Date(2020, 9, 28),],
+                onSelect: inst => {
+                    this.date = inst.dateSelected;
+                }
+            });
         }
     };
 }

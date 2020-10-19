@@ -1,4 +1,4 @@
-const i18next = self.i18n.i18next;
+const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'app-navBar', {
     about: 'Par mums',
     book: 'Pierakstīties',
@@ -65,7 +65,7 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
         methods: {
             changeLang(lang) {
                 this.lang = lang.substr(0, 2);
-                this._i18n.i18next.changeLanguage(lang);
+                i18next.changeLanguage(lang);
             },
             controlMenus(evt) {
                 const path = evt.path;
@@ -86,7 +86,7 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
             }
         },
         created() {
-            const savedLang = this._i18n.i18next.language;
+            const savedLang = i18next.language;
             this.lang = (savedLang.substring(0, 2) === 'ru') ? 'ru' : 'lv';
         },
     };

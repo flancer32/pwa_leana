@@ -55,8 +55,23 @@ export default class Fl32_Leana_App_Server_Route_Static {
                 } else if (url.startsWith('/src/mod/leana/')) {
                     const tail = url.replace('/src/mod/leana/', '/src/');
                     result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/static/vuejs-datepicker/')) {
-                    const tail = url.replace('/static/vuejs-datepicker/', '/node_modules/vuejs-datepicker/dist/');
+                } else if (url.startsWith('/node/vue/')) {
+                    const tail = url.replace('/node/vue/', '/node_modules/vue/dist/');
+                    result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/vue-router/')) {
+                    const tail = url.replace('/node/vue-router/', '/node_modules/vue-router/dist/');
+                    result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/i18next/')) {
+                    const tail = url.replace('/node/i18next/', '/node_modules/i18next/dist/umd/');
+                    result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/i18next-bld/')) {
+                    const tail = url.replace('/node/i18next-bld/', '/node_modules/i18next-browser-languagedetector/dist/umd/');
+                    result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/vuejs-datepicker/')) {
+                    const tail = url.replace('/node/vuejs-datepicker/', '/node_modules/vuejs-datepicker/dist/');
+                    result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/js-datepicker/')) {
+                    const tail = url.replace('/node/js-datepicker/', '/node_modules/js-datepicker/dist/');
                     result = $path.join(pathRoot, tail);
                 } else {
                     result = $path.join(pathWeb, url);

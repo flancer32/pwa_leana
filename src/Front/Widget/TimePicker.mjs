@@ -1,4 +1,4 @@
-const i18next = self.i18n.i18next;
+const i18next = self.teqfw.i18next;
 i18next.addResourceBundle('lv', 'widget_timePicker', {}, true);
 i18next.addResourceBundle('ru', 'widget_timePicker', {}, true);
 
@@ -78,9 +78,9 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
         },
         methods: {
             changeLang() {
-                const current = this._i18n.i18next.language;
+                const current = i18next.language;
                 const next = (current === 'en') ? 'ru' : 'en';
-                this._i18n.i18next.changeLanguage(next);
+                i18next.changeLanguage(next);
             },
             entryIsSelected(a, b, c, d) {
                 debugger

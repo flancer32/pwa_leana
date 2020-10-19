@@ -1,4 +1,4 @@
-const i18next = self.i18n.i18next;
+const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'route-about', {});
 i18next.addResources('ru', 'route-about', {});
 

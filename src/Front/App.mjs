@@ -1,4 +1,5 @@
-const i18next = self.i18n.i18next;
+const router = self.teqfw.router;
+const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'app', {});
 i18next.addResources('ru', 'app', {});
 
@@ -28,24 +29,15 @@ export default function Fl32_Leana_Front_App(spec) {
     const routeAbout = spec.Fl32_Leana_Front_Route_About$;
     const routeBook = spec.Fl32_Leana_Front_Route_Book$;
 
-    const routes = [
-        {path: '/', component: routeAbout},
-        {path: '/about', component: routeAbout},
-        {path: '/book', component: routeBook},
-    ];
+    router.addRoute({path: '/', component: routeAbout});
+    router.addRoute({path: '/about', component: routeAbout});
+    router.addRoute({path: '/book', component: routeBook});
 
-    const router = new self.VueRouter({
-        routes
-    });
+    // mount router here to enable routing on the first load of the page
+    self.teqfw.app.use(router);
 
     return {
         template,
-        data: function () {
-            return {};
-        },
-        methods: {},
-        i18n: self.i18n,
-        router,
         components: {
             'AppNavBar': appNavBar
         }
