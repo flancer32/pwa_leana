@@ -18,7 +18,8 @@
   "scripts": {
     "rebuild": "rm -fr node_modules package-lock.json && npm install",
     "start": "node --experimental-modules ./bin/tequila.mjs start",
-    "stop": "node --experimental-modules ./bin/tequila.mjs stop"
+    "stop": "node --experimental-modules ./bin/tequila.mjs stop",
+    "test": "./node_modules/mocha/bin/mocha --require esm --recursive './test/**/*.test.js'"
   },
   "dependencies": {
     "@teqfw/di": "teqfw/di#master",
@@ -44,6 +45,6 @@
     "eslint": "^7.10.0",
     "esm": "^3.2.25",
     "jsdoc": "^3.6.6",
-    "mocha": "^8.1.3"
+    "mocha": "^8.2.0"
   }
 }
