@@ -190,6 +190,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                     {id: 1},
                     {id: 2},
                 ],
+                /** @type {Date} */
                 date: null,
                 email: null,
                 master: null,
@@ -215,16 +216,19 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 this.time = label;
             },
             async send() {
+                // get local variable with 'date' value
+                const date = new Date(this.date.getTime());
+                const [hours, minutes] = this.time.split(':');
+                date.setHours(hours, minutes);
                 const data = {
                     category: this.category,
-                    date: this.date,
+                    date: date,
                     duration: 45,
                     email: this.email,
                     master: this.master,
                     name: this.name,
                     phone: this.phone,
                     service: this.service,
-                    time: this.time,
                 };
                 const res = await fetch('./api/book/save', {
                     method: 'POST',
@@ -236,14 +240,15 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 const result = await res.json();
                 // result in the response is the same data if succeed
                 if (result.data.name === this.name) {
-                    this.name = null;
-                    this.email = null;
-                    this.phone = null;
-                    this.category = null;
-                    this.service = null;
-                    this.master = null;
-                    this.date = null;
-                    this.time = null;
+                    // TMP: disable form cleaning
+                    // this.name = null;
+                    // this.email = null;
+                    // this.phone = null;
+                    // this.category = null;
+                    // this.service = null;
+                    // this.master = null;
+                    // this.date = null;
+                    // this.time = null;
                 }
             }
         },
@@ -253,11 +258,12 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 return d;
             })(new Date);
             self.datepicker('#bookDate', {
+                disabledDates: [new Date(2020, 9, 20), new Date(2020, 9, 22), new Date(2020, 9, 28),],
                 disableYearOverlay: true,
                 maxDate: week3Forward,
                 minDate: new Date(),
                 showAllDates: true,
-                disabledDates: [new Date(2020, 9, 20), new Date(2020, 9, 22), new Date(2020, 9, 28),],
+                startDay: 1,
                 onSelect: inst => {
                     this.date = inst.dateSelected;
                 }

@@ -56,9 +56,9 @@ export default class Fl32_Leana_Extern_Google_Api {
      * Create new event in Google Calendar.
      *
      * @param {string} summary
-     * @param {number} description
-     * @param {Object} start
-     * @param {Object} end
+     * @param {string} description
+     * @param {Date} start
+     * @param {Date} end
      * @returns {Promise<{}>}
      */
     async addEvent({summary, description, start, end}) {
@@ -69,12 +69,10 @@ export default class Fl32_Leana_Extern_Google_Api {
             summary,
             description,
             start: {
-                'dateTime': '2020-10-20T18:00:00+02:00',
-                'timeZone': 'Europe/Riga',
+                'dateTime': start.toJSON()
             },
             end: {
-                'dateTime': '2020-10-20T18:30:00+02:00',
-                'timeZone': 'Europe/Riga',
+                'dateTime': end.toJSON()
             }
         };
         const res = await this._calendar.events.insert({
