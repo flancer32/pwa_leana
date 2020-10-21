@@ -1,17 +1,24 @@
 /**
  * Save single booking.
  */
-// MODULE'S EXPORT
 export default class Fl32_Leana_Back_Route_Book_Save {
 
     constructor(spec) {
-        /** @type {Fl32_Leana_App_Config} */
-        const _config = spec.Fl32_Leana_App_Config$;
+        // INJECT DEPENDENCIES INTO THIS INSTANCE (PROPS AND VARS IN THE CLOSURE OF THE CONSTRUCTOR)
         /** @type {Fl32_Leana_Shared_Util_DateTime} */
         const _utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
         /** @type {Fl32_Leana_Extern_Google_Api} */
         const _googleApi = spec.Fl32_Leana_Extern_Google_Api$;
 
+        // DEFINE THIS INSTANCE METHODS (NOT IN PROTOTYPE)
+        /**
+         * API route handler to save single booking.
+         *
+         * @param req
+         * @param res
+         * @returns {Promise<void>}
+         * @see Fl32_Leana_App_Server.addApiRoute
+         */
         this.handle = async function (req, res) {
             // PARSE INPUT & DEFINE WORKING VARS
             const body = req.body;
