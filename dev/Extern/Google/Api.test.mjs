@@ -15,9 +15,13 @@ describe('Fl32_Leana_Extern_Google_Api', () => {
         describe('API performs', () => {
 
             it('event addition', async () => {
+                const start = new Date();
+                const end = new Date(start.getTime() + 3600 * 1000);
                 const spec = {
                     summary: 'Test Event',
-                    description: 'This event is added from test script.'
+                    description: 'This event is added from test script.',
+                    start,
+                    end
                 };
                 await obj.addEvent(spec);
                 assert(true);

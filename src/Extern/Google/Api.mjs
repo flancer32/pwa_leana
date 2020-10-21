@@ -2,14 +2,14 @@
  * Module description.
  */
 // NODE.JS IMPORTS
-import {google} from 'googleapis';
+import $googleapis from 'googleapis';
 
 
 // MODULE'S PRIVATE MEMBERS
 // Google API authorization scopes
 const SCOPE_CALENDAR = 'https://www.googleapis.com/auth/calendar';
 const SCOPE_EVENTS = 'https://www.googleapis.com/auth/calendar.events';
-
+const google = $googleapis.google;
 /**
  * Google API authorization.
  *
