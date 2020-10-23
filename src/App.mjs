@@ -24,6 +24,8 @@ export default class Fl32_Leana_App {
     _container
     /** @type {Fl32_Leana_App_Config} */
     _config
+    /** @type {Fl32_Leana_App_Db_Connector} */
+    _db
     /** @type {Fl32_Leana_App_Logger} */
     _logger
 
@@ -32,6 +34,7 @@ export default class Fl32_Leana_App {
         this._bootCfg = spec.bootstrap$;   // use bootstrap configuration defined in '../bin/tequila.js'
         this._container = spec.TeqFw_Di_Container$;
         this._config = spec.Fl32_Leana_App_Config$;
+        this._db = spec.Fl32_Leana_App_Db_Connector$;
         this._logger = spec.Fl32_Leana_App_Logger$;
         const logTransport = spec.Fl32_Leana_App_Logger_Transport_Console$;
         // INIT OWN PROPERTIES AND DEFINE WORKING VARS
@@ -79,6 +82,7 @@ export default class Fl32_Leana_App {
 
         // MAIN FUNCTIONALITY
         loadConfig();
+        await this._db.init();
         await addCliActions();
     }
 

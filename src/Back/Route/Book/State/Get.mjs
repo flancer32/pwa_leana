@@ -1,6 +1,5 @@
 /**
  * Get booking state (categories, services, masters, ...).
- * Route handler description.
  */
 export default class Fl32_Leana_Back_Route_Book_State_Get {
 
