@@ -62,9 +62,8 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                         {id: 24, code: 'hair_style_and_tone', category: [2, 5], duration: 180},
                     ],
                     master: [
-                        {id: 1, code: 'agata', services: [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20]},
-                        {id: 2, code: 'barbara', services: [3, 4, 5, 6, 11, 12, 13, 14, 19, 20, 21, 22]},
-                        {id: 3, code: 'cintija', services: [5, 6, 7, 8, 13, 14, 15, 16, 21, 22, 23, 24]},
+                        {id: 1, code: 'elena', services: [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20]},
+                        {id: 2, code: 'natalija', services: [3, 4, 5, 6, 11, 12, 13, 14, 19, 20, 21, 22]},
                     ],
                 };
                 Object.assign(data, state);

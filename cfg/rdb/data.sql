@@ -1,0 +1,42 @@
+DELETE FROM `book_employee`;
+INSERT INTO `book_employee` (`id`, `code`) VALUES (1,  'elena');
+INSERT INTO `book_employee` (`id`, `code`) VALUES (2,  'natalie');
+
+DELETE FROM `book_service`;
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (1, 'haircut_man', 30);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (2, 'haircut_women', 30);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (3, 'haircut_child', 30);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (4, 'color_simple', 30);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (5, 'color_complex', 60);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (6, 'color_highlight', 120);
+INSERT INTO `book_service` (`id`, `code`, `duration`) VALUES (7, 'perm', 60);
+
+DELETE FROM `book_employee_service`;
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 1);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 2);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 3);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 4);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 5);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 6);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (1, 7);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 1);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 2);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 3);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 4);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 5);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 6);
+INSERT INTO `book_employee_service` (`employee_ref`, `service_ref`) VALUES (2, 7);
+
+DELETE FROM `book_employee_time_work`;
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-10-26');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-10-27');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-10-28');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-10-29');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-10-30');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-10-31');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-11-01');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-11-02');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-11-03');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-11-04');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (1, '2020-11-05');
+INSERT INTO `book_employee_time_work` (`employee_ref`, `date`) VALUES (2, '2020-11-06');
