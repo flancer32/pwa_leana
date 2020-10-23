@@ -32,4 +32,13 @@ export default class Fl32_Leana_App_Db_Connector {
             this._logger.error('Cannot connect to DB \'' + db + '\' as \'' + user + '\'. Error: ' + e);
         }
     }
+
+    /**
+     * Start new knex transaction.
+     *
+     * @returns {Promise<*>}
+     */
+    async startTransaction() {
+        return await this._knex.transaction();
+    }
 }

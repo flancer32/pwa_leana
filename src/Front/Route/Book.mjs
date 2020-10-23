@@ -252,11 +252,22 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 }
             }
         },
-        mounted() {
+        async mounted() {
+            async function loadData() {
+                const res = await fetch('./api/book/state/get', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return await res.json();
+            }
+
             const week3Forward = ((d) => {
                 d.setDate(d.getDate() + 21);
                 return d;
             })(new Date);
+
             self.datepicker('#bookDate', {
                 disabledDates: [new Date(2020, 9, 20), new Date(2020, 9, 22), new Date(2020, 9, 28),],
                 disableYearOverlay: true,
@@ -268,6 +279,8 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                     this.date = inst.dateSelected;
                 }
             });
+
+            const {data} = await loadData();
         }
     };
 }
