@@ -281,8 +281,15 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                     showAllDates: true,
                     startDay: 1,
                     onSelect: inst => {
+                        function getSelected(options, id) {
+                            const key = Number.parseInt(id);
+                            return options.find(function (o) {
+                                return Number.parseInt(o.id) === key;
+                            });
+                        }
+
                         me.date = inst.dateSelected;
-                        const selected = me.serviceOptions[me.service];
+                        const selected = getSelected(me.serviceOptions, me.service);
                         me.duration = selected.duration;
                         me.tpStep = util.convertHrsMinsToMins(me.duration);
                     }

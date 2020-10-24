@@ -1,11 +1,17 @@
 {
-  "name": "Leana SIA",
+  "name": "Leana Frizētava",
   "short_name": "Leana",
   "theme_color": "#D3E987",
   "background_color": "#D3E987",
   "display": "minimal-ui",
   "scope": "/",
   "start_url": "/",
-  "icons": [],
+  "icons": [
+      {
+        "src": "img/favicon_src.png",
+        "sizes": "225x225",
+        "type": "image/png"
+      }
+  ],
   "splash_pages": null
 }
