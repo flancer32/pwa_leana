@@ -6,21 +6,14 @@ i18next.addResourceBundle('lv', 'route-book', {
     action: {
         send: 'Nosūtīt'
     },
-    category: 'Kategorija',
-    categoryLabel: {
-        1: 'Frizūra',
-        2: 'Krāsošana',
-    },
-    categorySelect: 'Izvēlieties kategoriju',
     date: 'Datums',
     datePH: 'Izvēlieties datumu',
     email: 'Jūsu e-pasts',
     emailPH: 'e-pasts: user@domain.com',
     master: 'Meistars',
     masterLabel: {
-        1: 'Agata',
-        2: 'Barbara',
-        3: 'Ciļa',
+        elena: 'Helena',
+        natalie: 'Natalija',
     },
     masterSelect: 'Izvēlieties meistaru',
     name: 'Jūsu vārds',
@@ -29,10 +22,13 @@ i18next.addResourceBundle('lv', 'route-book', {
     phonePH: 'telefons: 29101010',
     service: 'Pakalpojums',
     serviceLabel: {
-        1: 'Vīriešu matu griezums (30 min.)',
-        2: 'Vīriešu matu griezums + bārda (1 st.)',
-        3: 'Frizūra sievietēm, īsi mati (30 min.)',
-        4: 'Frizūra sievietēm, gari mati (1 st.)',
+        haircut_man: 'Vīriešu frizūra ({{time}})',
+        haircut_women: 'Sieviešu frizūra ({{time}})',
+        haircut_child: 'Bērnu frizūra ({{time}})',
+        color_simple: 'Vienkārša krāsošana ({{time}})',
+        color_complex: 'Kompleksa krāsošana ({{time}})',
+        color_highlight: 'Izcelšana ({{time}})',
+        perm: 'Perm ({{time}})',
     },
     serviceSelect: 'Izvēlieties pakalpojumu',
     time: 'Laiks',
@@ -43,21 +39,14 @@ i18next.addResourceBundle('ru', 'route-book', {
     action: {
         send: 'Отправить'
     },
-    category: 'Категория',
-    categoryLabel: {
-        1: 'Стрижка',
-        2: 'Окраска',
-    },
-    categorySelect: 'Выберите категорию',
     date: 'Дата',
     datePH: 'Выберите дату',
     email: 'Ваш email',
     emailPH: 'email: user@domain.com',
     master: 'Мастер',
     masterLabel: {
-        1: 'Алина',
-        2: 'Беата',
-        3: 'Варвара',
+        elena: 'Елена',
+        natalie: 'Наталья',
     },
     masterSelect: 'Выберите мастера',
     name: 'Ваше имя',
@@ -66,10 +55,13 @@ i18next.addResourceBundle('ru', 'route-book', {
     phonePH: 'телефон: 29101010',
     service: 'Услуга',
     serviceLabel: {
-        1: 'Стрижка мужская (30 мин.)',
-        2: 'Стрижка мужская + борода (1ч.)',
-        3: 'Стрижка женская, короткие волосы (30 мин.)',
-        4: 'Стрижка женская, длинные волосы (1ч.)'
+        haircut_man: 'Стрижка мужская ({{time}})',
+        haircut_women: 'Стрижка женская ({{time}})',
+        haircut_child: 'Стрижка детская ({{time}})',
+        color_simple: 'Окрашивание простое ({{time}})',
+        color_complex: 'Окрашивание сложное ({{time}})',
+        color_highlight: 'Мелирование ({{time}})',
+        perm: 'Химическая завивка ({{time}})',
     },
     serviceSelect: 'Выберите услугу',
     time: 'Время',
@@ -107,39 +99,26 @@ const template = `
         </div>
         <div class="form_row">
             <div class="form_label">
-                <span>{{$t('route-book:category')}}:</span>
-            </div>
-            <div class="form_field">
-                <select name="category" v-model="category">
-                    <option disabled value="null">{{$t('route-book:categorySelect')}}</option>
-                    <option v-for="one in categoryOptions" :value="one.id" :disabled="one.disabled">
-                        {{ $t('route-book:categoryLabel.' + one.id) }}
-                    </option>
-                </select>
-            </div>       
-        </div>
-        <div class="form_row" v-show="category && name && (phone || email)">
-            <div class="form_label">
                 <span>{{$t('route-book:service')}}:</span>
             </div>
             <div class="form_field">
                 <select name="service" v-model="service">
                     <option disabled value="null">{{$t('route-book:serviceSelect')}}</option>
-                    <option v-for="one in serviceOptions" :value="one.id" :disabled="one.disabled">
-                        {{ $t('route-book:serviceLabel.' + one.id) }}
+                    <option v-for="(one) in serviceOptions" :value="one.id" :disabled="one.disabled">
+                        {{ $t('route-book:serviceLabel.' + one.code, {time:one.duration}) }}
                     </option>
                 </select>
             </div>       
         </div>
-        <div class="form_row" v-show="service">
+        <div class="form_row" v-show="service && name && (phone || email)">
             <div class="form_label">
                 <span>{{$t('route-book:master')}}:</span>
             </div>
             <div class="form_field">
                 <select name="master" v-model="master">
                     <option disabled value="null">{{$t('route-book:masterSelect')}}</option>
-                    <option v-for="one in masterOptions" :value="one.id" :disabled="one.disabled">
-                        {{ $t('route-book:masterLabel.' + one.id) }}
+                    <option v-for="(one) in masterOptions" :value="one.id" :disabled="one.disabled">
+                        {{ $t('route-book:masterLabel.' + one.code, one.duration) }}
                     </option>
                 </select>
             </div>       
@@ -157,10 +136,10 @@ const template = `
                 <span>{{$t('route-book:time')}}:</span>
             </div>
             <div class="form_field">
-                <time-picker 
-                    begin="10:00" 
-                    end="18:00" 
-                    step="45"
+                <time-picker ref="timePicker"
+                    :begin="tpBegin" 
+                    :end="tpEnd" 
+                    :step="tpStep"
                      @selected="setTime"
                 ></time-picker>
             </div>       
@@ -176,7 +155,11 @@ const template = `
 `;
 
 export default function Fl32_Leana_Front_Route_Book(spec) {
+    /** @type {Fl32_Leana_Front_Widget_TimePicker} */
     const timePicker = spec.Fl32_Leana_Front_Widget_TimePicker$;
+    /** @type {Fl32_Leana_Shared_Util_DateTime} */
+    const util = spec.Fl32_Leana_Shared_Util_DateTime$;
+
     return {
         template,
         components: {
@@ -185,29 +168,19 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         },
         data: function () {
             return {
-                category: null,
-                categoryOptions: [
-                    {id: 1},
-                    {id: 2},
-                ],
+                tpBegin: '9:00',
+                tpEnd: '20:00',
+                tpStep: '30',
                 /** @type {Date} */
                 date: null,
+                duration: null,
                 email: null,
                 master: null,
-                masterOptions: [
-                    {id: 1},
-                    {id: 2, disabled: true},
-                    {id: 3}
-                ],
+                masterOptions: [],
                 name: null,
                 phone: null,
                 service: null,
-                serviceOptions: [
-                    {id: 1},
-                    {id: 2},
-                    {id: 3},
-                    {id: 4}
-                ],
+                serviceOptions: [],
                 time: null,
             };
         },
@@ -216,19 +189,30 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 this.time = label;
             },
             async send() {
+                function getCode(options, id) {
+                    let result = null;
+                    const key = Number.parseInt(id);
+                    const found = options.find(function (o) {
+                        return Number.parseInt(o.id) === key;
+                    });
+                    if (found) {
+                        result = found.code;
+                    }
+                    return result;
+                }
+
                 // get local variable with 'date' value
                 const date = new Date(this.date.getTime());
                 const [hours, minutes] = this.time.split(':');
                 date.setHours(hours, minutes);
                 const data = {
-                    category: this.category,
                     date: date,
-                    duration: 45,
+                    duration: this.duration,
                     email: this.email,
-                    master: this.master,
+                    master: getCode(this.masterOptions, this.master),
                     name: this.name,
                     phone: this.phone,
-                    service: this.service,
+                    service: getCode(this.serviceOptions, this.service),
                 };
                 const res = await fetch('./api/book/save', {
                     method: 'POST',
@@ -241,14 +225,13 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 // result in the response is the same data if succeed
                 if (result.data.name === this.name) {
                     // TMP: disable form cleaning
-                    // this.name = null;
-                    // this.email = null;
-                    // this.phone = null;
-                    // this.category = null;
-                    // this.service = null;
-                    // this.master = null;
-                    // this.date = null;
-                    // this.time = null;
+                    this.name = null;
+                    this.email = null;
+                    this.phone = null;
+                    this.service = null;
+                    this.master = null;
+                    this.date = null;
+                    this.time = null;
                 }
             }
         },
@@ -263,24 +246,54 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 return await res.json();
             }
 
-            const week3Forward = ((d) => {
-                d.setDate(d.getDate() + 21);
-                return d;
-            })(new Date);
-
-            self.datepicker('#bookDate', {
-                disabledDates: [new Date(2020, 9, 20), new Date(2020, 9, 22), new Date(2020, 9, 28),],
-                disableYearOverlay: true,
-                maxDate: week3Forward,
-                minDate: new Date(),
-                showAllDates: true,
-                startDay: 1,
-                onSelect: inst => {
-                    this.date = inst.dateSelected;
+            function initEmployees(data) {
+                const items = [];
+                for (const one of data) {
+                    // map backend data to frontend data (the data is the same in this case)
+                    const {id, code} = one;
+                    items.push({id, code});
                 }
-            });
+                me.masterOptions = items;
+            }
 
+            function initServices(data) {
+                const items = [];
+                for (const one of data) {
+                    // map backend data to frontend data (the data is the same in this case)
+                    const {id, code, duration} = one;
+                    const hm = util.convertMinsToHrsMins(duration);
+                    items.push({id, code, duration: hm});
+                }
+                me.serviceOptions = items;
+            }
+
+            function initDatepicker() {
+                const week3Forward = ((d) => {
+                    d.setDate(d.getDate() + 21);
+                    return d;
+                })(new Date);
+
+                self.datepicker('#bookDate', {
+                    disabledDates: [],
+                    disableYearOverlay: true,
+                    maxDate: week3Forward,
+                    minDate: new Date(),
+                    showAllDates: true,
+                    startDay: 1,
+                    onSelect: inst => {
+                        me.date = inst.dateSelected;
+                        const selected = me.serviceOptions[me.service];
+                        me.duration = selected.duration;
+                        me.tpStep = util.convertHrsMinsToMins(me.duration);
+                    }
+                });
+            }
+
+            const me = this;
             const {data} = await loadData();
+            initEmployees(data.employees);
+            initServices(data.services);
+            initDatepicker();
         }
     };
 }
