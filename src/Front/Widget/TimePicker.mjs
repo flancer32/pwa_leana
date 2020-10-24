@@ -51,7 +51,7 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
                 const step = util.convertHrsMinsToMins(this.step);
                 let id = 1;
                 for (let time = beginMins; (time + step) <= endMins; time += step) {
-                    result.push({id: id++, label: util.convertMinsToHrsMins(time)});
+                    result.push({id: id++, label: util.convertMinsToHrsMins(time, true)});
                 }
                 return result;
             }

@@ -45,23 +45,23 @@ describe('Fl32_Leana_Shared_Util_DateTime:', () => {
                 });
 
                 it('convert 9 to 00:09', async () => {
-                    const res = obj.convertMinsToHrsMins(9);
+                    const res = obj.convertMinsToHrsMins(9, true);
                     assert.deepStrictEqual(res, '00:09');
                 });
 
                 it('convert 0 to 00:00', async () => {
                     const res = obj.convertMinsToHrsMins(0);
-                    assert.deepStrictEqual(res, '00:00');
+                    assert.deepStrictEqual(res, '0:00');
                 });
 
                 it('convert null to 00:00', async () => {
-                    const res = obj.convertMinsToHrsMins(null);
+                    const res = obj.convertMinsToHrsMins(null, true);
                     assert.deepStrictEqual(res, '00:00');
                 });
 
-                it('convert undegined to 00:00', async () => {
+                it('convert undefined to 00:00', async () => {
                     const res = obj.convertMinsToHrsMins();
-                    assert.deepStrictEqual(res, '00:00');
+                    assert.deepStrictEqual(res, '0:00');
                 });
 
             });

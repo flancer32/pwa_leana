@@ -9,16 +9,19 @@ export default class Fl32_Leana_Shared_Util_DateTime {
      *  Convert minutes to 'hours:minutes'.
      *
      * @param {Number} mins
+     * @param {boolean} addLeadingZero to hours only
      * @returns {string}
      */
-    convertMinsToHrsMins(mins) {
+    convertMinsToHrsMins(mins, addLeadingZero = false) {
         let h = 0;
         let m = 0;
         if (mins) {
             h = Math.floor(mins / 60);
             m = mins % 60;
         }
-        h = h < 10 ? '0' + h : h;
+        if (addLeadingZero) {
+            h = h < 10 ? '0' + h : h;
+        }
         m = m < 10 ? '0' + m : m;
         return `${h}:${m}`;
     }

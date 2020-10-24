@@ -68,7 +68,7 @@ export default function Fl32_Leana_Front_App_NavBar(spec) {
                 await i18next.changeLanguage(lang);
             },
             controlMenus(evt) {
-                const path = evt.path;
+                const path = evt.path || (evt.composedPath && evt.composedPath());
                 const elLeftStart = document.querySelector('#nav_bar_left');
                 const elLeftMenu = document.querySelector('#menu_left');
                 if (path.includes(elLeftMenu) || path.includes(elLeftStart)) {
