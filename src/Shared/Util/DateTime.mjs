@@ -45,4 +45,21 @@ export default class Fl32_Leana_Shared_Util_DateTime {
         }
         return result;
     }
+
+    /**
+     * Convert `dateIn` into 'YYYYMMDD'. `new Date()` is used if `dateIn` is null.
+     *
+     * @param {Date|null} dateIn
+     * @returns {string}
+     */
+    formatDate(dateIn = null) {
+        /** @type {Date} */
+        const date = (dateIn) ? dateIn : new Date();
+        const y = date.getFullYear();
+        let m = (date.getMonth() + 1);
+        let d = date.getDate();
+        m = m < 10 ? '0' + m : m;
+        d = d < 10 ? '0' + d : d;
+        return `${y}${m}${d}`;
+    }
 }

@@ -41,4 +41,41 @@ export default class Fl32_Leana_App_Db_Connector {
     async startTransaction() {
         return await this._knex.transaction();
     }
+
+    /**
+     *
+     * @returns {*}
+     */
+    getSchema() {
+        return this._knex.schema;
+    }
+
+    async disconnect() {
+        const me = this;
+        const pool = me._knex.client.pool;
+        return new Promise(function (resolve) {
+            const WAIT = 100;
+
+            /**
+             * Check DB connections in loop and close all when all connections will be released.
+             */
+            function checkPool() {
+                const acquires = pool.numPendingAcquires();
+                const creates = pool.numPendingCreates();
+                const pending = acquires + creates;
+                if (pending > 0) {
+                    // wait until all connections will be released
+                    setTimeout(checkPool, WAIT);
+                } else {
+                    // close all connections
+                    me._knex.destroy();
+                    me._logger.info('All database connections are closed.');
+                    resolve();
+                }
+            }
+
+            setTimeout(checkPool, WAIT);
+        });
+
+    }
 }

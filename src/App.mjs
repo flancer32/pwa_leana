@@ -76,6 +76,7 @@ export default class Fl32_Leana_App {
         }
 
         async function addCliActions() {
+            await me.addCommand('Fl32_Leana_Back_Cli_Db_Schema_Upgrade');
             await me.addCommand('Fl32_Leana_Back_Cli_Start');
             await me.addCommand('Fl32_Leana_Back_Cli_Stop');
         }

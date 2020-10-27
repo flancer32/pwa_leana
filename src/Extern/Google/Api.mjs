@@ -23,7 +23,6 @@ async function $authorize(email, key) {
     return jwt;
 }
 
-// MODULE'S EXPORT
 export default class Fl32_Leana_Extern_Google_Api {
     /** @type {Fl32_Leana_App_Logger} */
     _logger
@@ -31,24 +30,8 @@ export default class Fl32_Leana_Extern_Google_Api {
 
     /**  @param {Object} spec */
     constructor(spec) {
-        // INJECT DEPENDENCIES INTO THIS INSTANCE (PROPS AND VARS IN THE CLOSURE OF THE CONSTRUCTOR)
         this._config = spec.Fl32_Leana_App_Config$;
         this._calendar = google.calendar('v3');
-
-        // POPULATE CURRENT INSTANCE WITH BASE CLASSES METHODS (COMPOSITION INSTEAD OF INHERITANCE)
-        // const base = spec.Vendor_Module_Base_Class$;
-        // objFactory.assignPrototypeMethods(this, base);
-
-        // INIT OWN PROPERTIES AND DEFINE WORKING VARS
-        // let _registry = 0; // instance level variable is started with '_'
-
-        // DEFINE INNER FUNCTIONS (AVAILABLE FOR CURRENT INSTANCE ONLY)
-        // function _inner() {
-        //     return (_registry += 1);
-        // }
-
-        // DEFINE THIS INSTANCE METHODS (NOT IN PROTOTYPE)
-
     }
 
 

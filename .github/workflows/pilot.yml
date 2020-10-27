@@ -12,9 +12,9 @@ jobs:
       - name: Check-out repo under '$GITHUB_WORKSPACE'.
         uses: actions/checkout@v2
 
-#      - name: Build application on '$GITHUB_WORKSPACE'.
-#        run: |
-#          npm install
+      #      - name: Build application on '$GITHUB_WORKSPACE'.
+      #        run: |
+      #          npm install
 
       - name: Copy files to Remote Server.
         uses: easingthemes/ssh-deploy@v2.0.7
@@ -42,4 +42,5 @@ jobs:
             rm -fr ./leana
             mv ./leana.new ./leana
             cd ./leana/
+            npm run db-upgrade
             nohup npm start > ./output.log 2>&1 &
