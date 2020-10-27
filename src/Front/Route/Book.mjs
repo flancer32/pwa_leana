@@ -1,13 +1,10 @@
 const i18next = self.teqfw.i18next;
-// see index.html
-const vuejsDatepicker = self.vuejsDatepicker;
+
 
 i18next.addResourceBundle('lv', 'route-book', {
     action: {
         send: 'Nosūtīt'
     },
-    date: 'Datums',
-    datePH: 'Izvēlieties datumu',
     email: 'Jūsu e-pasts',
     emailPH: 'e-pasts: user@domain.com',
     master: 'Meistars',
@@ -31,16 +28,12 @@ i18next.addResourceBundle('lv', 'route-book', {
         perm: 'Perm ({{time}})',
     },
     serviceSelect: 'Izvēlieties pakalpojumu',
-    time: 'Laiks',
-    timePH: 'Izvēlieties laiku',
     title: 'Pierakstīties',
 }, true);
 i18next.addResourceBundle('ru', 'route-book', {
     action: {
         send: 'Отправить'
     },
-    date: 'Дата',
-    datePH: 'Выберите дату',
     email: 'Ваш email',
     emailPH: 'email: user@domain.com',
     master: 'Мастер',
@@ -64,8 +57,6 @@ i18next.addResourceBundle('ru', 'route-book', {
         perm: 'Химическая завивка ({{time}})',
     },
     serviceSelect: 'Выберите услугу',
-    time: 'Время',
-    timePH: 'Выберите время',
     title: 'Записаться',
 }, true);
 
@@ -73,7 +64,7 @@ const template = `
 <div>
     <h1>{{$t('route-book:title')}}</h1>
     <form class="form_c1" onsubmit="return false">
-        <div class="form_row">
+        <div class="fld-name form_row">
             <div class="form_label">
                 <span>{{$t('route-book:name')}}:</span>
             </div>
@@ -81,7 +72,7 @@ const template = `
                 <input type="text" name="name" v-model="name" :placeholder="$t('route-book:namePH')">
             </div>       
         </div>
-        <div class="form_row">
+        <div class="fld-phone form_row">
             <div class="form_label">
                 <span>{{$t('route-book:phone')}}:</span>
             </div>
@@ -89,7 +80,7 @@ const template = `
                 <input type="text" name="phone" v-model="phone" :placeholder="$t('route-book:phonePH')">
             </div>       
         </div>
-        <div class="form_row">
+        <div class="fld-email form_row">
             <div class="form_label">
                 <span>{{$t('route-book:email')}}:</span>
             </div>
@@ -97,7 +88,7 @@ const template = `
                 <input type="text" name="email" v-model="email" :placeholder="$t('route-book:emailPH')">
             </div>       
         </div>
-        <div class="form_row">
+        <div class="fld-service form_row">
             <div class="form_label">
                 <span>{{$t('route-book:service')}}:</span>
             </div>
@@ -110,7 +101,7 @@ const template = `
                 </select>
             </div>       
         </div>
-        <div class="form_row" v-show="service && name && (phone || email)">
+        <div class="fld-master form_row" v-show="service && name && (phone || email)">
             <div class="form_label">
                 <span>{{$t('route-book:master')}}:</span>
             </div>
@@ -123,15 +114,12 @@ const template = `
                 </select>
             </div>       
         </div>
-        <div class="form_row" v-show="master">
-            <div class="form_label">
-                <span>{{$t('route-book:date')}}:</span>
-            </div>
-            <div class="form_field">
-                <input id="bookDate" type="text" autocomplete="off" :placeholder="$t('route-book:datePH')">
-            </div>
+        <div class="fld-date form_row" v-show="master">
+            <date-picker ref="datePicker"
+                @selected="setDate"
+            ></date-picker>
         </div>
-        <div class="form_row" v-show="date">
+        <div class="fld-time form_row" v-show="date">
             <div class="form_label">
                 <span>{{$t('route-book:time')}}:</span>
             </div>
@@ -155,6 +143,8 @@ const template = `
 `;
 
 export default function Fl32_Leana_Front_Route_Book(spec) {
+    /** @type {Fl32_Leana_Front_Widget_DatePicker} */
+    const datePicker = spec.Fl32_Leana_Front_Widget_DatePicker$;
     /** @type {Fl32_Leana_Front_Widget_TimePicker} */
     const timePicker = spec.Fl32_Leana_Front_Widget_TimePicker$;
     /** @type {Fl32_Leana_Shared_Util_DateTime} */
@@ -163,15 +153,13 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
     return {
         template,
         components: {
-            timePicker,
-            vuejsDatepicker
+            datePicker,
+            timePicker
         },
         data: function () {
             return {
                 tpBegin: '9:00',
                 tpEnd: '20:00',
-                tpStep: '30',
-                /** @type {Date} */
                 date: null,
                 duration: null,
                 email: null,
@@ -184,7 +172,43 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 time: null,
             };
         },
+        computed: {
+            /**
+             * Time-picker step in minutes (15, 30, 45, ...).
+             * @returns {string}
+             */
+            tpStep() {
+                function getSelected(options, id) {
+                    const key = Number.parseInt(id);
+                    return options.find(function (o) {
+                        return Number.parseInt(o.id) === key;
+                    });
+                }
+
+                let result = 30; // default value for time picker step
+                if (this.service !== null) {
+                    const option = getSelected(this.serviceOptions, this.service);
+                    if (option && option.duration) {
+                        result = util.convertHrsMinsToMins(option.duration);
+                    }
+                }
+                return result;
+            }
+        },
         methods: {
+            /**
+             * Handler for datePicker's event.
+             *
+             * @param {Date} date
+             */
+            setDate(date) {
+                this.date = date;
+            },
+            /**
+             * Handler for timePicker's event.
+             *
+             * @param {string} label
+             */
             setTime(label) {
                 this.time = label;
             },
@@ -236,6 +260,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
             }
         },
         async mounted() {
+            // DEFINE INNER FUNCTIONS
             async function loadData() {
                 const res = await fetch('./api/book/state/get', {
                     method: 'GET',
@@ -267,40 +292,11 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 me.serviceOptions = items;
             }
 
-            function initDatepicker() {
-                const week3Forward = ((d) => {
-                    d.setDate(d.getDate() + 21);
-                    return d;
-                })(new Date);
-
-                self.datepicker('#bookDate', {
-                    disabledDates: [],
-                    disableYearOverlay: true,
-                    maxDate: week3Forward,
-                    minDate: new Date(),
-                    showAllDates: true,
-                    startDay: 1,
-                    onSelect: inst => {
-                        function getSelected(options, id) {
-                            const key = Number.parseInt(id);
-                            return options.find(function (o) {
-                                return Number.parseInt(o.id) === key;
-                            });
-                        }
-
-                        me.date = inst.dateSelected;
-                        const selected = getSelected(me.serviceOptions, me.service);
-                        me.duration = selected.duration;
-                        me.tpStep = util.convertHrsMinsToMins(me.duration);
-                    }
-                });
-            }
-
+            // MAIN FUNCTIONALITY
             const me = this;
             const {data} = await loadData();
             initEmployees(data.employees);
             initServices(data.services);
-            initDatepicker();
         }
     };
 }

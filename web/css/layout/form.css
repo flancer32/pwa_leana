@@ -3,7 +3,7 @@
     /* 1 column grid */
     display: grid;
     grid-template-columns:   1fr;
-    grid-gap: 10px;
+    grid-gap: var(--grid-gap);
 }
 
 .form_row {
@@ -25,13 +25,15 @@
 
 .form_c1 INPUT, .form_c1 SELECT {
     width: 100%;
-    min-height: 40px;
+    min-height: var(--input-height);
 }
 
 DIV.form_label {
     display: none;
 }
 
+.form_c1 BUTTON,
 .form_actions BUTTON {
-    min-height: 40px;
+    min-width: var(--input-height);
+    min-height: var(--input-height);
 }

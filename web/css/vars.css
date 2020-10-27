@@ -1,5 +1,7 @@
 /* Define default values for CSS variables */
 :root {
-    --layout-navbar-height: 70px;
     --font-size-large: 20px;
+    --grid-gap: 10px;
+    --input-height: 40px;
+    --layout-navbar-height: 70px;
 }

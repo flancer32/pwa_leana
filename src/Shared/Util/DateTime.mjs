@@ -62,4 +62,17 @@ export default class Fl32_Leana_Shared_Util_DateTime {
         d = d < 10 ? '0' + d : d;
         return `${y}${m}${d}`;
     }
+
+    /**
+     * Return `date` forwarded up to `days`.
+     *
+     * @param {number} days
+     * @param {Date|null} date
+     * @returns {Date}
+     */
+    forwardDate(days, date = null) {
+        let result = (date) ? new Date(date.getTime()) : new Date();
+        result.setDate(result.getDate() + days);
+        return result;
+    }
 }
