@@ -9,10 +9,10 @@ i18next.addResourceBundle('ru', 'widget_timePicker', {
 const template = `
 <div class="timepicker">
     <div class="inputs">
+        <div><button v-on:click="showEntries = !showEntries">...</button></div>
         <div>
             <input type="text" name="timePicker" v-model="interval" disabled :placeholder="$t('widget_timePicker:timePicker')">
         </div>
-        <div><button v-on:click="showEntries = !showEntries">...</button></div>
     </div>    
     <div v-show="showEntries">
         <div class="entries">
@@ -39,7 +39,11 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
         components: {
             timePickerEntry: entry
         },
-        props: ['begin', 'end', 'step'],
+        props: {
+            begin: String,
+            end: String,
+            step: Number
+        },
         emits: ['selected'],
         data: function () {
             return {

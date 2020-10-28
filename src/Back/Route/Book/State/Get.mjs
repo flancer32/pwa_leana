@@ -4,6 +4,8 @@
 export default class Fl32_Leana_Back_Route_Book_State_Get {
 
     constructor(spec) {
+        /** @type {TeqFw_Di_Container} */
+        const _container = spec.TeqFw_Di_Container$;
         /** @type {Fl32_Leana_App_Db_Connector} */
         const _db = spec.Fl32_Leana_App_Db_Connector$;
 
@@ -18,7 +20,6 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
          */
         this.handle = async function (req, res) {
             // PARSE INPUT & DEFINE WORKING VARS
-            const data = {};
 
             // DEFINE INNER FUNCTIONS (AVAILABLE FOR CURRENT INSTANCE ONLY)
 
@@ -28,18 +29,26 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
-                    result.push(Object.assign({}, one));
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Employee');
+                    result.push(Object.assign(target, one));
                 }
                 return result;
             }
 
+            /**
+             *
+             * @param trx
+             * @returns {Promise<[Array<Fl32_Leana_Shared_Api_Data_Service>]>}
+             * @private
+             */
             async function _getServices(trx) {
                 const result = [];
                 const query = trx.select();
                 query.from('service');
                 const rs = await query;
                 for (const one of rs) {
-                    result.push(Object.assign({}, one));
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service');
+                    result.push(Object.assign(target, one));
                 }
                 return result;
             }
@@ -66,14 +75,65 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 return result;
             }
 
+            /**
+             * Put services data into employees.
+             *
+             * @param {Array<Fl32_Leana_Shared_Api_Data_Employee>} result
+             * @param {Array<{employee_ref:number, service_ref:number}>} map
+             * @return {Array<Fl32_Leana_Shared_Api_Data_Employee>}
+             * @private
+             */
+            function _populateWithServices(result, map) {
+                const mapped = {};
+                for (const one of map) {
+                    const employeeRef = one.employee_ref;
+                    if (!mapped[employeeRef]) mapped[employeeRef] = [];
+                    mapped[employeeRef].push(one.service_ref);
+                }
+                for (const one of result) {
+                    const id = one.id;
+                    one.services = (mapped[id]) ? mapped[id] : [];
+                }
+                return result;
+            }
+
+            /**
+             *
+             * @param {Array<Fl32_Leana_Shared_Api_Data_Employee>} result
+             * @param {Array<{}>} map
+             * @return {*}
+             * @private
+             */
+            function _populateWithWorkTime(result, map) {
+                const mapped = {};
+                for (const one of map) {
+                    const employeeRef = one.employee_ref;
+                    const date = one.date;
+                    const from = one.from;
+                    const to = one.to;
+                    if (!mapped[employeeRef]) mapped[employeeRef] = {};
+                    if (!mapped[employeeRef][date]) mapped[employeeRef][date] = {};
+                    mapped[employeeRef][date] = {from, to};
+                }
+                for (const one of result) {
+                    const id = one.id;
+                    one.workTime = (mapped[id]) ? mapped[id] : {};
+                }
+                return result;
+            }
+
             // MAIN FUNCTIONALITY
+            /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
+            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Book_State_Get_Response');
             const trx = await _db.startTransaction();
             try {
+                const workTime = await _getWorkTime(trx);
+                const servicesMap = await _getServicesMap(trx);
                 const employees = await _getEmployees(trx);
                 const services = await _getServices(trx);
-                const servicesMap = await _getServicesMap(trx);
-                const workTime = await _getWorkTime(trx);
-                Object.assign(data, {employees, services, servicesMap, workTime});
+                _populateWithServices(employees, servicesMap);
+                _populateWithWorkTime(employees, workTime);
+                Object.assign(data, {employees, services});
                 trx.commit();
                 // COMPOSE SUCCESS RESPONSE
                 res.setHeader('Content-Type', 'application/json; charset=UTF-8');

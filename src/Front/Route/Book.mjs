@@ -109,13 +109,16 @@ const template = `
                 <select name="master" v-model="master">
                     <option disabled value="null">{{$t('route-book:masterSelect')}}</option>
                     <option v-for="(one) in masterOptions" :value="one.id" :disabled="one.disabled">
-                        {{ $t('route-book:masterLabel.' + one.code, one.duration) }}
+                        {{ $t('route-book:masterLabel.' + one.code) }}
                     </option>
                 </select>
             </div>       
         </div>
         <div class="fld-date form_row" v-show="master">
             <date-picker ref="datePicker"
+                :min="tdDateMin"
+                :max="tdDateMax"
+                :dates-disabled="tdDatesDisabled"
                 @selected="setDate"
             ></date-picker>
         </div>
@@ -148,7 +151,9 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
     /** @type {Fl32_Leana_Front_Widget_TimePicker} */
     const timePicker = spec.Fl32_Leana_Front_Widget_TimePicker$;
     /** @type {Fl32_Leana_Shared_Util_DateTime} */
-    const util = spec.Fl32_Leana_Shared_Util_DateTime$;
+    const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
+    /** @type {Fl32_Leana_Shared_Util_Mix} */
+    const utilMix = spec.Fl32_Leana_Shared_Util_Mix$;
 
     return {
         template,
@@ -158,42 +163,83 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         },
         data: function () {
             return {
-                tpBegin: '9:00',
-                tpEnd: '20:00',
                 date: null,
                 duration: null,
                 email: null,
                 master: null,
-                masterOptions: [],
                 name: null,
                 phone: null,
                 service: null,
-                serviceOptions: [],
                 time: null,
+                /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
+                bookingState: null,
+                tpBegin: '9:00',
+                tpEnd: '20:00',
             };
         },
         computed: {
+            masterOptions() {
+                let result = [];
+                if (this.bookingState && Array.isArray(this.bookingState.employees)) {
+                    for (const one of this.bookingState.employees) {
+                        if (Array.isArray(one.services) && one.services.includes(this.service)) {
+                            result.push({id: one.id, code: one.code});
+                        }
+                    }
+                }
+                return result;
+            },
+            serviceOptions() {
+                let result = [];
+                if (this.bookingState && Array.isArray(this.bookingState.services)) {
+                    result = this.bookingState.services;
+                }
+                return result;
+            },
+            tdDateMax() {
+                return utilDate.forwardDate(21);
+            },
+            tdDateMin() {
+                return new Date();
+            },
+            tdDatesDisabled() {
+                const result = [];
+                if (this.bookingState && Array.isArray(this.bookingState.employees)) {
+                    const work = utilMix.getOptionPropById(this.bookingState.employees, this.master, 'workTime');
+                    if (work) {
+                        let date = this.tdDateMin;
+                        let dateMax = this.tdDateMax;
+                        while (date < dateMax) {
+                            date = utilDate.forwardDate(1, date);
+                            const formatted = utilDate.formatDate(date);
+                            if (!work[formatted]) {
+                                const disabled = utilDate.unformatDate(formatted);
+                                result.push(disabled);
+                            }
+                        }
+                    }
+                }
+                // const tomorrow = utilDate.forwardDate(2);
+                // const tomorrow2 = utilDate.forwardDate(3);
+                // result.push(tomorrow);
+                // result.push(tomorrow2);
+                return result;
+            },
             /**
              * Time-picker step in minutes (15, 30, 45, ...).
-             * @returns {string}
+             * @returns {number}
              */
             tpStep() {
-                function getSelected(options, id) {
-                    const key = Number.parseInt(id);
-                    return options.find(function (o) {
-                        return Number.parseInt(o.id) === key;
-                    });
-                }
-
                 let result = 30; // default value for time picker step
                 if (this.service !== null) {
-                    const option = getSelected(this.serviceOptions, this.service);
+                    const option = utilMix.getOptionById(this.serviceOptions, this.service);
                     if (option && option.duration) {
-                        result = util.convertHrsMinsToMins(option.duration);
+                        result = utilDate.convertHrsMinsToMins(option.duration);
                     }
                 }
                 return result;
             }
+
         },
         methods: {
             /**
@@ -248,7 +294,6 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 const result = await res.json();
                 // result in the response is the same data if succeed
                 if (result.data.name === this.name) {
-                    // TMP: disable form cleaning
                     this.name = null;
                     this.email = null;
                     this.phone = null;
@@ -261,7 +306,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         },
         async mounted() {
             // DEFINE INNER FUNCTIONS
-            async function loadData() {
+            async function _loadData() {
                 const res = await fetch('./api/book/state/get', {
                     method: 'GET',
                     headers: {
@@ -271,7 +316,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 return await res.json();
             }
 
-            function initEmployees(data) {
+            function _initEmployees(data) {
                 const items = [];
                 for (const one of data) {
                     // map backend data to frontend data (the data is the same in this case)
@@ -281,12 +326,12 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 me.masterOptions = items;
             }
 
-            function initServices(data) {
+            function _initServices(data) {
                 const items = [];
                 for (const one of data) {
                     // map backend data to frontend data (the data is the same in this case)
                     const {id, code, duration} = one;
-                    const hm = util.convertMinsToHrsMins(duration);
+                    const hm = utilDate.convertMinsToHrsMins(duration);
                     items.push({id, code, duration: hm});
                 }
                 me.serviceOptions = items;
@@ -294,9 +339,10 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
 
             // MAIN FUNCTIONALITY
             const me = this;
-            const {data} = await loadData();
-            initEmployees(data.employees);
-            initServices(data.services);
+            const {data} = await _loadData();
+            this.bookingState = data;
+            _initServices(data.services);
+            _initEmployees(data.employees);
         }
     };
 }

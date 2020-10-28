@@ -9,20 +9,26 @@ i18next.addResourceBundle('ru', 'widget_datePicker', {
 
 const template = `
 <div class="datepicker">
+    <div><button v-on:click="showHide">...</button></div>
     <div>
         <input type="text" id="bookDate" name="datePicker" disabled :placeholder="$t('widget_datePicker:datePicker')">
     </div>
-    <div><button v-on:click="showHide">...</button></div>
 </div>
 `;
 
-export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
-    /** @type {Fl32_Leana_Shared_Util_DateTime} */
-    const util = spec.Fl32_Leana_Shared_Util_DateTime$;
+export default function Fl32_Leana_Front_Widget_TimePicker() {
+
+    // picker container should be a simple object (not vued as prop or data)
+    let picker;
+
     return {
         template,
         components: {},
-        props: ['begin', 'end', 'step'],
+        props: {
+            min: Date,
+            max: Date,
+            datesDisabled: Array
+        },
         emits: ['selected'],
         data: function () {
             return {
@@ -30,32 +36,42 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
             };
         },
         computed: {},
+        watch: {
+            /**
+             *
+             * @param {Array<Date>>} val
+             */
+            datesDisabled() {
+                this.createPicker();
+            }
+        },
         methods: {
             showHide(event) {
                 event.stopPropagation();
-                const isHidden = this.widgetPicker.calendarContainer.classList.contains('qs-hidden');
-                this.widgetPicker[isHidden ? 'show' : 'hide']();
-            }
-        },
-        async mounted() {
-            function initDatepicker() {
-                const week3Forward = util.forwardDate(21);
-
-                me.widgetPicker = self.datepicker('#bookDate', {
-                    disabledDates: [],
+                const isHidden = picker.calendarContainer.classList.contains('qs-hidden');
+                picker[isHidden ? 'show' : 'hide']();
+            },
+            /**
+             * (Re)create date picker widget after params were changed.
+             */
+            createPicker() {
+                // https://github.com/qodesmith/datepicker
+                if (picker && picker.remove) picker.remove();
+                picker = self.datepicker('#bookDate', {
+                    disabledDates: this.datesDisabled,
                     disableYearOverlay: true,
-                    maxDate: week3Forward,
-                    minDate: new Date(),
+                    maxDate: this.max,
+                    minDate: this.min,
                     showAllDates: true,
                     startDay: 1,
                     onSelect: (inst) => {
-                        me.$emit('selected', inst.dateSelected);
+                        this.$emit('selected', inst.dateSelected);
                     }
                 });
             }
-
-            const me = this;
-            initDatepicker();
+        },
+        mounted() {
+            this.createPicker();
         }
     };
 }

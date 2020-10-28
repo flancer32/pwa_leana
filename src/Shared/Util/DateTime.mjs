@@ -64,6 +64,21 @@ export default class Fl32_Leana_Shared_Util_DateTime {
     }
 
     /**
+     *
+     * @param {string} formatted 'YYYYMMDD'
+     * @param {Date} time
+     */
+    unformatDate(formatted, time = null) {
+        const result = new Date();
+        const y = formatted.substring(0, 4);
+        const m = formatted.substring(4, 6);
+        const d = formatted.substring(6, 8);
+        const msec = (time) ? Date.parse(`${y}/${m}/${d} ${time}`) : Date.parse(`${y}/${m}/${d} 12:00:00`);
+        result.setTime(msec);
+        return result;
+    }
+
+    /**
      * Return `date` forwarded up to `days`.
      *
      * @param {number} days

@@ -7,12 +7,20 @@ module.exports = {
     'extends': [
         'eslint:recommended'
     ],
-    'parser': 'babel-eslint',
+    'parser': '@babel/eslint-parser',
     'parserOptions': {
         'ecmaVersion': 12,
-        'sourceType': 'module'
+        'sourceType': 'module',
+        'babelOptions': {
+            'plugins': [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-proposal-private-methods'
+            ],
+        },
     },
-    'plugins': [],
+    'plugins': [
+        '@babel'
+    ],
     'rules': {
         'camelcase': [
             'warn',

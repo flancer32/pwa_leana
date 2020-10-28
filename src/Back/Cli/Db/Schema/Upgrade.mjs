@@ -111,6 +111,7 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 schema.createTable('book_detail', (table) => {
                     table.integer('book_ref').unsigned().notNullable();
                     table.integer('employee_ref').unsigned().notNullable();
+                    table.integer('service_ref').unsigned().notNullable();
                     table.string('date', 8).comment('Date as "YYYYMMDD".');
                     table.string('from', 4).notNullable().comment('Time starting: 0900.');
                     table.string('to', 4).notNullable().comment('Finish time: 2000.');
@@ -121,6 +122,9 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     table.foreign('employee_ref').references('id').inTable('employee')
                         .onDelete('CASCADE').onUpdate('CASCADE')
                         .withKeyName('FK_book_detail__employee');
+                    table.foreign('service_ref').references('id').inTable('service')
+                        .onDelete('CASCADE').onUpdate('CASCADE')
+                        .withKeyName('FK_book_detail__service');
                     table.comment('Booking details.');
                 });
             }
@@ -145,7 +149,6 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {employee_ref: 1, service_ref: 3},
                     {employee_ref: 1, service_ref: 4},
                     {employee_ref: 1, service_ref: 5},
-                    {employee_ref: 1, service_ref: 6},
                     {employee_ref: 1, service_ref: 7},
                     {employee_ref: 2, service_ref: 1},
                     {employee_ref: 2, service_ref: 2},
@@ -153,7 +156,6 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {employee_ref: 2, service_ref: 4},
                     {employee_ref: 2, service_ref: 5},
                     {employee_ref: 2, service_ref: 6},
-                    {employee_ref: 2, service_ref: 7},
                 ]);
                 await trx('employee_time_work').insert([
                     {employee_ref: 1, date: '20201026'},
@@ -187,11 +189,11 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 ]);
                 const date = _util.formatDate();
                 await trx('book_detail').insert([
-                    {book_ref: 1, employee_ref: 1, date, from: '1015', to: '1045'},
-                    {book_ref: 2, employee_ref: 2, date, from: '1000', to: '1115'},
-                    {book_ref: 3, employee_ref: 1, date, from: '1100', to: '1130'},
-                    {book_ref: 4, employee_ref: 1, date, from: '1215', to: '1330'},
-                    {book_ref: 5, employee_ref: 2, date, from: '1630', to: '1730'},
+                    {book_ref: 1, employee_ref: 1, service_ref: 1, date, from: '1015', to: '1045'},
+                    {book_ref: 2, employee_ref: 2, service_ref: 2, date, from: '1000', to: '1115'},
+                    {book_ref: 3, employee_ref: 1, service_ref: 3, date, from: '1100', to: '1130'},
+                    {book_ref: 4, employee_ref: 1, service_ref: 4, date, from: '1215', to: '1330'},
+                    {book_ref: 5, employee_ref: 2, service_ref: 5, date, from: '1630', to: '1730'},
                 ]);
             }
 
