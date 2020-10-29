@@ -28,20 +28,20 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
         this.action = async function () {
             // PARSE INPUT & DEFINE WORKING VARS
             // DEFINE INNER FUNCTIONS
-            async function getTables(trx) {
-                const result = [];
-                const dialect = trx.client.config.client;
-                if (['mysql', 'mysql2'].includes(dialect)) {
-                    const rs = await trx.raw('show tables');
-                    if (Array.isArray(rs)) {
-                        const column = rs[1][0]['name'];
-                        rs[0].map(one => result.push(one[column]));
-                    }
-                } else {
-                    throw new Error(`This dialect (${dialect}) is not supported.`);
-                }
-                return result;
-            }
+            // async function getTables(trx) {
+            //     const result = [];
+            //     const dialect = trx.client.config.client;
+            //     if (['mysql', 'mysql2'].includes(dialect)) {
+            //         const rs = await trx.raw('show tables');
+            //         if (Array.isArray(rs)) {
+            //             const column = rs[1][0]['name'];
+            //             rs[0].map(one => result.push(one[column]));
+            //         }
+            //     } else {
+            //         throw new Error(`This dialect (${dialect}) is not supported.`);
+            //     }
+            //     return result;
+            // }
 
             async function dropTables(schema) {
                 // drop related tables (foreign keys)
@@ -157,26 +157,16 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {employee_ref: 2, service_ref: 5},
                     {employee_ref: 2, service_ref: 6},
                 ]);
-                await trx('employee_time_work').insert([
-                    {employee_ref: 1, date: '20201026'},
-                    {employee_ref: 2, date: '20201027'},
-                    {employee_ref: 1, date: '20201028'},
-                    {employee_ref: 2, date: '20201029'},
-                    {employee_ref: 1, date: '20201030'},
-                    {employee_ref: 2, date: '20201031'},
-                    {employee_ref: 1, date: '20201101'},
-                    {employee_ref: 2, date: '20201102'},
-                    {employee_ref: 1, date: '20201103'},
-                    {employee_ref: 2, date: '20201104'},
-                    {employee_ref: 1, date: '20201105'},
-                    {employee_ref: 2, date: '20201106'},
-                    {employee_ref: 1, date: '20201107'},
-                    {employee_ref: 2, date: '20201108'},
-                    {employee_ref: 1, date: '20201109'},
-                    {employee_ref: 2, date: '20201110'},
-                    {employee_ref: 1, date: '20201111'},
-                    {employee_ref: 2, date: '20201112'},
-                ]);
+                // employee_time_work
+                const timeWorkItems = [];
+                for (let i = 1; i < 20; i++) {
+                    const ref = i % 2 + 1;
+                    const dt = _util.forwardDate(i);
+                    const date = _util.formatDate(dt);
+                    timeWorkItems.push({employee_ref: ref, date});
+
+                }
+                await trx('employee_time_work').insert(timeWorkItems);
             }
 
             async function initBook(trx) {
@@ -187,13 +177,16 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {id: 4},
                     {id: 5},
                 ]);
-                const date = _util.formatDate();
+                const d2 = _util.forwardDate(2);
+                const d3 = _util.forwardDate(3);
+                const date2 = _util.formatDate(d2);
+                const date3 = _util.formatDate(d3);
                 await trx('book_detail').insert([
-                    {book_ref: 1, employee_ref: 1, service_ref: 1, date, from: '1015', to: '1045'},
-                    {book_ref: 2, employee_ref: 2, service_ref: 2, date, from: '1000', to: '1115'},
-                    {book_ref: 3, employee_ref: 1, service_ref: 3, date, from: '1100', to: '1130'},
-                    {book_ref: 4, employee_ref: 1, service_ref: 4, date, from: '1215', to: '1330'},
-                    {book_ref: 5, employee_ref: 2, service_ref: 5, date, from: '1630', to: '1730'},
+                    {book_ref: 1, employee_ref: 1, service_ref: 1, date: date2, from: '1015', to: '1045'},
+                    {book_ref: 2, employee_ref: 2, service_ref: 2, date: date3, from: '1000', to: '1115'},
+                    {book_ref: 3, employee_ref: 1, service_ref: 3, date: date2, from: '1100', to: '1130'},
+                    {book_ref: 4, employee_ref: 1, service_ref: 4, date: date2, from: '1215', to: '1330'},
+                    {book_ref: 5, employee_ref: 2, service_ref: 5, date: date3, from: '1630', to: '1730'},
                 ]);
             }
 

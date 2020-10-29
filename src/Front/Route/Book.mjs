@@ -219,10 +219,6 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                         }
                     }
                 }
-                // const tomorrow = utilDate.forwardDate(2);
-                // const tomorrow2 = utilDate.forwardDate(3);
-                // result.push(tomorrow);
-                // result.push(tomorrow2);
                 return result;
             },
             /**

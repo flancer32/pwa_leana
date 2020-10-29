@@ -62,7 +62,7 @@ export default function Fl32_Leana_Front_Widget_TimePicker() {
                     disableYearOverlay: true,
                     maxDate: this.max,
                     minDate: this.min,
-                    showAllDates: true,
+                    showAllDates: false,
                     startDay: 1,
                     onSelect: (inst) => {
                         this.$emit('selected', inst.dateSelected);

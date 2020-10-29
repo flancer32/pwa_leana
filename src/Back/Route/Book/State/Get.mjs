@@ -75,6 +75,17 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 return result;
             }
 
+            async function _getBookedTime(trx) {
+                const result = [];
+                const query = trx.select();
+                query.from('book_detail');
+                const rs = await query;
+                for (const one of rs) {
+                    result.push(Object.assign({}, one));
+                }
+                return result;
+            }
+
             /**
              * Put services data into employees.
              *
@@ -122,17 +133,40 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 return result;
             }
 
+            async function _populateWithBookedTime(result, map) {
+                const mapped = {};
+                for (const one of map) {
+                    const bookRef = one.book_ref;
+                    const employeeRef = one.employee_ref;
+                    const serviceRef = one.service_ref;
+                    const date = one.date;
+                    const from = one.from;
+                    const to = one.to;
+                    if (!mapped[employeeRef]) mapped[employeeRef] = {};
+                    if (!mapped[employeeRef][date]) mapped[employeeRef][date] = {};
+                    const item = await _container.get('Fl32_Leana_Shared_Api_Data_Employee_BookedTime'); // create
+                    mapped[employeeRef][date][from] = Object.assign(item, {bookRef, serviceRef, to});
+                }
+                for (const one of result) {
+                    const id = one.id;
+                    one.bookedTime = (mapped[id]) ? mapped[id] : {};
+                }
+                return result;
+            }
+
             // MAIN FUNCTIONALITY
             /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
             const data = await _container.get('Fl32_Leana_Shared_Api_Route_Book_State_Get_Response');
             const trx = await _db.startTransaction();
             try {
                 const workTime = await _getWorkTime(trx);
+                const bookedTime = await _getBookedTime(trx);
                 const servicesMap = await _getServicesMap(trx);
                 const employees = await _getEmployees(trx);
                 const services = await _getServices(trx);
                 _populateWithServices(employees, servicesMap);
                 _populateWithWorkTime(employees, workTime);
+                await _populateWithBookedTime(employees, bookedTime);
                 Object.assign(data, {employees, services});
                 trx.commit();
                 // COMPOSE SUCCESS RESPONSE
