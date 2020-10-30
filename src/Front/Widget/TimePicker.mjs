@@ -1,19 +1,24 @@
 const i18next = self.teqfw.i18next;
 i18next.addResourceBundle('lv', 'widget_timePicker', {
-    timePicker: 'Izvēlieties laiku'
+    noEntries: 'Tukšs',
+    timePicker: 'Izvēlieties laiku',
 }, true);
 i18next.addResourceBundle('ru', 'widget_timePicker', {
-    timePicker: 'Выберите время'
+    noEntries: 'Пусто',
+    timePicker: 'Выберите время',
 }, true);
 
 const template = `
 <div class="timepicker">
     <div class="inputs">
-        <div><button v-on:click="showEntries = !showEntries">...</button></div>
         <div>
-            <input type="text" name="timePicker" v-model="interval" disabled :placeholder="$t('widget_timePicker:timePicker')">
+            <button v-on:click="showEntries = !showEntries">...</button>
         </div>
-    </div>    
+        <div>
+            <input type="text" name="timePicker" v-model="interval" disabled
+                   :placeholder="$t('widget_timePicker:timePicker')">
+        </div>
+    </div>
     <div v-show="showEntries">
         <div class="entries">
             <time-picker-entry
@@ -25,6 +30,7 @@ const template = `
                     @selected="entryIsSelected"
             ></time-picker-entry>
         </div>
+        <div v-show="entries.length===0">{{ $t('widget_timePicker:noEntries') }}</div>
     </div>
 </div>
 `;
@@ -40,9 +46,10 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
             timePickerEntry: entry
         },
         props: {
+            entries: Array,
             begin: String,
             end: String,
-            step: Number
+            taskDuration: Number
         },
         emits: ['selected'],
         data: function () {
@@ -57,13 +64,13 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
              * Calculate array with time picker entries.
              * @returns {[]}
              */
-            entries() {
+            entriesOld() {
                 let result = [];
                 const beginMins = util.convertHrsMinsToMins(this.begin);
                 const endMins = util.convertHrsMinsToMins(this.end);
-                const step = util.convertHrsMinsToMins(this.step);
+                const duration = util.convertHrsMinsToMins(this.taskDuration);
                 let id = 1;
-                for (let time = beginMins; (time + step) <= endMins; time += step) {
+                for (let time = beginMins; (time + duration) <= endMins; time += duration) {
                     result.push({id: id++, label: util.convertMinsToHrsMins(time, true)});
                 }
                 return result;
@@ -72,7 +79,7 @@ export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
         methods: {
             entryIsSelected(label) {
                 const start = util.convertHrsMinsToMins(label);
-                const end = start + Number.parseInt(this.step);
+                const end = start + Number.parseInt(this.taskDuration);
                 const startHM = util.convertMinsToHrsMins(start);
                 const endHM = util.convertMinsToHrsMins(end);
                 this.interval = `${startHM}-${endHM}`;

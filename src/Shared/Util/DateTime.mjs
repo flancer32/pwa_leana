@@ -27,7 +27,7 @@ export default class Fl32_Leana_Shared_Util_DateTime {
     }
 
     /**
-     * Convert 'hours:minutes' to minutes.
+     * Convert 'HH:MM' to minutes.
      *
      * @param {string} hm 10:00
      * @returns {number} 600
@@ -39,6 +39,27 @@ export default class Fl32_Leana_Shared_Util_DateTime {
             (hm.includes(':'))
         ) {
             const [h, m] = hm.split(':');
+            result = Number(h) * 60 + Number(m);
+        } else if (hm) {
+            result = Number(hm);
+        }
+        return result;
+    }
+
+    /**
+     * Convert 'HHMM' to minutes.
+     *
+     * @param {string} hm 10:00
+     * @returns {number} 600
+     */
+    convertDbHrsMinsToMins(hm) {
+        let result = 0;
+        if (
+            (typeof hm === 'string') &&
+            (hm.length === 4)
+        ) {
+            const h = hm.substring(0, 2);
+            const m = hm.substring(2, 4);
             result = Number(h) * 60 + Number(m);
         } else if (hm) {
             result = Number(hm);

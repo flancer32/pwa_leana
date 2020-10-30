@@ -62,83 +62,81 @@ i18next.addResourceBundle('ru', 'route-book', {
 
 const template = `
 <div>
-    <h1>{{$t('route-book:title')}}</h1>
+    <h1>{{ $t('route-book:title') }}</h1>
     <form class="form_c1" onsubmit="return false">
         <div class="fld-name form_row">
             <div class="form_label">
-                <span>{{$t('route-book:name')}}:</span>
+                <span>{{ $t('route-book:name') }}:</span>
             </div>
             <div class="form_field">
                 <input type="text" name="name" v-model="name" :placeholder="$t('route-book:namePH')">
-            </div>       
+            </div>
         </div>
         <div class="fld-phone form_row">
             <div class="form_label">
-                <span>{{$t('route-book:phone')}}:</span>
+                <span>{{ $t('route-book:phone') }}:</span>
             </div>
             <div class="form_field">
                 <input type="text" name="phone" v-model="phone" :placeholder="$t('route-book:phonePH')">
-            </div>       
+            </div>
         </div>
         <div class="fld-email form_row">
             <div class="form_label">
-                <span>{{$t('route-book:email')}}:</span>
+                <span>{{ $t('route-book:email') }}:</span>
             </div>
             <div class="form_field">
                 <input type="text" name="email" v-model="email" :placeholder="$t('route-book:emailPH')">
-            </div>       
+            </div>
         </div>
         <div class="fld-service form_row">
             <div class="form_label">
-                <span>{{$t('route-book:service')}}:</span>
+                <span>{{ $t('route-book:service') }}:</span>
             </div>
             <div class="form_field">
                 <select name="service" v-model="service">
-                    <option disabled value="null">{{$t('route-book:serviceSelect')}}</option>
+                    <option disabled value="null">{{ $t('route-book:serviceSelect') }}</option>
                     <option v-for="(one) in serviceOptions" :value="one.id" :disabled="one.disabled">
-                        {{ $t('route-book:serviceLabel.' + one.code, {time:one.duration}) }}
+                        {{ $t('route-book:serviceLabel.' + one.code, {time: one.duration}) }}
                     </option>
                 </select>
-            </div>       
+            </div>
         </div>
         <div class="fld-master form_row" v-show="service && name && (phone || email)">
             <div class="form_label">
-                <span>{{$t('route-book:master')}}:</span>
+                <span>{{ $t('route-book:master') }}:</span>
             </div>
             <div class="form_field">
                 <select name="master" v-model="master">
-                    <option disabled value="null">{{$t('route-book:masterSelect')}}</option>
+                    <option disabled value="null">{{ $t('route-book:masterSelect') }}</option>
                     <option v-for="(one) in masterOptions" :value="one.id" :disabled="one.disabled">
                         {{ $t('route-book:masterLabel.' + one.code) }}
                     </option>
                 </select>
-            </div>       
+            </div>
         </div>
         <div class="fld-date form_row" v-show="master">
             <date-picker ref="datePicker"
-                :min="tdDateMin"
-                :max="tdDateMax"
-                :dates-disabled="tdDatesDisabled"
-                @selected="setDate"
+                         :min="dpDateMin"
+                         :max="dpDateMax"
+                         :dates-disabled="dpDatesDisabled"
+                         @selected="setDate"
             ></date-picker>
         </div>
         <div class="fld-time form_row" v-show="date">
             <div class="form_label">
-                <span>{{$t('route-book:time')}}:</span>
+                <span>{{ $t('route-book:time') }}:</span>
             </div>
             <div class="form_field">
                 <time-picker ref="timePicker"
-                    :begin="tpBegin" 
-                    :end="tpEnd" 
-                    :step="tpStep"
-                     @selected="setTime"
+                             :entries="tpEntries"
+                             @selected="setTime"
                 ></time-picker>
-            </div>       
+            </div>
         </div>
-        
+
         <div class="form_actions">
             <div>
-                <button v-on:click="send" v-show="time">{{$t('route-book:action.send')}}</button>
+                <button v-on:click="send" v-show="time">{{ $t('route-book:action.send') }}</button>
             </div>
         </div>
     </form>
@@ -164,7 +162,6 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         data: function () {
             return {
                 date: null,
-                duration: null,
                 email: null,
                 master: null,
                 name: null,
@@ -173,8 +170,6 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 time: null,
                 /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
                 bookingState: null,
-                tpBegin: '9:00',
-                tpEnd: '20:00',
             };
         },
         computed: {
@@ -192,23 +187,27 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
             serviceOptions() {
                 let result = [];
                 if (this.bookingState && Array.isArray(this.bookingState.services)) {
-                    result = this.bookingState.services;
+                    for (const one of this.bookingState.services) {
+                        const duration = utilDate.convertMinsToHrsMins(one.duration);
+                        const option = {id: one.id, code: one.code, duration};
+                        result.push(option);
+                    }
                 }
                 return result;
             },
-            tdDateMax() {
+            dpDateMax() {
                 return utilDate.forwardDate(21);
             },
-            tdDateMin() {
+            dpDateMin() {
                 return new Date();
             },
-            tdDatesDisabled() {
+            dpDatesDisabled() {
                 const result = [];
                 if (this.bookingState && Array.isArray(this.bookingState.employees)) {
                     const work = utilMix.getOptionPropById(this.bookingState.employees, this.master, 'workTime');
                     if (work) {
-                        let date = this.tdDateMin;
-                        let dateMax = this.tdDateMax;
+                        let date = this.dpDateMin;
+                        let dateMax = this.dpDateMax;
                         while (date < dateMax) {
                             date = utilDate.forwardDate(1, date);
                             const formatted = utilDate.formatDate(date);
@@ -221,12 +220,8 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 }
                 return result;
             },
-            /**
-             * Time-picker step in minutes (15, 30, 45, ...).
-             * @returns {number}
-             */
-            tpStep() {
-                let result = 30; // default value for time picker step
+            duration() {
+                let result = null;
                 if (this.service !== null) {
                     const option = utilMix.getOptionById(this.serviceOptions, this.service);
                     if (option && option.duration) {
@@ -234,8 +229,67 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                     }
                 }
                 return result;
-            }
+            },
+            tpEntries() {
+                /**
+                 * Collect 'from' & 'to' times for booking intervals.
+                 * @param {string} date YYYYMMDD
+                 * @param {Fl32_Leana_Shared_Api_Data_Employee} employee
+                 * @return {{booked: Object.<string, string>, bookedFroms: string[]}}
+                 */
+                function getBookedTime(date, employee) {
+                    const booked = {};
+                    const bookedTime = employee.bookedTime;
+                    if (bookedTime[date]) {
+                        for (const bookFromDb in bookedTime[date]) {
+                            const bookToDb = bookedTime[date][bookFromDb].to;
+                            const bookFrom = utilDate.convertDbHrsMinsToMins(bookFromDb);
+                            const bookTo = utilDate.convertDbHrsMinsToMins(bookToDb);
+                            booked[bookFrom] = bookTo;
+                        }
+                    }
+                    const bookedFroms = Object.keys(booked).sort((a, b) => a - b);
+                    return {booked, bookedFroms};
+                }
 
+                // MAIN FUNCTIONALITY
+                const result = [];
+                if (this.date && this.master && this.bookingState && Array.isArray(this.bookingState.employees)) {
+                    const date = utilDate.formatDate(this.date);
+                    const duration = this.duration;
+                    /** @type {Fl32_Leana_Shared_Api_Data_Employee} */
+                    const employee = utilMix.getOptionById(this.bookingState.employees, this.master);
+                    const workTime = employee.workTime;
+                    // employee has working hours for the date
+                    if (workTime[date]) {
+                        const {from: workFromDb, to: workToDb} = workTime[date];
+                        // begin & end of the working day
+                        let workFrom = utilDate.convertDbHrsMinsToMins(workFromDb);
+                        const workTo = utilDate.convertDbHrsMinsToMins(workToDb);
+                        const {booked, bookedFroms} = getBookedTime(date, employee);
+                        let bookFrom = Number.parseInt(bookedFroms.shift());
+                        while (workFrom < workTo) {
+                            const intervalEnd = workFrom + duration;
+                            if (bookFrom && (intervalEnd > bookFrom)) {
+                                // planned interval overlays already booked interval,
+                                // set workFrom to the end of booked interval
+                                workFrom = Number.parseInt(booked[bookFrom]);
+                                // shift booked interval
+                                bookFrom = Number.parseInt(bookedFroms.shift());
+                            } else {
+                                // no booked interval or end of planned interval is less than start of booked interval
+                                const id = workFrom;
+                                const labelFrom = utilDate.convertMinsToHrsMins(workFrom);
+                                const labelTo = utilDate.convertMinsToHrsMins(intervalEnd);
+                                const label = `${labelFrom}-${labelTo}`;
+                                result.push({id, label});
+                                workFrom = intervalEnd;
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
         },
         methods: {
             /**
@@ -312,33 +366,9 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 return await res.json();
             }
 
-            function _initEmployees(data) {
-                const items = [];
-                for (const one of data) {
-                    // map backend data to frontend data (the data is the same in this case)
-                    const {id, code} = one;
-                    items.push({id, code});
-                }
-                me.masterOptions = items;
-            }
-
-            function _initServices(data) {
-                const items = [];
-                for (const one of data) {
-                    // map backend data to frontend data (the data is the same in this case)
-                    const {id, code, duration} = one;
-                    const hm = utilDate.convertMinsToHrsMins(duration);
-                    items.push({id, code, duration: hm});
-                }
-                me.serviceOptions = items;
-            }
-
             // MAIN FUNCTIONALITY
-            const me = this;
             const {data} = await _loadData();
             this.bookingState = data;
-            _initServices(data.services);
-            _initEmployees(data.employees);
         }
     };
 }

@@ -14,6 +14,24 @@ describe('Fl32_Leana_Shared_Util_DateTime:', () => {
 
         describe('functionality:', () => {
 
+            describe('convertDbHrsMinsToMins:', () => {
+
+                it('convert HHMM to MM', async () => {
+                    const res = obj.convertDbHrsMinsToMins('1021');
+                    assert.deepStrictEqual(res, 621);
+                });
+
+                it('convert empty string to 0', async () => {
+                    const res = obj.convertDbHrsMinsToMins('');
+                    assert.deepStrictEqual(res, 0);
+                });
+
+                it('convert null to 0', async () => {
+                    const res = obj.convertDbHrsMinsToMins();
+                    assert.deepStrictEqual(res, 0);
+                });
+            });
+
             describe('convertHrsMinsToMins:', () => {
 
                 it('convert HH:MM to MM', async () => {

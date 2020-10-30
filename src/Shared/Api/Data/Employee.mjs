@@ -21,4 +21,8 @@ export default class Fl32_Leana_Shared_Api_Data_Employee {
      * @type {Object.<string, Fl32_Leana_Shared_Api_Data_Employee_WorkTime>}
      */
     workTime
+    /**
+     * @type {Object.<string, Object.<string, Fl32_Leana_Shared_Api_Data_Employee_BookedTime>>}
+     */
+    bookedTime
 }
