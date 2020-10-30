@@ -303,36 +303,25 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
             /**
              * Handler for timePicker's event.
              *
-             * @param {string} label
+             * @param {number} id
              */
-            setTime(label) {
-                this.time = label;
+            setTime(id) {
+                this.time = id;
             },
             async send() {
-                function getCode(options, id) {
-                    let result = null;
-                    const key = Number.parseInt(id);
-                    const found = options.find(function (o) {
-                        return Number.parseInt(o.id) === key;
-                    });
-                    if (found) {
-                        result = found.code;
-                    }
-                    return result;
-                }
-
                 // get local variable with 'date' value
                 const date = new Date(this.date.getTime());
-                const [hours, minutes] = this.time.split(':');
+                const hm = utilDate.convertMinsToHrsMins(this.time);
+                const [hours, minutes] = hm.split(':');
                 date.setHours(hours, minutes);
                 const data = {
                     date: date,
                     duration: this.duration,
                     email: this.email,
-                    master: getCode(this.masterOptions, this.master),
+                    master: utilMix.getOptionPropById(this.masterOptions, this.master, 'code'),
                     name: this.name,
                     phone: this.phone,
-                    service: getCode(this.serviceOptions, this.service),
+                    service: utilMix.getOptionPropById(this.serviceOptions, this.service, 'code'),
                 };
                 const res = await fetch('./api/book/save', {
                     method: 'POST',

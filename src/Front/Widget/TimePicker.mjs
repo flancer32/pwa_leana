@@ -22,11 +22,10 @@ const template = `
     <div v-show="showEntries">
         <div class="entries">
             <time-picker-entry
-                    v-for="one in entries"
+                    v-for="one in entriesGrouped"
                     :key="one.id"
                     :id="one.id"
                     :label="one.label"
-                    :inactive="one.inactive"
                     @selected="entryIsSelected"
             ></time-picker-entry>
         </div>
@@ -38,52 +37,56 @@ const template = `
 export default function Fl32_Leana_Front_Widget_TimePicker(spec) {
     /** @type {Fl32_Leana_Front_Widget_TimePicker_Entry} */
     const entry = spec.Fl32_Leana_Front_Widget_TimePicker_Entry$;
-    /** @type {Fl32_Leana_Shared_Util_DateTime} */
-    const util = spec.Fl32_Leana_Shared_Util_DateTime$;
     return {
         template,
         components: {
             timePickerEntry: entry
         },
         props: {
-            entries: Array,
-            begin: String,
-            end: String,
-            taskDuration: Number
+            entries: Array
         },
         emits: ['selected'],
         data: function () {
             return {
-                interval: null,
-                selected: null,
+                idSelected: null,
                 showEntries: false,
             };
         },
         computed: {
-            /**
-             * Calculate array with time picker entries.
-             * @returns {[]}
-             */
-            entriesOld() {
-                let result = [];
-                const beginMins = util.convertHrsMinsToMins(this.begin);
-                const endMins = util.convertHrsMinsToMins(this.end);
-                const duration = util.convertHrsMinsToMins(this.taskDuration);
-                let id = 1;
-                for (let time = beginMins; (time + duration) <= endMins; time += duration) {
-                    result.push({id: id++, label: util.convertMinsToHrsMins(time, true)});
+            entriesGrouped() {
+                const result = [];
+                if (Array.isArray(this.entries)) {
+                    const leftColumn = [];
+                    const rightColumn = [];
+                    const total = this.entries.length;
+                    const median = (total / 2) + (total % 2); // (5/2+1) = 3 or (6/2+0)=3
+                    let i = 0;
+                    for (const ndx in this.entries) {
+                        (i++ < median) ? leftColumn.push(this.entries[ndx]) : rightColumn.push(this.entries[ndx]);
+                    }
+                    let left, right;
+                    do {
+                        left = leftColumn.shift();
+                        right = rightColumn.shift();
+                        if (left) result.push(left);
+                        if (right) result.push(right);
+                    } while (left || right);
+                }
+                return result;
+            },
+            interval() {
+                let result = '';
+                if (this.idSelected) {
+                    const found = this.entries.find((one) => one.id === this.idSelected);
+                    if (found) result = found.label;
                 }
                 return result;
             }
         },
         methods: {
-            entryIsSelected(label) {
-                const start = util.convertHrsMinsToMins(label);
-                const end = start + Number.parseInt(this.taskDuration);
-                const startHM = util.convertMinsToHrsMins(start);
-                const endHM = util.convertMinsToHrsMins(end);
-                this.interval = `${startHM}-${endHM}`;
-                this.$emit('selected', label);
+            entryIsSelected(id) {
+                this.$emit('selected', id);
+                this.idSelected = id;
                 this.showEntries = false;
             }
         }

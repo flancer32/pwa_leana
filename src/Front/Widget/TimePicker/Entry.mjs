@@ -1,9 +1,5 @@
-const i18next = self.teqfw.i18next;
-i18next.addResourceBundle('lv', 'widget_timePicker', {}, true);
-i18next.addResourceBundle('ru', 'widget_timePicker', {}, true);
-
 const template = `
-<div @click="$emit('selected', label)">
+<div @click="$emit('selected', id)">
     <input type="radio" name="timePickerEntry" :id="domId"> <label :for="domId">{{label}}</label>
 </div>
 `;
@@ -11,7 +7,7 @@ const template = `
 export default function Fl32_Leana_Front_Widget_TimePicker_Entry() {
     return {
         template,
-        props: ['id', 'label', 'inactive'],
+        props: ['id', 'label'],
         emits: ['selected'],
         computed: {
             domId() {
