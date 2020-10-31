@@ -36,7 +36,7 @@ const template = `
         </div>
     </div>
     <div id="nav_bar_center">
-        <img alt="Beauty salon" width="100" src="img/logo.svg">
+        <img alt="Beauty salon" width="100" src="img/logo.png">
     </div>
     <div id="nav_bar_right">
         <span style="text-transform: uppercase">{{lang}}</span>
@@ -52,7 +52,7 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_App_NavBar(spec) {
+export default function Fl32_Leana_Front_App_NavBar() {
     return {
         template,
         data: function () {
