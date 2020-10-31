@@ -26,6 +26,18 @@ export default class Fl32_Leana_Shared_Util_DateTime {
         return `${h}:${m}`;
     }
 
+    convertMinsToDbHrsMins(mins) {
+        let h = 0;
+        let m = 0;
+        if (mins) {
+            h = Math.floor(mins / 60);
+            m = mins % 60;
+        }
+        h = h < 10 ? '0' + h : h;
+        m = m < 10 ? '0' + m : m;
+        return `${h}${m}`;
+    }
+
     /**
      * Convert 'HH:MM' to minutes.
      *
@@ -70,17 +82,17 @@ export default class Fl32_Leana_Shared_Util_DateTime {
     /**
      * Convert `dateIn` into 'YYYYMMDD'. `new Date()` is used if `dateIn` is null.
      *
-     * @param {Date|null} dateIn
+     * @param {Date|string|null} dateIn
      * @returns {string}
      */
     formatDate(dateIn = null) {
         /** @type {Date} */
-        const date = (dateIn) ? dateIn : new Date();
+        const date = (dateIn) ?
+            (dateIn instanceof Date) ? dateIn : new Date(dateIn) :
+            new Date();
         const y = date.getFullYear();
-        let m = (date.getMonth() + 1);
-        let d = date.getDate();
-        m = m < 10 ? '0' + m : m;
-        d = d < 10 ? '0' + d : d;
+        const m = `${date.getMonth() + 1}`.padStart(2, '0');
+        const d = `${date.getDate()}`.padStart(2, '0');
         return `${y}${m}${d}`;
     }
 

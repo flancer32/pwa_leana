@@ -83,6 +83,31 @@ describe('Fl32_Leana_Shared_Util_DateTime:', () => {
                 });
 
             });
+
+            describe('formatDate:', () => {
+
+                const now = new Date();
+                const y = now.getFullYear();
+                const m = `${now.getMonth() + 1}`.padStart(2, '0');
+                const d = `${now.getDate()}`.padStart(2, '0');
+                const today = `${y}${m}${d}`;
+
+                it('format null', async () => {
+                    const res = obj.formatDate();
+                    assert.deepStrictEqual(res, today);
+                });
+
+                it('format Date', async () => {
+                    const res = obj.formatDate(new Date());
+                    assert.deepStrictEqual(res, today);
+                });
+
+                it('format String', async () => {
+                    const res = obj.formatDate('2020-11-01T07:30:00.000Z');
+                    assert.deepStrictEqual(res, '20201101');
+                });
+
+            });
         });
 
     });

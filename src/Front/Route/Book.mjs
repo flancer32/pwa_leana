@@ -144,6 +144,8 @@ const template = `
 `;
 
 export default function Fl32_Leana_Front_Route_Book(spec) {
+    /** @type {TeqFw_Di_Container} */
+    const container = spec.TeqFw_Di_Container$;
     /** @type {Fl32_Leana_Front_Widget_DatePicker} */
     const datePicker = spec.Fl32_Leana_Front_Widget_DatePicker$;
     /** @type {Fl32_Leana_Front_Widget_TimePicker} */
@@ -313,16 +315,17 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 const date = new Date(this.date.getTime());
                 const hm = utilDate.convertMinsToHrsMins(this.time);
                 const [hours, minutes] = hm.split(':');
-                date.setHours(hours, minutes);
-                const data = {
-                    date: date,
-                    duration: this.duration,
-                    email: this.email,
-                    master: utilMix.getOptionPropById(this.masterOptions, this.master, 'code'),
-                    name: this.name,
-                    phone: this.phone,
-                    service: utilMix.getOptionPropById(this.serviceOptions, this.service, 'code'),
-                };
+                date.setHours(Number.parseInt(hours), Number.parseInt(minutes));
+                /** @type {Fl32_Leana_Shared_Api_Route_Book_Save_Request} */
+                const data = await container.get('Fl32_Leana_Shared_Api_Route_Book_Save_Request');
+                data.date = date;
+                data.duration = this.duration;
+                data.email = this.email;
+                data.lang = i18next.language;
+                data.masterId = this.master;
+                data.name = this.name;
+                data.phone = this.phone;
+                data.serviceId = this.service;
                 const res = await fetch('./api/book/save', {
                     method: 'POST',
                     headers: {
