@@ -45,6 +45,7 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 const result = [];
                 const query = trx.select();
                 query.from('service');
+                query.where('public', true);
                 const rs = await query;
                 for (const one of rs) {
                     const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service');

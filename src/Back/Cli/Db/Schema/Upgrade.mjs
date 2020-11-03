@@ -69,6 +69,8 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                         .comment('Short unique name for service.');
                     table.integer('duration').unsigned().notNullable().defaultTo(0)
                         .comment('Service duration in minutes.');
+                    table.boolean('public').notNullable().defaultTo(false)
+                        .comment('Does this service available on front or only through admin UI.');
                     table.unique(['code'], 'UQ_employee__code');
                     table.comment('Register for services.');
                 });
@@ -135,10 +137,10 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {id: 2, code: 'natalie'}
                 ]);
                 await trx('service').insert([
-                    {id: 1, code: 'haircut_man', duration: 30},
-                    {id: 2, code: 'haircut_women', duration: 30},
-                    {id: 3, code: 'haircut_child', duration: 30},
-                    {id: 4, code: 'color_simple', duration: 30},
+                    {id: 1, code: 'haircut_man', public: true, duration: 30},
+                    {id: 2, code: 'haircut_women', public: true, duration: 30},
+                    {id: 3, code: 'haircut_child', public: true, duration: 30},
+                    {id: 4, code: 'color_simple', public: true, duration: 30},
                     {id: 5, code: 'color_complex', duration: 60},
                     {id: 6, code: 'color_highlight', duration: 120},
                     {id: 7, code: 'perm', duration: 60},
