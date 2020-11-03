@@ -30,12 +30,16 @@ const template = `
 export default function Fl32_Leana_Dashboard_App(spec) {
     /** @type {Fl32_Leana_Dashboard_Layout_StatusBar} */
     const appStatusBar = spec.Fl32_Leana_Dashboard_Layout_StatusBar$;
-    // const routeAbout = spec.Fl32_Leana_Dashboard_Route_About$;
-    // const routeBook = spec.Fl32_Leana_Dashboard_Route_Book$;
+    const routeCalendar = spec.Fl32_Leana_Dashboard_Route_Calendar$;
+    const routeClients = spec.Fl32_Leana_Dashboard_Route_Clients$;
+    const routeEmployees = spec.Fl32_Leana_Dashboard_Route_Employees$;
+    const routeServices = spec.Fl32_Leana_Dashboard_Route_Services$;
 
     // router.addRoute({path: '/', component: routeAbout});
-    // router.addRoute({path: '/about', component: routeAbout});
-    // router.addRoute({path: '/book', component: routeBook});
+    router.addRoute({path: '/calendar', component: routeCalendar});
+    router.addRoute({path: '/clients', component: routeClients});
+    router.addRoute({path: '/employees', component: routeEmployees});
+    router.addRoute({path: '/services', component: routeServices});
 
     // mount router here to enable routing on the first load of the page
     self.teqfw.app.use(router);

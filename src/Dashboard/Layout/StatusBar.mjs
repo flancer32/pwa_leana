@@ -14,16 +14,16 @@ i18next.addResources('ru', 'statusBar', {
 
 const template = `
 <div id="status_bar">
-    <div>
+    <div v-on:click="$router.push('/calendar')">
         <i class="far fa-calendar-alt fa-3x filter-top-fg" :title="$t('statusBar:calendar')"></i>  
     </div>
-    <div>
+    <div v-on:click="$router.push('/clients')">
         <i class="fas fa-users fa-3x filter-top-fg" :title="$t('statusBar:clients')"></i> 
     </div>
-    <div>
+    <div v-on:click="$router.push('/services')">
         <i class="fas fa-server fa-3x filter-top-fg" :title="$t('statusBar:services')"></i> 
     </div>
-    <div>
+    <div v-on:click="$router.push('/employees')">
         <i class="fas fa-user-tie fa-3x filter-top-fg" :title="$t('statusBar:employees')"></i> 
     </div>
 </div>
