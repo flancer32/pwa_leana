@@ -7,7 +7,10 @@ const template = `
 export default function Fl32_Leana_Front_Widget_TimePicker_Entry() {
     return {
         template,
-        props: ['id', 'label'],
+        props: {
+            id: Number,
+            label: String
+        },
         emits: ['selected'],
         computed: {
             domId() {

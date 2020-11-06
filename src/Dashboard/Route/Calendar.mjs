@@ -4,14 +4,18 @@ i18next.addResources('ru', 'route-about', {});
 
 const template = `
 <div>
-    <div>Calendar</div>
+    <booking></booking>
 </div>
 `;
 
-export default function Fl32_Leana_Dashboard_Route_Calendar() {
-
+export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
+    /** @type {Fl32_Leana_Dashboard_Widget_Booking} */
+    const booking = spec.Fl32_Leana_Dashboard_Widget_Booking$;
     return {
         template,
+        components: {
+            booking
+        },
         data: function () {
             return {};
         },

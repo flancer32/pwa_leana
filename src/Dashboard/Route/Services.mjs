@@ -9,7 +9,6 @@ i18next.addResources('ru', 'route-about', {
 const template = `
 
 <div>
-    <div>Services</div>
     <div class="table">
         <div class="table-actions">
             <div>[Add]</div>

@@ -15,7 +15,7 @@ const template = `
             <app-status-bar></app-status-bar>
         </div>
         <div id="layer_side_bar">
-            <app-side-bar></app-side-bar>
+<!--            <app-side-bar></app-side-bar>-->
         </div>
         <div id="layer_overlay">
 <!--            <app_display_image></app_display_image>-->

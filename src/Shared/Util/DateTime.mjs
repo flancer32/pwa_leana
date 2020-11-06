@@ -59,22 +59,26 @@ export default class Fl32_Leana_Shared_Util_DateTime {
     }
 
     /**
-     * Convert 'HHMM' to minutes.
+     * Convert 'HHMM' or 'MM' to minutes.
      *
-     * @param {string} hm 10:00
+     * @param {string|number} hm 1000, 925 or 59
      * @returns {number} 600
      */
     convertDbHrsMinsToMins(hm) {
         let result = 0;
-        if (
-            (typeof hm === 'string') &&
-            (hm.length === 4)
-        ) {
-            const h = hm.substring(0, 2);
-            const m = hm.substring(2, 4);
+        const str = (typeof hm === 'string') ? hm : hm.toString();
+        if (str.length === 4) {
+            const h = str.substring(0, 2);
+            const m = str.substring(2, 4);
             result = Number(h) * 60 + Number(m);
-        } else if (hm) {
-            result = Number(hm);
+        } else if (str.length === 3) {
+            const h = str.substring(0, 1);
+            const m = str.substring(1, 3);
+            result = Number(h) * 60 + Number(m);
+        } else if (str.length <= 2) {
+            result = Number(str);
+        } else {
+            throw new Error(`Illegal format for DB hours-minutes data (${hm}).`);
         }
         return result;
     }
