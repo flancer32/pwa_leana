@@ -46,6 +46,7 @@ export default class Fl32_Leana_App_Server {
         await this.addApiRoute('/api/app/config/get', 'Fl32_Leana_Back_Route_App_Config_Get$');
         await this.addApiRoute('/api/book/save', 'Fl32_Leana_Back_Route_Book_Save$');
         await this.addApiRoute('/api/book/state/get', 'Fl32_Leana_Back_Route_Book_State_Get$');
+        await this.addApiRoute('/api/desktop/calendar/get', 'Fl32_Leana_Back_Route_Dashboard_Calendar_Get$');
         // static resources in project
         const pathRoot = this._config.get('path/root');
         const pathPub = $path.join(pathRoot, 'web');

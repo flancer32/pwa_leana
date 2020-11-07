@@ -54,7 +54,7 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 schema.dropTableIfExists('book');
             }
 
-            async function composeRegistries(schema) {
+            async function composeRegistries(schema, knex) {
                 // EMPLOYEE
                 schema.createTable('employee', (table) => {
                     table.increments('id');
@@ -77,6 +77,7 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 // BOOKING
                 schema.createTable('book', (table) => {
                     table.increments('id');
+                    table.dateTime('created').notNullable().defaultTo(knex.fn.now());
                     table.comment('Register for appointments (booking).');
                 });
             }
@@ -193,13 +194,14 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
             }
 
             // MAIN FUNCTIONALITY
+            const knex = _connector.getKnex();
             const trx = await _connector.startTransaction();
             try {
                 /** @type {SchemaBuilder} */
                 const schema = _connector.getSchema();
                 // compose queries to create DB structure
                 await dropTables(schema);
-                await composeRegistries(schema);
+                await composeRegistries(schema, knex);
                 await composeEmployee(schema);
                 await composeBook(schema);
                 // perform queries to create DB structure

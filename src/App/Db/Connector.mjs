@@ -43,7 +43,16 @@ export default class Fl32_Leana_App_Db_Connector {
     }
 
     /**
+     * Accessor for 'knex' object.
      *
+     * @return {*}
+     */
+    getKnex() {
+        return this._knex;
+    }
+
+    /**
+     * Accessor for 'knex.schema' object.
      * @returns {*}
      */
     getSchema() {
