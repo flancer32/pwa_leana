@@ -26,17 +26,17 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
             /**
              * Get employees entries for dashboard calendar.
              * @param trx
-             * @returns {Promise<[Array<Fl32_Leana_Shared_Api_Data_Service>]>}
+             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Dashboard_Employee>>}
              * @private
              */
             async function _getEmployees(trx) {
-                const result = [];
+                const result = {};
                 const query = trx.select();
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
                     const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Employee');
-                    result.push(Object.assign(target, one));
+                    result[one.id] = Object.assign(target, one);
                 }
                 return result;
             }
@@ -44,23 +44,29 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
             /**
              * Get services entries for dashboard calendar.
              * @param trx
-             * @returns {Promise<[Array<Fl32_Leana_Shared_Api_Data_Service>]>}
+             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Service>>}
              * @private
              */
             async function _getServices(trx) {
-                const result = [];
+                const result = {};
                 const query = trx.select();
                 query.from('service');
                 const rs = await query;
                 for (const one of rs) {
                     const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service');
-                    result.push(Object.assign(target, one));
+                    result[one.id] = Object.assign(target, one);
                 }
                 return result;
             }
 
+            /**
+             *
+             * @param trx
+             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Dashboard_Task>>}
+             * @private
+             */
             async function _getTasks(trx) {
-                const result = [];
+                const result = {};
                 // SELECT from book
                 const query = trx.select();
                 query.from({b: 'book'});
@@ -78,10 +84,11 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                     {bookedEnd: 'd.to'},
                 ]);
 
+                // COMPOSE RESULTS
                 const rs = await query;
                 for (const one of rs) {
                     const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Task');
-                    result.push(Object.assign(target, one));
+                    result[one.id] = Object.assign(target, one);
                 }
                 return result;
             }

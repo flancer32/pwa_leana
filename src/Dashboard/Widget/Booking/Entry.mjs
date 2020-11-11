@@ -1,5 +1,5 @@
 const template = `
-<div class="book_panel_entry" :id="id">
+<div class="book_panel_entry" :id="id">aaaa
     <div class="panel_entry_time">{{timestamp}}</div>
     <div class="panel_entry_tasks">
         <div v-for="one of tasks" 
@@ -12,15 +12,15 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Dashboard_Widget_Booking_Panel_Entry() {
+export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
     return {
         template,
         components: {},
         props: {
             id: String,
-            interval: Number,
-            tasks: Array,
-            timestamp: String,
+            // interval: Number,
+            // tasks: Array,
+            // timestamp: String,
         },
         emits: ['selected'],
         data: function () {
