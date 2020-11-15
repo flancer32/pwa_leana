@@ -24,7 +24,7 @@ const bootstrap = {version: '0.1.0', root: pathRoot};
 container.set('bootstrap', bootstrap);
 
 /** Request Container to construction app then run it */
-container.get('Fl32_Leana_App')
+container.get('Fl32_Leana_App$')
     .then(
         /**  @param {Fl32_Leana_App} app */
         async (app) => {

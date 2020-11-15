@@ -317,7 +317,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 const [hours, minutes] = hm.split(':');
                 date.setHours(Number.parseInt(hours), Number.parseInt(minutes));
                 /** @type {Fl32_Leana_Shared_Api_Route_Book_Save_Request} */
-                const data = await container.get('Fl32_Leana_Shared_Api_Route_Book_Save_Request');
+                const data = await container.get('Fl32_Leana_Shared_Api_Route_Book_Save_Request$');
                 data.date = date;
                 data.duration = this.duration;
                 data.email = this.email;

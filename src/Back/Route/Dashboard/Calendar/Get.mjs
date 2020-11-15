@@ -35,7 +35,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Employee');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Employee$$');
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -53,7 +53,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                 query.from('service');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service$$');
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -87,7 +87,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                 // COMPOSE RESULTS
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Task');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Task$$');
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -95,7 +95,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
 
             // MAIN FUNCTIONALITY
             /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
-            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Dashboard_Calendar_Get_Response');
+            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Dashboard_Calendar_Get_Response$$');
             const trx = await _db.startTransaction();
             try {
                 const employees = await _getEmployees(trx);

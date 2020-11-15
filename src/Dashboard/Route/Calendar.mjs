@@ -52,7 +52,7 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
                     /** @type {Fl32_Leana_Shared_Api_Data_Dashboard_Task} */
                     const taskApi = data.tasks[taskId];
                     /** @type {Fl32_Leana_Dashboard_Widget_Booking_Api_Task} */
-                    const taskUi = await container.get('Fl32_Leana_Dashboard_Widget_Booking_Api_Task');
+                    const taskUi = await container.get('Fl32_Leana_Dashboard_Widget_Booking_Api_Task$');
                     const employeeId = taskApi.employeeRef;
                     const serviceId = taskApi.serviceRef;
                     const employeeCode = data.employees[employeeId]['code'];

@@ -22,11 +22,11 @@ export default class Fl32_Leana_App_Db_Connector {
      * @returns {Promise<void>}
      */
     async init() {
-        const spec = this._config.get('/local/db/main');
-        const db = spec.connection.database + '@' + spec.connection.host;
-        const user = spec.connection.user;
+        const dbSpec = this._config.get('/local/db/main');
+        const db = dbSpec.connection.database + '@' + dbSpec.connection.host;
+        const user = dbSpec.connection.user;
         try {
-            this._knex = await $knex(spec);
+            this._knex = await $knex(dbSpec);
             this._logger.info('Connected to DB \'' + db + '\' as \'' + user + '\'.');
         } catch (e) {
             this._logger.error('Cannot connect to DB \'' + db + '\' as \'' + user + '\'. Error: ' + e);

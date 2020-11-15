@@ -31,8 +31,8 @@ export default class Fl32_Leana_App {
 
     constructor(spec) {
         // INJECT DEPENDENCIES INTO THIS INSTANCE
-        this._bootCfg = spec.bootstrap$;   // use bootstrap configuration defined in '../bin/tequila.js'
-        this._container = spec.TeqFw_Di_Container$;
+        this._bootCfg = spec.bootstrap;   // use bootstrap configuration manually defined in '../bin/tequila.js'
+        this._container = spec.container; // use DI container manually defined in 'TeqFw_Di_Container'
         this._config = spec.Fl32_Leana_App_Config$;
         this._db = spec.Fl32_Leana_App_Db_Connector$;
         this._logger = spec.Fl32_Leana_App_Logger$;
@@ -76,9 +76,9 @@ export default class Fl32_Leana_App {
         }
 
         async function addCliActions() {
-            await me.addCommand('Fl32_Leana_Back_Cli_Db_Schema_Upgrade');
-            await me.addCommand('Fl32_Leana_Back_Cli_Start');
-            await me.addCommand('Fl32_Leana_Back_Cli_Stop');
+            await me.addCommand('Fl32_Leana_Back_Cli_Db_Schema_Upgrade$');
+            await me.addCommand('Fl32_Leana_Back_Cli_Start$');
+            await me.addCommand('Fl32_Leana_Back_Cli_Stop$');
         }
 
         // MAIN FUNCTIONALITY

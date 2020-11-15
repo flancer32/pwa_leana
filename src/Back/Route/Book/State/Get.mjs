@@ -29,7 +29,7 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Employee');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Employee$$');
                     result.push(Object.assign(target, one));
                 }
                 return result;
@@ -48,7 +48,7 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                 query.where('public', true);
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service$$');
                     result.push(Object.assign(target, one));
                 }
                 return result;
@@ -145,7 +145,7 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
                     const to = one.to;
                     if (!mapped[employeeRef]) mapped[employeeRef] = {};
                     if (!mapped[employeeRef][date]) mapped[employeeRef][date] = {};
-                    const item = await _container.get('Fl32_Leana_Shared_Api_Data_Employee_BookedTime'); // create
+                    const item = await _container.get('Fl32_Leana_Shared_Api_Data_Employee_BookedTime$$'); // create
                     mapped[employeeRef][date][from] = Object.assign(item, {bookRef, serviceRef, to});
                 }
                 for (const one of result) {
@@ -157,7 +157,7 @@ export default class Fl32_Leana_Back_Route_Book_State_Get {
 
             // MAIN FUNCTIONALITY
             /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
-            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Book_State_Get_Response');
+            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Book_State_Get_Response$$');
             const trx = await _db.startTransaction();
             try {
                 const workTime = await _getWorkTime(trx);
