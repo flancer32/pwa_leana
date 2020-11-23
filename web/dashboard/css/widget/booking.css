@@ -25,8 +25,10 @@
 
 .panel_entry_tasks_item {
     position: absolute;
-    top: 0px;
     background-color: var(--booking-task-color-bg);
+    border: 1px solid #c1433b;
+    border-radius: var(--booking-padding);
+    border-radius: var(--booking-padding);
 }
 
 .panel_entry_time {
@@ -38,73 +40,4 @@
 .panel_entry_tasks {
     height: 100%;
     border-left: 1px solid #c1807c;
-}
-
-.book_day {
-    background-color: #c1807c;
-    display: grid;
-    grid-template-columns: 60px 1fr;
-}
-
-.hours_grid, .task_grid {
-    background-color: peachpuff;
-    display: grid;
-    grid-auto-rows: 40px;
-    grid-gap: 0px;
-}
-
-
-.hours_grid > DIV, .task_grid > DIV {
-    display: inline-flex;
-    align-items: center;
-    border-bottom: 1px solid #c1807c;
-    height: 100%;
-    width: 100%;
-}
-
-.task_grid > DIV {
-    border-left: 1px solid #c1807c;
-}
-
-.hours_grid > DIV {
-    justify-content: flex-end;
-}
-
-.hours_grid > DIV > DIV {
-    /*padding-top: 5px;*/
-    padding-right: 5px;
-    justify-content: flex-end;
-}
-
-.task {
-    display: block;
-    background-color: #FF9E2C;
-    padding: var(--booking-padding);
-    border-radius: var(--booking-padding);
-}
-
-.task_grid > DIV {
-    position: relative;
-    z-index: 5;
-}
-
-.task_grid > DIV > DIV {
-    border: 1px solid #c1433b;
-    border-radius: var(--booking-padding);
-}
-
-.task01 {
-    position: absolute;
-    width: 150px;
-    top: 0px;
-    left: 0px;
-    height: calc(3 * var(--booking-row-height) - 2 * var(--booking-padding));
-}
-
-.task02 {
-    position: absolute;
-    width: 150px;
-    top: 0px;
-    left: 100px;
-    height: calc(2 * var(--booking-row-height) - 2 * var(--booking-padding));
 }
