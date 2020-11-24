@@ -1,3 +1,4 @@
+const app = self.teqfw.app;
 const router = self.teqfw.router;
 const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'app', {});
@@ -17,9 +18,7 @@ const template = `
         <div id="layer_side_bar">
 <!--            <app-side-bar></app-side-bar>-->
         </div>
-        <div id="layer_overlay">
-<!--            <app_display_image></app_display_image>-->
-        </div>
+        <app-overlay></app-overlay>
         <div id="layer_notification">
 <!--            <app_notification></app_notification>-->
         </div>
@@ -29,6 +28,7 @@ const template = `
 
 export default function Fl32_Leana_Dashboard_App(spec) {
     /** @type {Fl32_Leana_Dashboard_Layout_StatusBar} */
+    const appOverlay = spec.Fl32_Leana_Dashboard_Layout_Overlay$;
     const appStatusBar = spec.Fl32_Leana_Dashboard_Layout_StatusBar$;
     const routeCalendar = spec.Fl32_Leana_Dashboard_Route_Calendar$;
     const routeClients = spec.Fl32_Leana_Dashboard_Route_Clients$;
@@ -44,10 +44,17 @@ export default function Fl32_Leana_Dashboard_App(spec) {
     // mount router here to enable routing on the first load of the page
     self.teqfw.app.use(router);
 
+    // add globally used components (accessible from other components)
+    app.component('appOverlay', appOverlay);
+
     return {
         template,
         components: {
-            appStatusBar
-        }
+            appStatusBar,
+        },
+        provide: {
+            overlayComponent: 'tab-home'
+        },
+        methods: {}
     };
 }

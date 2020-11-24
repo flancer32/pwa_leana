@@ -1,3 +1,4 @@
+const app = self.teqfw.app;
 const template = `
 <div class="book_panel_entry" :id="id">
     <div class="panel_entry_time">{{timestamp}}</div>
@@ -5,6 +6,7 @@ const template = `
         <div v-for="one of tasks" 
             class="panel_entry_tasks_item"
             :style="getStyle(one)"
+            v-on:click="edit(one.id)"
         >
             {{one.id}} / {{one.title}} 
         </div>
@@ -53,7 +55,19 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
                 const topIndent = (beginDelta / this.interval) * rowHeight;
                 const cssTop = `top: ${topIndent}px`;
                 return `${cssHeight}; ${cssWidth}; ${cssTop};  ${cssLeft}`;
+            },
+            edit(id) {
+                console.log('id:' + JSON.stringify(id));
+                // const comps = app.components;
+                // const compOverlay = app.component('appOverlay');
+                const ctx = app._context;
+                const compOverlay = ctx.components['appOverlay'];
+                compOverlay.methods.show();
             }
+        },
+        setup() {
+            // const boo = app.resolveComponent('appOverlay');
+            // debugger
         }
     };
 }

@@ -61,6 +61,9 @@ export default class Fl32_Leana_App_Server_Route_Static {
                 } else if (url.startsWith('/node/vue-router/')) {
                     const tail = url.replace('/node/vue-router/', '/node_modules/vue-router/dist/');
                     result = $path.join(pathRoot, tail);
+                } else if (url.startsWith('/node/vuex/')) {
+                    const tail = url.replace('/node/vuex/', '/node_modules/vuex/dist/');
+                    result = $path.join(pathRoot, tail);
                 } else if (url.startsWith('/node/i18next/')) {
                     const tail = url.replace('/node/i18next/', '/node_modules/i18next/dist/umd/');
                     result = $path.join(pathRoot, tail);
