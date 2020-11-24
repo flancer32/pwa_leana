@@ -1,4 +1,5 @@
-const app = self.teqfw.app;
+const mapMutations = self.teqfw.lib.Vuex.mapMutations;
+
 const template = `
 <div class="book_panel_entry" :id="id">
     <div class="panel_entry_time">{{timestamp}}</div>
@@ -58,16 +59,14 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
             },
             edit(id) {
                 console.log('id:' + JSON.stringify(id));
-                // const comps = app.components;
-                // const compOverlay = app.component('appOverlay');
-                const ctx = app._context;
-                const compOverlay = ctx.components['appOverlay'];
-                compOverlay.methods.show();
-            }
+                // const ctx = app._context;
+                // const compOverlay = ctx.components['appOverlay'];
+                // compOverlay.methods.show();
+                this.setOverlay({name: 'tab-home', params: {id}});
+            },
+            ...mapMutations('app', [
+                'setOverlay'
+            ]),
         },
-        setup() {
-            // const boo = app.resolveComponent('appOverlay');
-            // debugger
-        }
     };
 }

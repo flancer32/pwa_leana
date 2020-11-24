@@ -69,10 +69,14 @@
             try {
                 // initialize objects loader (Dependency Injection container)
                 const container = await initDiContainer();
-                // create 'teqfw' object in global scope and populate it
+                // create 'teqfw' object in global scope and populate it with old-style loaded objects
                 self.teqfw = {};
+                self.teqfw.lib = {Vue: self.Vue, Vuex: self.Vuex, VueRouter: self.VueRouter};
+                // create vue application
                 self.teqfw.app = self.Vue.createApp({});
+                // create empty store and inject it into root component
                 const store = self.Vuex.createStore({});
+                // store.registerModule('app', {});
                 self.teqfw.app.use(store);
                 self.teqfw.config = await loadConfig();
                 self.teqfw.router = initRouter();

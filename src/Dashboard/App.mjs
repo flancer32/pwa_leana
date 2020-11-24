@@ -6,8 +6,8 @@ i18next.addResources('ru', 'app', {});
 
 const template = `
 <div>
-    <div id='app'>
-        <div id='layer_base'>
+    <div id="app">
+        <div id="layer_base">
             <main>
                 <router-view></router-view>
             </main>
@@ -34,6 +34,7 @@ export default function Fl32_Leana_Dashboard_App(spec) {
     const routeClients = spec.Fl32_Leana_Dashboard_Route_Clients$;
     const routeEmployees = spec.Fl32_Leana_Dashboard_Route_Employees$;
     const routeServices = spec.Fl32_Leana_Dashboard_Route_Services$;
+    const appState = spec.Fl32_Leana_Dashboard_App_State$;
 
     // router.addRoute({path: '/', component: routeAbout});
     router.addRoute({path: '/calendar', component: routeCalendar});
@@ -52,9 +53,8 @@ export default function Fl32_Leana_Dashboard_App(spec) {
         components: {
             appStatusBar,
         },
-        provide: {
-            overlayComponent: 'tab-home'
-        },
-        methods: {}
+        created() {
+            this.$store.registerModule('app', appState);
+        }
     };
 }

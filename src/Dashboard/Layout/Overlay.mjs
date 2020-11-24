@@ -1,12 +1,11 @@
 const app = self.teqfw.app;
-
 const template = `
 <div id="layer_overlay" v-on:click="hideOverlay">
     <component :is="currentComponent"></component>
 </div>
 `;
 
-export default function Fl32_Leana_Dashboard_Layout_StatusBar() {
+export default function Fl32_Leana_Dashboard_Layout_Overlay() {
     app.component('tab-home', {
         template: '<div>Home component</div>'
     });
@@ -27,7 +26,15 @@ export default function Fl32_Leana_Dashboard_Layout_StatusBar() {
         },
         computed: {
             currentComponent() {
-                return this.name;
+                const overlay = this.$store.state.app.overlay;
+                let name = overlay.name;
+                if (!self.teqfw.app._context.components[name]) {
+                    name = null;
+                } else {
+                    this.show();
+                }
+
+                return name;
             }
         },
         methods: {
