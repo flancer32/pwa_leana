@@ -28,7 +28,7 @@
     background-color: var(--booking-task-color-bg);
     border: 1px solid #c1433b;
     border-radius: var(--booking-padding);
-    border-radius: var(--booking-padding);
+    overflow: hidden;
 }
 
 .panel_entry_time {
