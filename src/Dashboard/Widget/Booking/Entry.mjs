@@ -9,7 +9,7 @@ const template = `
             :style="getStyle(one)"
             v-on:click="edit(one.id)"
         >
-            {{one.id}} / {{one.title}} 
+            {{one.title}} / {{one.id}} 
         </div>
     </div>
 </div>

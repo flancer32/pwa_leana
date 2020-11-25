@@ -118,6 +118,9 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     table.string('date', 8).comment('Date as "YYYYMMDD".');
                     table.string('from', 4).notNullable().comment('Time starting: 0900.');
                     table.string('to', 4).notNullable().comment('Finish time: 2000.');
+                    table.string('customer', 255).notNullable().comment('Customer name.');
+                    table.string('phone', 255).nullable().comment('Customer phone.');
+                    table.string('email', 255).nullable().comment('Customer email.');
                     table.primary(['book_ref']);
                     table.foreign('book_ref').references('id').inTable('book')
                         .onDelete('CASCADE').onUpdate('CASCADE')
@@ -185,11 +188,22 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 const date2 = _util.formatDate(d2);
                 const date3 = _util.formatDate(d3);
                 await trx('book_detail').insert([
-                    {book_ref: 1, employee_ref: 1, service_ref: 1, date: date2, from: '1015', to: '1045'},
-                    {book_ref: 2, employee_ref: 2, service_ref: 2, date: date3, from: '1000', to: '1115'},
-                    {book_ref: 3, employee_ref: 1, service_ref: 3, date: date2, from: '1100', to: '1130'},
-                    {book_ref: 4, employee_ref: 1, service_ref: 4, date: date2, from: '1215', to: '1330'},
-                    {book_ref: 5, employee_ref: 2, service_ref: 5, date: date3, from: '1630', to: '1730'},
+                    {
+                        book_ref: 1, employee_ref: 1, service_ref: 1, date: date2, from: '1015', to: '1045',
+                        customer: 'John Doe'
+                    }, {
+                        book_ref: 2, employee_ref: 2, service_ref: 2, date: date3, from: '1000', to: '1115',
+                        customer: 'John Doe'
+                    }, {
+                        book_ref: 3, employee_ref: 1, service_ref: 3, date: date2, from: '1100', to: '1130',
+                        customer: 'John Doe'
+                    }, {
+                        book_ref: 4, employee_ref: 1, service_ref: 4, date: date2, from: '1215', to: '1330',
+                        customer: 'Jane Doe'
+                    }, {
+                        book_ref: 5, employee_ref: 2, service_ref: 5, date: date3, from: '1630', to: '1730',
+                        customer: 'Jane Doe'
+                    },
                 ]);
             }
 

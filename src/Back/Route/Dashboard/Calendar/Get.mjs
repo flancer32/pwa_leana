@@ -82,8 +82,12 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                     {bookedDate: 'd.date'},
                     {bookedBegin: 'd.from'},
                     {bookedEnd: 'd.to'},
+                    {customerName: 'd.customer'},
+                    {customerPhone: 'd.phone'},
+                    {customerEmail: 'd.email'},
                 ]);
-
+                // const sql = query.toString();
+                // console.log(sql);
                 // COMPOSE RESULTS
                 const rs = await query;
                 for (const one of rs) {

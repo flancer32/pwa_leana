@@ -40,4 +40,10 @@ export default class Fl32_Leana_Shared_Api_Data_Dashboard_Task {
      * @type {string} YYYYMMDD
      */
     bookedEnd
+    /** @type {String} */
+    customerEmail
+    /** @type {String} */
+    customerName
+    /** @type {String} */
+    customerPhone
 }

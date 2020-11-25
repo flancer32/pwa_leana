@@ -72,7 +72,10 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
                     const serviceId = taskApi.serviceRef;
                     const employeeCode = data.employees[employeeId]['code'];
                     const serviceCode = data.services[serviceId]['code'];
-                    const title = `${employeeCode}: ${serviceCode}`;
+                    const customer = taskApi.customerName;
+                    const email = taskApi.customerEmail ?? '';
+                    const phone = taskApi.customerPhone ?? '';
+                    const title = `${customer} (${email}, ${phone}) (${employeeCode}: ${serviceCode})`;
                     const id = Number.parseInt(taskApi.id);
                     taskUi.id = id; // 1
                     taskUi.title = title;   // "elena: haircut_man"

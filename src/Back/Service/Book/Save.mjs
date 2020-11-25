@@ -11,7 +11,7 @@ export default class Fl32_Leana_Back_Service_Book_Save {
     }
 
     /**
-     * Method is bound to object prototype (one function for all instances).
+     * Save booking details from front into RDB.
      *
      * @param {Function} trx
      * @param {Fl32_Leana_Shared_Api_Route_Book_Save_Request} req
@@ -33,6 +33,9 @@ export default class Fl32_Leana_Back_Service_Book_Save {
             const fromMin = me.#utilDate.convertDbHrsMinsToMins(from);
             const toMin = fromMin + Number.parseInt(req.duration);
             const to = me.#utilDate.convertMinsToDbHrsMins(toMin);
+            const customer = req.name ?? undefined;
+            const email = req.email ?? undefined;
+            const phone = req.phone ?? undefined;
             // register ID for entity
             const rs = await trx('book').insert({});
             const bookId = rs[0];
@@ -41,7 +44,7 @@ export default class Fl32_Leana_Back_Service_Book_Save {
                 book_ref: bookId,
                 employee_ref: req.masterId,
                 service_ref: req.serviceId,
-                date, from, to
+                date, from, to, customer, email, phone
             });
             return bookId;
         }
@@ -83,7 +86,7 @@ Service: ${service}
         const bookId = await saveToDb();
         const master = await getEmployeeName(req.masterId);
         const service = await getServiceName(req.serviceId);
-        await saveToGoogle(bookId, master, service);
+        // await saveToGoogle(bookId, master, service);
 
         // COMPOSE RESULT
         return result;
