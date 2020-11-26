@@ -37,4 +37,6 @@ export default class Fl32_Leana_Dashboard_Widget_Booking_Api_Task {
      * @type {number} 1,2,3
      */
     column
+    /** @type {Fl32_Leana_Dashboard_Widget_Api_Task} */
+    taskData
 }

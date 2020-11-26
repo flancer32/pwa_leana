@@ -8,7 +8,7 @@ export default class Fl32_Leana_Shared_Api_Data_Employee {
      */
     id
     /**
-     * Unique code of the service.
+     * Unique code of the employee.
      * @type {string}
      */
     code

@@ -7,9 +7,9 @@ const template = `
         <div v-for="one of tasks" 
             class="panel_entry_tasks_item"
             :style="getStyle(one)"
-            v-on:click="edit(one.id)"
+            v-on:click="overlay(one)"
         >
-            {{one.title}} / {{one.id}} 
+            {{getTitle(one)}} 
         </div>
     </div>
 </div>
@@ -35,7 +35,6 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
         data: function () {
             return {};
         },
-        computed: {},
         methods: {
             /**
              *
@@ -57,12 +56,25 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
                 const cssTop = `top: ${topIndent}px`;
                 return `${cssHeight}; ${cssWidth}; ${cssTop};  ${cssLeft}`;
             },
-            edit(id) {
-                console.log('id:' + JSON.stringify(id));
+            getTitle(one) {
+                /** @type {Fl32_Leana_Dashboard_Widget_Api_Task} */
+                const data = one.taskData;
+                if (data) {
+                    const customer = data.customer;
+                    return `${customer.name} (task: ${data.id})`;
+                } else {
+                    return '';
+                }
+            },
+            /**
+             *
+             * @param {Fl32_Leana_Dashboard_Widget_Booking_Api_Task} task
+             */
+            overlay(task) {
                 // const ctx = app._context;
                 // const compOverlay = ctx.components['appOverlay'];
                 // compOverlay.methods.show();
-                this.setOverlay({name: 'tab-home', params: {id}});
+                this.setOverlay({name: 'taskPreview', params: task.taskData});
             },
             ...mapMutations('app', [
                 'setOverlay'

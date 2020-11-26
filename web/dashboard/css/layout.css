@@ -47,14 +47,10 @@
 }
 
 #layer_overlay {
-    background-color: #FF9E2C;
-    /*display: none;*/
-    /*opacity: 0.5;*/
-    /*transition: display 3s ease-in-out;*/
+    background-color: var(--color-back-main);
     visibility: hidden;
     opacity: 0;
     transition: opacity 500ms;
-    /*will-change: transform;*/
     /* positioning */
     position: fixed;
     top: 0;

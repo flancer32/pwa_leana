@@ -103,14 +103,23 @@ export default class Fl32_Leana_Shared_Util_DateTime {
     /**
      *
      * @param {string} formatted 'YYYYMMDD'
-     * @param {Date} time
+     * @param {string} time 'HHMM' | 'HH:MM'
      */
     unformatDate(formatted, time = null) {
         const result = new Date();
         const y = formatted.substring(0, 4);
         const m = formatted.substring(4, 6);
         const d = formatted.substring(6, 8);
-        const msec = (time) ? Date.parse(`${y}/${m}/${d} ${time}`) : Date.parse(`${y}/${m}/${d} 12:00:00`);
+        let msec = Date.parse(`${y}/${m}/${d} 12:00:00`);
+        if (time) {
+            if (time.length === 4) {
+                const hour = time.substring(0, 2);
+                const min = time.substring(2, 4);
+                msec = Date.parse(`${y}/${m}/${d} ${hour}:${min}:00`);
+            } else {
+                msec = Date.parse(`${y}/${m}/${d} ${time}`);
+            }
+        }
         result.setTime(msec);
         return result;
     }

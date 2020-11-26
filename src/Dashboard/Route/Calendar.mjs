@@ -18,7 +18,11 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
     const booking = spec.Fl32_Leana_Dashboard_Widget_Booking$;
     /** @type {Fl32_Leana_Shared_Util_DateTime} */
     const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
-    const TaskUi = spec['Fl32_Leana_Dashboard_Widget_Booking_Api_Task#'];
+    const CustomerUi = spec['Fl32_Leana_Dashboard_Widget_Api_Customer#'];
+    const EmployeeUi = spec['Fl32_Leana_Dashboard_Widget_Api_Employee#'];
+    const ServiceUi = spec['Fl32_Leana_Dashboard_Widget_Api_Service#'];
+    const TaskUi = spec['Fl32_Leana_Dashboard_Widget_Api_Task#'];
+    const TaskWidget = spec['Fl32_Leana_Dashboard_Widget_Booking_Api_Task#'];
 
     return {
         template,
@@ -57,32 +61,70 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
              * @return {Object.<string, Object.<number, Fl32_Leana_Dashboard_Widget_Booking_Api_Task>>} {'YYYYMMDD':{id:{TaskUI}}}
              */
             function _prepareBookedTasks(data) {
+                /**
+                 * Convert data from Backend API fromat to UI format.
+                 *
+                 * @param {Fl32_Leana_Shared_Api_Data_Dashboard_Task} taskApi
+                 * @param {Fl32_Leana_Shared_Api_Data_Dashboard_Employee} employeeApi
+                 * @param {Fl32_Leana_Shared_Api_Data_Service} serviceApi
+                 * @param {number} duration
+                 * @return {Fl32_Leana_Dashboard_Widget_Api_Task}
+                 */
+                function _parseTaskUi(taskApi, employeeApi, serviceApi, duration) {
+                    /** @type {Fl32_Leana_Dashboard_Widget_Api_Task} */
+                    const result = new TaskUi();
+                    result.id = taskApi.id;
+                    result.dateBook = utilDate.unformatDate(taskApi.bookedDate, taskApi.bookedBegin);
+                    result.dateCreated = taskApi.dateCreated;
+                    result.duration = duration;
+                    /** @type {Fl32_Leana_Dashboard_Widget_Api_Customer} */
+                    const customer = new CustomerUi();
+                    customer.name = taskApi.customerName;
+                    customer.email = taskApi.customerEmail;
+                    customer.phone = taskApi.customerPhone;
+                    result.customer = customer;
+                    /** @type {Fl32_Leana_Dashboard_Widget_Api_Service} */
+                    const service = new ServiceUi();
+                    service.id = serviceApi.id;
+                    service.code = serviceApi.code;
+                    service.duration = serviceApi.duration;
+                    result.service = service;
+                    /** @type {Fl32_Leana_Dashboard_Widget_Api_Employee} */
+                    const employee = new EmployeeUi();
+                    employee.id = employeeApi.id;
+                    employee.code = employeeApi.code;
+                    result.employee = employee;
+                    return result;
+                }
+
                 const result = {};
                 for (const taskId in data.tasks) {
+                    // convert Backend API data to UI data
                     /** @type {Fl32_Leana_Shared_Api_Data_Dashboard_Task} */
                     const taskApi = data.tasks[taskId];
-                    const bookedDate = taskApi.bookedDate;  // 20201120
-                    result[bookedDate] = result[bookedDate] || {};
+                    /** @type {Fl32_Leana_Shared_Api_Data_Dashboard_Employee} */
+                    const employeeApi = data.employees[taskApi.employeeRef];
+                    /** @type {Fl32_Leana_Shared_Api_Data_Service} */
+                    const serviceApi = data.services[taskApi.serviceRef];
+                    // prepare intermediate data
                     const minsBegin = utilDate.convertDbHrsMinsToMins(taskApi.bookedBegin); // 615
                     const minsEnd = utilDate.convertDbHrsMinsToMins(taskApi.bookedEnd); // 645
                     const duration = minsEnd - minsBegin;       // 30
+                    // compose task common data for all widgets (UI)
+                    /** @type {Fl32_Leana_Dashboard_Widget_Api_Task} */
+                    const taskUi = _parseTaskUi(taskApi, employeeApi, serviceApi, duration);
                     /** @type {Fl32_Leana_Dashboard_Widget_Booking_Api_Task} */
-                    const taskUi = new TaskUi();
-                    const employeeId = taskApi.employeeRef;
-                    const serviceId = taskApi.serviceRef;
-                    const employeeCode = data.employees[employeeId]['code'];
-                    const serviceCode = data.services[serviceId]['code'];
-                    const customer = taskApi.customerName;
-                    const email = taskApi.customerEmail ?? '';
-                    const phone = taskApi.customerPhone ?? '';
-                    const title = `${customer} (${email}, ${phone}) (${employeeCode}: ${serviceCode})`;
+                    const taskWidget = new TaskWidget();
                     const id = Number.parseInt(taskApi.id);
-                    taskUi.id = id; // 1
-                    taskUi.title = title;   // "elena: haircut_man"
-                    taskUi.begin = minsBegin;   // 540
-                    taskUi.end = minsEnd;       // 570
-                    taskUi.duration = duration; // 30
-                    result[bookedDate][id] = taskUi;
+                    taskWidget.id = id;             // 1
+                    taskWidget.begin = minsBegin;   // 540
+                    taskWidget.end = minsEnd;       // 570
+                    taskWidget.duration = duration; // 30
+                    taskWidget.taskData = taskUi;
+                    // add widget task data to results
+                    const bookedDate = taskApi.bookedDate;  // 20201120
+                    result[bookedDate] = result[bookedDate] || {};
+                    result[bookedDate][id] = taskWidget;
                 }
                 return result;
             }

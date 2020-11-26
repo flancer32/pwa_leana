@@ -1,5 +1,6 @@
 /* Define default values for CSS variables */
 :root {
+    --color-back-main: #f9efed;
     --color-back-top: #f1e7e4;
     --font-size-large: 20px;
     --grid-gap: 10px;
