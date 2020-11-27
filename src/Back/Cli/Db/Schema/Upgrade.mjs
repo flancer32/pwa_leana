@@ -190,19 +190,19 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                 await trx('book_detail').insert([
                     {
                         book_ref: 1, employee_ref: 1, service_ref: 1, date: date2, from: '1015', to: '1045',
-                        customer: 'John Doe'
+                        customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
                         book_ref: 2, employee_ref: 2, service_ref: 2, date: date3, from: '1000', to: '1115',
-                        customer: 'John Doe'
+                        customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
                         book_ref: 3, employee_ref: 1, service_ref: 3, date: date2, from: '1100', to: '1130',
-                        customer: 'John Doe'
+                        customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
                         book_ref: 4, employee_ref: 1, service_ref: 4, date: date2, from: '1215', to: '1330',
-                        customer: 'Jane Doe'
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
                     }, {
                         book_ref: 5, employee_ref: 2, service_ref: 5, date: date3, from: '1630', to: '1730',
-                        customer: 'Jane Doe'
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
                     },
                 ]);
             }

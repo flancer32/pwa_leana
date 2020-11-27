@@ -4,6 +4,7 @@ i18next.addResources('ru', 'route-about', {});
 
 const template = `
 <div>
+    <action-bar></action-bar>
     <booking 
         :tasks="bookedTasks"
         :begin="'0900'"
@@ -15,10 +16,12 @@ const template = `
 
 export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
     /** @type {Fl32_Leana_Dashboard_Widget_Booking} */
-    const booking = spec.Fl32_Leana_Dashboard_Widget_Booking$;
+    const booking = spec.Fl32_Leana_Dashboard_Widget_Booking$;  // singleton
     /** @type {Fl32_Leana_Shared_Util_DateTime} */
     const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
-    const CustomerUi = spec['Fl32_Leana_Dashboard_Widget_Api_Customer#'];
+    /** @type {Fl32_Leana_Dashboard_Widget_Action_Bar} */
+    const wgActionBar = spec.Fl32_Leana_Dashboard_Widget_Action_Bar$$;   // new instance
+    const CustomerUi = spec['Fl32_Leana_Dashboard_Widget_Api_Customer#'];   // class constructor
     const EmployeeUi = spec['Fl32_Leana_Dashboard_Widget_Api_Employee#'];
     const ServiceUi = spec['Fl32_Leana_Dashboard_Widget_Api_Service#'];
     const TaskUi = spec['Fl32_Leana_Dashboard_Widget_Api_Task#'];
@@ -27,7 +30,8 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
     return {
         template,
         components: {
-            booking
+            booking,
+            actionBar: wgActionBar
         },
         data: function () {
             return {
