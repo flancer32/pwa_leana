@@ -24,7 +24,7 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
         template,
         components: {},
         props: {
-            id: String,
+            id: Number,
             interval: Number,
             tasks: Array,
             timestamp: String,

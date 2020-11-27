@@ -1,21 +1,33 @@
 const template = `
-<div class="action_bar" style="width: 100%; height: 20px; background-color: #c1433b">
-
+<div class="action_bar">
+    <action 
+        v-for="one in Object.values(actions)"
+        :params="one"
+    ></action>
 </div>
 `;
 
 export default function Fl32_Leana_Dashboard_Widget_Action_Bar(spec) {
-    /** @type {Fl32_Leana_Dashboard_Widget_Action_Bar} */
-    const actionBar = spec.Fl32_Leana_Dashboard_Widget_Action_Bar$$;   // new instance
+    /** @type {Fl32_Leana_Dashboard_Widget_Action_Item} */
+    const action = spec.Fl32_Leana_Dashboard_Widget_Action_Item$;   // singleton
+    const Bar = spec['Fl32_Leana_Dashboard_Widget_Action_Api#Bar']; // class
 
     return {
         template,
         props: {
-            params: Object
+            /** @type {Fl32_Leana_Dashboard_Widget_Action_Api_Bar} */
+            params: Bar
+        },
+        components: {
+            action
         },
         computed: {
             actions() {
-                return [];
+                return this.bar.items || {};
+            },
+            /** @type {Fl32_Leana_Dashboard_Widget_Action_Api_Bar} */
+            bar() {
+                return this.params || {};
             }
         }
     };
