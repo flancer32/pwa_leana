@@ -1,3 +1,6 @@
+const mapState = self.teqfw.lib.Vuex.mapState;
+const mapMutations = self.teqfw.lib.Vuex.mapMutations;
+
 const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'route-about', {});
 i18next.addResources('ru', 'route-about', {});
@@ -40,6 +43,16 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
                 /** @type {Object.<string,Object<number, Fl32_Leana_Dashboard_Widget_Booking_Api_Task>>} */
                 bookedTasks: {},
             };
+        },
+        computed: {
+            ...mapState({
+                dateSelected: state => state.calendar.dateSelected,
+            })
+        },
+        methods: {
+            ...mapMutations({
+                setDateSelected: 'calendar/setDateSelected'
+            })
         },
         async mounted() {
             // DEFINE INNER FUNCTIONS
@@ -134,6 +147,10 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
             }
 
             // MAIN FUNCTIONALITY
+            if (typeof this.dateSelected.getTime !== 'function') {
+                const now = new Date(Date.now());
+                this.setDateSelected(now);
+            }
             const {data} = await _loadData();
             this.calendarData = data;
             this.bookedTasks = _prepareBookedTasks(data);

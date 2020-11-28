@@ -15,20 +15,15 @@ const template = `
         <div id="layer_status_bar">
             <app-status-bar></app-status-bar>
         </div>
-        <div id="layer_side_bar">
-<!--            <app-side-bar></app-side-bar>-->
-        </div>
+        <div id="layer_side_bar"></div>
         <app-overlay></app-overlay>
-        <div id="layer_notification">
-<!--            <app_notification></app_notification>-->
-        </div>
+        <div id="layer_notification"></div>
     </div>
 </div>
 `;
 
 export default function Fl32_Leana_Dashboard_App(spec) {
     /** @type {Fl32_Leana_Dashboard_Layout_StatusBar} */
-    const appState = spec.Fl32_Leana_Dashboard_App_State$;
     const compLayoutOverlay = spec.Fl32_Leana_Dashboard_Layout_Overlay$;
     const compLayoutStatusBar = spec.Fl32_Leana_Dashboard_Layout_StatusBar$;
     const compRouteCalendar = spec.Fl32_Leana_Dashboard_Route_Calendar$;
@@ -36,6 +31,8 @@ export default function Fl32_Leana_Dashboard_App(spec) {
     const compRouteEmployees = spec.Fl32_Leana_Dashboard_Route_Employees$;
     const compRouteServices = spec.Fl32_Leana_Dashboard_Route_Services$;
     const compWidgetTaskPreview = spec.Fl32_Leana_Dashboard_Widget_Task_Preview$;
+    const state = spec.Fl32_Leana_Dashboard_State$;
+    // const stateCalendar = spec.Fl32_Leana_Dashboard_App_State_Calendar$;
 
     // router.addRoute({path: '/', component: routeAbout});
     router.addRoute({path: '/calendar', component: compRouteCalendar});
@@ -44,7 +41,11 @@ export default function Fl32_Leana_Dashboard_App(spec) {
     router.addRoute({path: '/services', component: compRouteServices});
 
     // mount router here to enable routing on the first load of the page
-    self.teqfw.app.use(router);
+    app.use(router);
+
+    // setup Vuex store
+    const store = self.Vuex.createStore(state);
+    app.use(store);
 
     // add globally used components (accessible from other components)
     app.component('appOverlay', compLayoutOverlay);
@@ -52,11 +53,10 @@ export default function Fl32_Leana_Dashboard_App(spec) {
 
     return {
         template,
-        components: {
+        components: {   // locally used components
             appStatusBar: compLayoutStatusBar,
         },
         created() {
-            this.$store.registerModule('app', appState);
         }
     };
 }

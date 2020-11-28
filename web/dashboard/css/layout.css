@@ -1,12 +1,8 @@
-:root {
-
-}
-
 /* common styles for all modes (portrait, landscape & tablet) */
-
-#app {
+BUTTON {
+    min-width: var(--input-height);
+    min-height: var(--input-height);
 }
-
 
 #layer_base {
     will-change: transform;
@@ -57,8 +53,24 @@
     left: 0;
     z-index: 2000;
     /* fit this DIV into viewport */
-    height: 100%;
+    min-height: 100%;
     width: 100%;
+    /* grid */
+    display: grid;
+    grid-template-rows:  auto 1fr;
+    grid-template-columns:1fr;
+    grid-gap: var(--grid-gap);
+    /*align-items: center;*/
+    /*justify-items: center;*/
+}
+
+.layer_overlay_close {
+    /*align-self: center;*/
+    justify-self: end;
+}
+
+.layer_overlay_content {
+    justify-self: center;
 }
 
 #layer_notification {

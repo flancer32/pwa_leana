@@ -13,10 +13,6 @@ i18next.addResources('ru', 'taskPreview', {
 
 const template = `
 <div class="">
-    <div class="actions">
-        [{{$t('taskPreview:actionEdit')}}]
-        <span v-on:click="actionClose">[{{$t('taskPreview:actionClose')}}]</span>
-    </div>
     <h1>{{$t('taskPreview:task')}} {{ params.id }}</h1>
     <form class="preview" onsubmit="return false">
         <div class="row">

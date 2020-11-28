@@ -1,20 +1,17 @@
-const app = self.teqfw.app;
+const mapMutations = self.teqfw.lib.Vuex.mapMutations;
+
 const template = `
 <div id="layer_overlay">
-    <component :is="currentComponent" :params="params"></component>
+    <div class="layer_overlay_close" v-on:click="resetOverlay">
+        <i class="far fa-times-circle fa-2x filter-top-fg"></i>  
+    </div>
+    <div class="layer_overlay_content">
+        <component :is="currentComponent" :params="params"></component>
+    </div>
 </div>
 `;
 
 export default function Fl32_Leana_Dashboard_Layout_Overlay() {
-    app.component('tab-home', {
-        template: '<div>Home component</div>'
-    });
-    app.component('tab-posts', {
-        template: '<div>Posts component</div>'
-    });
-    app.component('tab-archive', {
-        template: '<div>Archive component</div>'
-    });
 
     return {
         template,
@@ -40,6 +37,9 @@ export default function Fl32_Leana_Dashboard_Layout_Overlay() {
                 let name = overlay.name;
                 if (!self.teqfw.app._context.components[name]) {
                     this.hideOverlay();
+                    if (typeof name === 'string') {
+                        console.log(`Cannot use component with name '${name}' in overlay.`);
+                    }
                     return null;
                 } else {
                     return overlay.params;
@@ -47,6 +47,9 @@ export default function Fl32_Leana_Dashboard_Layout_Overlay() {
             }
         },
         methods: {
+            close() {
+                this.resetOverlay();
+            },
             hideOverlay() {
                 const elOverlay = self.document.querySelector('#layer_overlay');
                 if (elOverlay) {
@@ -58,7 +61,10 @@ export default function Fl32_Leana_Dashboard_Layout_Overlay() {
                 const elOverlay = self.document.querySelector('#layer_overlay');
                 elOverlay.style.visibility = 'visible';
                 elOverlay.style.opacity = '1';
-            }
+            },
+            ...mapMutations('app', [
+                'resetOverlay'
+            ]),
         },
     };
 }
