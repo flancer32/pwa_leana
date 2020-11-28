@@ -1,3 +1,4 @@
+const mapMutations = self.teqfw.lib.Vuex.mapMutations;
 const mapState = self.teqfw.lib.Vuex.mapState;
 
 const template = `
@@ -25,6 +26,7 @@ export default function Fl32_Leana_Dashboard_Widget_Booking(spec) {
     /** @type {Fl32_Leana_Dashboard_Widget_Booking_Entry} */
     const bookingEntry = spec.Fl32_Leana_Dashboard_Widget_Booking_Entry$;
     const EntryUi = spec['Fl32_Leana_Dashboard_Widget_Booking_Api_Entry#'];
+    const Swipe = spec['Fl32_Leana_Dashboard_Util_Swipe#'];
     return {
         template,
         components: {
@@ -190,6 +192,24 @@ export default function Fl32_Leana_Dashboard_Widget_Booking(spec) {
             ...mapState({
                 dateSelected: state => state.calendar.dateSelected,
             })
+        },
+        methods: {
+            ...mapMutations({
+                saveDateSelected: 'calendar/setDateSelected',
+            }),
+        },
+        mounted() {
+            const me = this;
+            /** @type {Fl32_Leana_Dashboard_Util_Swipe} */
+            const swipe = new Swipe('.book_panel');
+            swipe.setOnLeft(function () {
+                const dayAfter = utilDate.forwardDate(1, me.dateSelected);
+                me.saveDateSelected(dayAfter);
+            });
+            swipe.setOnRight(function () {
+                const dayBefore = utilDate.forwardDate(-1, me.dateSelected);
+                me.saveDateSelected(dayBefore);
+            });
         }
     };
 }
