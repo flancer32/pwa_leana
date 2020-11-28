@@ -1,3 +1,5 @@
+const mapState = self.teqfw.lib.Vuex.mapState;
+
 const template = `
 <div class="booking">
     <div>
@@ -179,13 +181,15 @@ export default function Fl32_Leana_Dashboard_Widget_Booking(spec) {
                 // const result = {};
                 const dayBegin = utilDate.convertDbHrsMinsToMins(this.begin);
                 const dayEnd = utilDate.convertDbHrsMinsToMins(this.end);
-                // get tasks
-                const dayPlus2 = utilDate.forwardDate(2);
-                const datestamp = utilDate.formatDate(dayPlus2);
+                // get tasks for selected date
+                const datestamp = utilDate.formatDate(this.dateSelected);
                 const tasksOnDate = _getTasksOnDate(datestamp);    // all tasks being scheduled for the date
                 const grid = _getGridWithTasks(dayBegin, dayEnd, this.gridStep, tasksOnDate);
                 return _convertGridToEntries(grid, this.step, this.gridStep);
             },
+            ...mapState({
+                dateSelected: state => state.calendar.dateSelected,
+            })
         }
     };
 }

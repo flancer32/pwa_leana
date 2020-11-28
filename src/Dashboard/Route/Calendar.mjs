@@ -8,6 +8,7 @@ i18next.addResources('ru', 'route-about', {});
 const template = `
 <div>
     <action-bar></action-bar>
+    <div style="text-align: center">{{dateFormatted}}</div>
     <booking 
         :tasks="bookedTasks"
         :begin="'0900'"
@@ -45,6 +46,19 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
             };
         },
         computed: {
+            dateFormatted() {
+                let result = '';
+                if (typeof this.dateSelected.toLocaleDateString === 'function') {
+                    const locale = i18next.language;
+                    result = this.dateSelected.toLocaleDateString(locale, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                }
+                return result;
+            },
             ...mapState({
                 dateSelected: state => state.calendar.dateSelected,
             })

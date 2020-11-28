@@ -61,7 +61,8 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
                 const data = one.taskData;
                 if (data) {
                     const customer = data.customer;
-                    return `${customer.name} (task: ${data.id})`;
+                    const employee = data.employee;
+                    return `${customer.name} (task: ${data.id} / ${employee.code})`;
                 } else {
                     return '';
                 }
