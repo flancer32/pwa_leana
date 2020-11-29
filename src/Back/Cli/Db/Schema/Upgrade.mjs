@@ -182,26 +182,50 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {id: 3},
                     {id: 4},
                     {id: 5},
+                    {id: 6},
+                    {id: 7},
+                    {id: 8},
+                    {id: 9},
+                    {id: 10},
                 ]);
+                const d0 = _util.forwardDate(0);
+                const d1 = _util.forwardDate(1);
                 const d2 = _util.forwardDate(2);
                 const d3 = _util.forwardDate(3);
+                const date0 = _util.formatDate(d0);
+                const date1 = _util.formatDate(d1);
                 const date2 = _util.formatDate(d2);
                 const date3 = _util.formatDate(d3);
                 await trx('book_detail').insert([
                     {
-                        book_ref: 1, employee_ref: 1, service_ref: 1, date: date2, from: '1015', to: '1045',
+                        book_ref: 1, employee_ref: 1, service_ref: 1, date: date0, from: '0900', to: '1115',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
-                        book_ref: 2, employee_ref: 2, service_ref: 2, date: date3, from: '1000', to: '1115',
+                        book_ref: 2, employee_ref: 1, service_ref: 2, date: date0, from: '0930', to: '1045',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
-                        book_ref: 3, employee_ref: 1, service_ref: 3, date: date2, from: '1100', to: '1130',
+                        book_ref: 3, employee_ref: 1, service_ref: 3, date: date0, from: '1030', to: '1130',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
                     }, {
-                        book_ref: 4, employee_ref: 1, service_ref: 4, date: date2, from: '1215', to: '1330',
+                        book_ref: 4, employee_ref: 1, service_ref: 4, date: date0, from: '1215', to: '1330',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
                     }, {
-                        book_ref: 5, employee_ref: 2, service_ref: 5, date: date3, from: '1630', to: '1730',
+                        book_ref: 5, employee_ref: 1, service_ref: 5, date: date0, from: '1630', to: '1730',
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                    }, {
+                        book_ref: 6, employee_ref: 1, service_ref: 5, date: date2, from: '0915', to: '1130',
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                    }, {
+                        book_ref: 7, employee_ref: 1, service_ref: 5, date: date2, from: '1230', to: '1730',
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                    }, {
+                        book_ref: 8, employee_ref: 2, service_ref: 5, date: date1, from: '0900', to: '1030',
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                    }, {
+                        book_ref: 9, employee_ref: 2, service_ref: 5, date: date1, from: '1030', to: '1130',
+                        customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                    }, {
+                        book_ref: 10, employee_ref: 2, service_ref: 5, date: date3, from: '1030', to: '1730',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
                     },
                 ]);

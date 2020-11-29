@@ -9,7 +9,6 @@ export default function Fl32_Leana_Dashboard_State_App() {
         namespaced: true,
         state: {
             overlay: {name: String, params: Object},
-            calendar: {dateSelected: Date},
         },
         getters: {},
         mutations: {

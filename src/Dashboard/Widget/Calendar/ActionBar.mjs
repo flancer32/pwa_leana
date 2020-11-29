@@ -18,11 +18,6 @@ export default function Fl32_Leana_Dashboard_Widget_Calendar_ActionBar(spec) {
 
     return {
         template,
-        data() {
-            return {
-                boo: 'ret'
-            };
-        },
         components: {
             actionBar
         },

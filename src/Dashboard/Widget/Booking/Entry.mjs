@@ -68,18 +68,17 @@ export default function Fl32_Leana_Dashboard_Widget_Booking_Entry() {
                 }
             },
             /**
-             *
+             * Place selected task into Vuex store and open overlay with Task Preview component.
              * @param {Fl32_Leana_Dashboard_Widget_Booking_Api_Task} task
              */
             overlay(task) {
-                // const ctx = app._context;
-                // const compOverlay = ctx.components['appOverlay'];
-                // compOverlay.methods.show();
+                this.setTaskSelected(task.taskData);
                 this.setOverlay({name: 'taskPreview', params: task.taskData});
             },
-            ...mapMutations('app', [
-                'setOverlay'
-            ]),
+            ...mapMutations({
+                setOverlay: 'app/setOverlay',
+                setTaskSelected: 'calendar/setTaskSelected',
+            }),
         },
     };
 }

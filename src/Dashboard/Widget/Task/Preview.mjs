@@ -13,6 +13,7 @@ i18next.addResources('ru', 'taskPreview', {
 
 const template = `
 <div class="">
+    <actions></actions>
     <h1>{{$t('taskPreview:task')}} {{ params.id }}</h1>
     <form class="preview" onsubmit="return false">
         <div class="row">
@@ -46,12 +47,16 @@ const template = `
  * Widget to preview task details in dashboard overlay.
  */
 export default function Fl32_Leana_Dashboard_Widget_Task_Preview(spec) {
-    const Fl32_Leana_Dashboard_Widget_Api_Task = spec['Fl32_Leana_Dashboard_Widget_Api_Task#'];
+    const actions = spec.Fl32_Leana_Dashboard_Widget_Task_Preview_Actions$$;    // new instance
+    const Task = spec['Fl32_Leana_Dashboard_Widget_Api_Task#'];
     return {
         template,
+        components: {
+            actions
+        },
         props: {
             /** @type {Fl32_Leana_Dashboard_Widget_Api_Task} */
-            params: new Fl32_Leana_Dashboard_Widget_Api_Task()
+            params: new Task()
         },
         computed: {
             customer() {
@@ -77,9 +82,11 @@ export default function Fl32_Leana_Dashboard_Widget_Task_Preview(spec) {
             actionClose() {
                 this.setOverlay({name: null, params: {}});
             },
-            ...mapMutations('app', [
-                'setOverlay'
-            ]),
+            ...mapMutations({
+                resetOverlay: 'app/resetOverlay',
+                setOverlay: 'app/setOverlay',
+                setTaskSelected: 'calendar/setTaskSelected',
+            }),
         }
     };
 }
