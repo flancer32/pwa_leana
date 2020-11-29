@@ -25,7 +25,7 @@ export default function Fl32_Leana_Dashboard_Widget_Booking(spec) {
     const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
     /** @type {Fl32_Leana_Dashboard_Widget_Booking_Entry} */
     const bookingEntry = spec.Fl32_Leana_Dashboard_Widget_Booking_Entry$;
-    const EntryUi = spec['Fl32_Leana_Dashboard_Widget_Booking_Api_Entry#'];
+    const EntryUi = spec['Fl32_Leana_Dashboard_Widget_Booking_Api#Entry'];
     const Swipe = spec['Fl32_Leana_Dashboard_Util_Swipe#'];
     return {
         template,

@@ -29,7 +29,7 @@ export default function Fl32_Leana_Dashboard_Route_Calendar(spec) {
     const EmployeeUi = spec['Fl32_Leana_Dashboard_Widget_Api_Employee#'];
     const ServiceUi = spec['Fl32_Leana_Dashboard_Widget_Api_Service#'];
     const TaskUi = spec['Fl32_Leana_Dashboard_Widget_Api_Task#'];
-    const TaskWidget = spec['Fl32_Leana_Dashboard_Widget_Booking_Api_Task#'];
+    const TaskWidget = spec['Fl32_Leana_Dashboard_Widget_Booking_Api#Task'];
 
     return {
         template,
