@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Dashboard for Leana Hairdresser Salon.">
-    <title>Leana Dashboard</title>
+    <title>Leana Desk</title>
     <script>
         async function bootstrap() {
 
@@ -86,9 +86,37 @@
             }
         }
 
-        self.addEventListener("load", async () => {
-            await bootstrap();
-        });
+        if ("serviceWorker" in navigator) { // if browser supports service workers
+            // ... then add event handler to run script after window will be loaded
+            // (https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event)
+            self.addEventListener("load", async () => {
+                const container = navigator.serviceWorker;
+                if (container.controller === null) {
+                    // ... to load "sw.js" script and register service worker in navigator
+                    try {
+                        const reg = await container.register("sw.js");
+                        if (reg.active) {
+                            console.log("SW is registered and is active.", reg);
+                            await bootstrap();
+                        } else {
+                            console.log("SW is registered but is not activated yet.", reg);
+                            // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
+                            container.addEventListener("controllerchange", async () => {
+                                // SW just installed (page's first load).
+                                await bootstrap();
+                            });
+                        }
+                    } catch (e) {
+                        console.error("SW registration is failed: " + e + "\n" + e.stack)
+                    }
+                } else {
+                    // SW already installed before (repeated loading of the page).
+                    console.log("SW is already running for this app.");
+                    await bootstrap();
+                }
+
+            });
+        }
     </script>
 </head>
 <body>

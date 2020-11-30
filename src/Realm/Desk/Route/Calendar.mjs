@@ -39,7 +39,7 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
         },
         data: function () {
             return {
-                /** @type {Fl32_Leana_Shared_Api_Route_Dashboard_Calendar_Get_Response} */
+                /** @type {Fl32_Leana_Shared_Api_Route_Desk_Calendar_Get_Response} */
                 calendarData: {},
                 /** @type {Object.<string,Object<number, Fl32_Leana_Realm_Desk_Widget_Booking_Api_Task>>} */
                 bookedTasks: {},
@@ -77,7 +77,7 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
              * @private
              */
             async function _loadData() {
-                const res = await fetch('../api/desktop/calendar/get', {
+                const res = await fetch('../api/desk/calendar/get', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -88,15 +88,15 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
 
             /**
              * Convert API data to UI data.
-             * @param {Fl32_Leana_Shared_Api_Route_Dashboard_Calendar_Get_Response} data
+             * @param {Fl32_Leana_Shared_Api_Route_Desk_Calendar_Get_Response} data
              * @return {Object.<string, Object.<number, Fl32_Leana_Realm_Desk_Widget_Booking_Api_Task>>} {'YYYYMMDD':{id:{TaskUI}}}
              */
             function _prepareBookedTasks(data) {
                 /**
                  * Convert data from Backend API fromat to UI format.
                  *
-                 * @param {Fl32_Leana_Shared_Api_Data_Dashboard_Task} taskApi
-                 * @param {Fl32_Leana_Shared_Api_Data_Dashboard_Employee} employeeApi
+                 * @param {Fl32_Leana_Shared_Api_Data_Desk_Task} taskApi
+                 * @param {Fl32_Leana_Shared_Api_Data_Desk_Employee} employeeApi
                  * @param {Fl32_Leana_Shared_Api_Data_Service} serviceApi
                  * @param {number} duration
                  * @return {Fl32_Leana_Realm_Desk_Widget_Api_Task}
@@ -131,9 +131,9 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
                 const result = {};
                 for (const taskId in data.tasks) {
                     // convert Backend API data to UI data
-                    /** @type {Fl32_Leana_Shared_Api_Data_Dashboard_Task} */
+                    /** @type {Fl32_Leana_Shared_Api_Data_Desk_Task} */
                     const taskApi = data.tasks[taskId];
-                    /** @type {Fl32_Leana_Shared_Api_Data_Dashboard_Employee} */
+                    /** @type {Fl32_Leana_Shared_Api_Data_Desk_Employee} */
                     const employeeApi = data.employees[taskApi.employeeRef];
                     /** @type {Fl32_Leana_Shared_Api_Data_Service} */
                     const serviceApi = data.services[taskApi.serviceRef];

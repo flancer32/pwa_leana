@@ -1,7 +1,7 @@
 /**
  * Get calendar state for desktop.
  */
-export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
+export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
 
     constructor(spec) {
         /** @type {TeqFw_Di_Container} */
@@ -26,7 +26,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
             /**
              * Get employees entries for dashboard calendar.
              * @param trx
-             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Dashboard_Employee>>}
+             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Desk_Employee>>}
              * @private
              */
             async function _getEmployees(trx) {
@@ -35,7 +35,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Employee$$');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Desk_Employee$$');
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -62,7 +62,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
             /**
              *
              * @param trx
-             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Dashboard_Task>>}
+             * @returns {Promise<Object.<string, Fl32_Leana_Shared_Api_Data_Desk_Task>>}
              * @private
              */
             async function _getTasks(trx) {
@@ -91,7 +91,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
                 // COMPOSE RESULTS
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Dashboard_Task$$');
+                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Desk_Task$$');
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -99,7 +99,7 @@ export default class Fl32_Leana_Back_Route_Dashboard_Calendar_Get {
 
             // MAIN FUNCTIONALITY
             /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
-            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Dashboard_Calendar_Get_Response$$');
+            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Desk_Calendar_Get_Response$$');
             const trx = await _db.startTransaction();
             try {
                 const employees = await _getEmployees(trx);

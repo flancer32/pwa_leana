@@ -1,7 +1,7 @@
 /**
  * Task data for dashboard.
  */
-export default class Fl32_Leana_Shared_Api_Data_Dashboard_Task {
+export default class Fl32_Leana_Shared_Api_Data_Desk_Task {
     /**
      * Internal id.
      *
