@@ -1,24 +1,23 @@
 /**
- * Service worker main script.
+ * Service worker for default frontend realm.
  *
  * @type {ServiceWorkerGlobalScope} self
- * @type {Fl32_First_Front_Sw.config} self.config see 'pub/js/sw/config.hard.js'
  */
 'use strict';
 
-const API_STATIC_FILES = '/api/sw/init/files_to_cache';
-const CACHE_STATIC = 'static-cache-v1';
-const ROUTE_API = 'api';
-const ROUTE_STATIC = 'static';
-const ROUTE_WORKER = 'sw';
+const API_STATIC_FILES = '/api/sw/init/files_to_cache'; // route to get list of files to cache on startup
+const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
+const ROUTE_API = 'api';            // marker for API routes (don't cache)
+const ROUTE_STATIC = 'static';      // marker for static resources (to be cached)
+const ROUTE_WORKER = 'sw';          // marker for Service Worker commands
 
 /**
- * Service worker flag to use cache to process fetch requests.
+ * Service worker flag to use cache to process fetch requests (disabled by default).
  *
  * @type {boolean}
  * @private
  */
-let _cacheEnabled = true;
+let _cacheEnabled = false;
 
 /**
  * Handler for 'install' event (cache static resources).
@@ -96,28 +95,44 @@ function hndlEventFetch(evt) {
     }
 
     /**
-     * Processor for service worker command.
+     * Processor for service worker command:
+     *  - /cache/clean
+     *  - /cache/disable
+     *  - /cache/enable
+     *  - /cache/status
      *
      * @param {FetchEvent} evt
      */
     async function processWorkerCommand(evt) {
-        const url = evt.request.url;
-        if (url.includes('/cache/disable')) {
-            _cacheEnabled = false;
-            console.log('[SW] Cache is disabled.');
-        } else if (url.includes('/cache/enable')) {
-            _cacheEnabled = true;
-            console.log('[SW] Cache is enabled.');
-        } else if (url.includes('/cache/clean')) {
-            await self.caches.delete(CACHE_STATIC);
-            console.log('[SW] Cache is cleaned.');
+        try {
+            const url = evt.request.url;
+            const dataOut = {};
+            if (url.includes('/cache/clean')) {
+                await self.caches.delete(CACHE_STATIC);
+                dataOut.message = 'Cache is cleaned.';
+            } else if (url.includes('/cache/disable')) {
+                _cacheEnabled = false;
+                dataOut.message = 'Cache is disabled.';
+            } else if (url.includes('/cache/enable')) {
+                _cacheEnabled = true;
+                dataOut.message = 'Cache is enabled.';
+            } else if (url.includes('/cache/status')) {
+                const status = (_cacheEnabled) ? 'enabled' : 'disabled';
+                dataOut.message = `Cache status: ${status}`;
+            } else {
+                dataOut.message = 'Unknown command.';
+            }
+            return new Response(JSON.stringify({data: dataOut}), {
+                headers: {'Content-Type': 'application/json'}
+            });
+        } catch (e) {
+            return new Response(JSON.stringify({error: e}), {
+                headers: {'Content-Type': 'application/json'}
+            });
         }
-        return new Response(JSON.stringify({status: 'OK'}), {
-            headers: {'Content-Type': 'application/json'}
-        });
     }
 
-    const url = evt.request.url;
+    // const url = evt.request.url;
     const routeType = getRouteType(evt.request);
     if (routeType === ROUTE_API) {
         // just pass the request to server
@@ -127,7 +142,7 @@ function hndlEventFetch(evt) {
     } else {
         // get static resource by default
         if (_cacheEnabled) {
-            console.log('[SW] Fetch \'%s\' as \'%s\' route.', url, routeType);
+            // console.log('[SW] Fetch \'%s\' as \'%s\' route.', url, routeType);
             evt.respondWith(getFromCacheOrFetchAndCache());
         } else {
             // return nothing to process fetch request natively (by browser)
