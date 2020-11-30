@@ -6,7 +6,7 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_Route_Services() {
+export default function Fl32_Leana_Realm_Pub_Route_Services() {
 
     return {
         template,

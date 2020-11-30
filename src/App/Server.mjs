@@ -44,6 +44,8 @@ export default class Fl32_Leana_App_Server {
         this._server.use(me._serverLog.handle);
         // API routes
         await this.addApiRoute('/api/app/config/get', 'Fl32_Leana_Back_Route_App_Config_Get$');
+        await this.addApiRoute('/api/app/sw/files_to_cache/admin', 'Fl32_Leana_Back_Route_App_Sw_FilesToCache_Pub$');
+        await this.addApiRoute('/api/app/sw/files_to_cache/pub', 'Fl32_Leana_Back_Route_App_Sw_FilesToCache_Pub$');
         await this.addApiRoute('/api/book/remove', 'Fl32_Leana_Back_Route_Book_Remove$');
         await this.addApiRoute('/api/book/save', 'Fl32_Leana_Back_Route_Book_Save$');
         await this.addApiRoute('/api/book/state/get', 'Fl32_Leana_Back_Route_Book_State_Get$');
@@ -58,8 +60,9 @@ export default class Fl32_Leana_App_Server {
         this._server.all('*', function (req, res) {
             me._logger.debug(`${req.method} ${req.url}`);
             // COMPOSE RESULT
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({response: 'default route'}));
+            res.status(404);
+            res.setHeader('Content-Type', 'text/plain');
+            res.end(`The route '${req.url}' is not found on the server.`);
         });
     }
 

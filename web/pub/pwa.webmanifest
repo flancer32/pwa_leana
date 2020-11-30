@@ -1,14 +1,14 @@
 {
   "name": "Leana Frizētava",
   "short_name": "Leana",
-  "theme_color": "#D3E987",
-  "background_color": "#D3E987",
+  "theme_color": "#C1433B",
+  "background_color": "#C1433B",
   "display": "minimal-ui",
   "scope": "/",
   "start_url": "/",
   "icons": [
       {
-        "src": "img/favicon_src.png",
+        "src": "../img/favicon_src.png",
         "sizes": "225x225",
         "type": "image/png"
       }

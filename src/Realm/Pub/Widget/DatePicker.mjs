@@ -16,7 +16,7 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_Widget_DatePicker() {
+export default function Fl32_Leana_Realm_Pub_Widget_DatePicker() {
 
     // picker container should be a simple object (not vued as prop or data)
     let picker;

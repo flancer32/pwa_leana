@@ -143,13 +143,13 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_Route_Book(spec) {
+export default function Fl32_Leana_Realm_Pub_Route_Book(spec) {
     /** @type {TeqFw_Di_Container} */
     const container = spec.TeqFw_Di_Container$;
-    /** @type {Fl32_Leana_Front_Widget_DatePicker} */
-    const datePicker = spec.Fl32_Leana_Front_Widget_DatePicker$;
-    /** @type {Fl32_Leana_Front_Widget_TimePicker} */
-    const timePicker = spec.Fl32_Leana_Front_Widget_TimePicker$;
+    /** @type {Fl32_Leana_Realm_Pub_Widget_DatePicker} */
+    const datePicker = spec.Fl32_Leana_Realm_Pub_Widget_DatePicker$;
+    /** @type {Fl32_Leana_Realm_Pub_Widget_TimePicker} */
+    const timePicker = spec.Fl32_Leana_Realm_Pub_Widget_TimePicker$;
     /** @type {Fl32_Leana_Shared_Util_DateTime} */
     const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$;
     /** @type {Fl32_Leana_Shared_Util_Mix} */
@@ -326,7 +326,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
                 data.name = this.name;
                 data.phone = this.phone;
                 data.serviceId = this.service;
-                const res = await fetch('./api/book/save', {
+                const res = await fetch('../api/book/save', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -349,7 +349,7 @@ export default function Fl32_Leana_Front_Route_Book(spec) {
         async mounted() {
             // DEFINE INNER FUNCTIONS
             async function _loadData() {
-                const res = await fetch('./api/book/state/get', {
+                const res = await fetch('../api/book/state/get', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

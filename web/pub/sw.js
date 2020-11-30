@@ -5,8 +5,8 @@
  */
 'use strict';
 
-const API_STATIC_FILES = '/api/sw/init/files_to_cache'; // route to get list of files to cache on startup
-const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
+const API_STATIC_FILES = '/api/app/sw/files_to_cache/pub'; // route to get list of files to cache on startup
+const CACHE_STATIC = 'pub-cache-v1'; // store name to cache static resources
 const ROUTE_API = 'api';            // marker for API routes (don't cache)
 const ROUTE_STATIC = 'static';      // marker for static resources (to be cached)
 const ROUTE_WORKER = 'sw';          // marker for Service Worker commands
@@ -29,15 +29,27 @@ function hndlEventInstall(evt) {
      * @returns {Promise<void>}
      */
     async function cacheStaticFiles() {
-        // Get list of static files
-        const req = new Request(API_STATIC_FILES);
-        const resp = await self.fetch(req);
-        const json = await resp.json();
-        const files = json.urls;
-        if (Array.isArray(files)) {
-            // ... and load static files to the local cache
-            const cacheStat = await caches.open(CACHE_STATIC);
-            await cacheStat.addAll(files);
+        try {
+            // Get list of static files
+            const req = new Request(API_STATIC_FILES);
+            const resp = await self.fetch(req);
+            const json = await resp.json();
+            const files = json.urls;
+            if (Array.isArray(files)) {
+                // ... and load static files to the local cache
+                const cacheStat = await caches.open(CACHE_STATIC);
+                // await cacheStat.addAll(files);
+                await Promise.all(
+                    files.map(function (url) {
+                        return cacheStat.add(url).catch(function (reason) {
+                            console.log(`'${url}' failed: ${String(reason)}`);
+                        });
+                    })
+                );
+            }
+        } catch (e) {
+            console.log('[SW] install error: ');
+            console.dir(e);
         }
     }
 
@@ -89,7 +101,7 @@ function hndlEventFetch(evt) {
             await cache.put(evt.request, resp.clone());
             return resp;
         } catch (e) {
-            console.log('[SW] error:');
+            console.log('[SW] error: ');
             console.dir(e);
         }
     }

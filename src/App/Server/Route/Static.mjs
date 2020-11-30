@@ -21,63 +21,33 @@ marked.setOptions({
 
 // MODULE'S EXPORT
 export default class Fl32_Leana_App_Server_Route_Static {
-    /** @type {Fl32_Leana_App_Config} */
-    _config
-    /** @type {Fl32_Leana_App_Logger} */
-    _logger
-
 
     constructor(spec) {
-        this._config = spec.Fl32_Leana_App_Config$;
-        this._logger = spec.Fl32_Leana_App_Logger$;
+        // dependencies
+        const config = spec.Fl32_Leana_App_Config$;
+        const pathMap = spec['Fl32_Leana_App_Server_Route_Static_PathMap#'];
 
-        const pathRoot = this._config.get('/path/root');
+        // instance's internal vars
+        const pathRoot = config.get('/path/root');
         const pathWeb = $path.join(pathRoot, 'src/web');
 
+        // request handler
         this.handle = async function (req, res, next) {
             /**
-             * Compose path to resource:
-             *  - @teqfw/di - DI container
-             *  - web/mod/leana - modules's static resources
-             *  - src/mod/leana - module's JS resources
+             * Compose absolute path to requested resource:
+             *  - /node/vue/vue.global.js => /node_modules/vue/dist/vue.global.js
+             *  - /favicon.ico => /src/web/favicon.ico
              *
              * @param {string} url
              * @returns {string}
              */
             function getPath(url) {
                 let result;
-                if (url.startsWith('/src/@teqfw/di/')) {
-                    const tail = url.replace('/src/@teqfw/di/', '/node_modules/@teqfw/di/src/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/static/mod/leana/')) {
-                    const tail = url.replace('/static/mod/leana/', '/src/web/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/src/mod/leana/')) {
-                    const tail = url.replace('/src/mod/leana/', '/src/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/vue/')) {
-                    const tail = url.replace('/node/vue/', '/node_modules/vue/dist/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/vue-router/')) {
-                    const tail = url.replace('/node/vue-router/', '/node_modules/vue-router/dist/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/vuex/')) {
-                    const tail = url.replace('/node/vuex/', '/node_modules/vuex/dist/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/i18next/')) {
-                    const tail = url.replace('/node/i18next/', '/node_modules/i18next/dist/umd/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/i18next-bld/')) {
-                    const tail = url.replace('/node/i18next-bld/', '/node_modules/i18next-browser-languagedetector/dist/umd/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/vuejs-datepicker/')) {
-                    const tail = url.replace('/node/vuejs-datepicker/', '/node_modules/vuejs-datepicker/dist/');
-                    result = $path.join(pathRoot, tail);
-                } else if (url.startsWith('/node/js-datepicker/')) {
-                    const tail = url.replace('/node/js-datepicker/', '/node_modules/js-datepicker/dist/');
-                    result = $path.join(pathRoot, tail);
-                } else {
+                const mapped = pathMap(url);
+                if (url === mapped) {   // URL w/o mapping should be resolved relative to web root
                     result = $path.join(pathWeb, url);
+                } else {    // URL w mapping should be resolved relative to project root
+                    result = $path.join(pathRoot, mapped);
                 }
                 return result;
             }

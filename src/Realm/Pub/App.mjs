@@ -24,12 +24,12 @@ const template = `
 </div>
 `;
 
-export default function Fl32_Leana_Front_App(spec) {
-    const appNavBar = spec.Fl32_Leana_Front_App_NavBar$;
-    const routeAbout = spec.Fl32_Leana_Front_Route_About$;
-    const routeBook = spec.Fl32_Leana_Front_Route_Book$;
-    const routeContacts = spec.Fl32_Leana_Front_Route_Contacts$;
-    const routeServices = spec.Fl32_Leana_Front_Route_Services$;
+export default function Fl32_Leana_Realm_Pub_App(spec) {
+    const appNavBar = spec.Fl32_Leana_Realm_Pub_App_NavBar$;
+    const routeAbout = spec.Fl32_Leana_Realm_Pub_Route_About$;
+    const routeBook = spec.Fl32_Leana_Realm_Pub_Route_Book$;
+    const routeContacts = spec.Fl32_Leana_Realm_Pub_Route_Contacts$;
+    const routeServices = spec.Fl32_Leana_Realm_Pub_Route_Services$;
 
     router.addRoute({path: '/', component: routeAbout});
     router.addRoute({path: '/about', component: routeAbout});
