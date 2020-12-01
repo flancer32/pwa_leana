@@ -8,18 +8,20 @@ const template = `
 `;
 
 export default function Fl32_Leana_Realm_Desk_Widget_Calendar_ActionBar(spec) {
-    /** @type {Fl32_Leana_Realm_Desk_Widget_Action_Bar} */
-    const actionBar = spec.Fl32_Leana_Realm_Desk_Widget_Action_Bar$$;   // new instance
     const Bar = spec['Fl32_Leana_Realm_Desk_Widget_Action_Api#Bar'];
     const Item = spec['Fl32_Leana_Realm_Desk_Widget_Action_Api#Item'];
-    const calendarSetDate = spec.Fl32_Leana_Realm_Desk_Widget_Calendar_SetDate$$;
+    const wgActionBar = spec.Fl32_Leana_Realm_Desk_Widget_Action_Bar$;    // singleton
+    const wgSetDate = spec.Fl32_Leana_Realm_Desk_Widget_Calendar_SetDate$;    // singleton
+    const wgTaskEdit = spec.Fl32_Leana_Realm_Desk_Widget_Task_Edit$;    // singleton
 
-    app.component('calendarSetDate', calendarSetDate);
+    // add globally used components (accessible from other components)
+    app.component('calendarSetDate', wgSetDate);
+    app.component('taskEdit', wgTaskEdit);
 
     return {
         template,
         components: {
-            actionBar
+            actionBar: wgActionBar
         },
         computed: {
             actions() {
@@ -44,7 +46,7 @@ export default function Fl32_Leana_Realm_Desk_Widget_Calendar_ActionBar(spec) {
         },
         methods: {
             actionAddTask() {
-                console.log('add task should be here...');
+                this.setOverlay({name: 'taskEdit', params: {}});
             },
             actionSetDate() {
                 this.setOverlay({name: 'calendarSetDate', params: {}});

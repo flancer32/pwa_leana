@@ -28,6 +28,7 @@ export default function Fl32_Leana_Realm_Desk_App(spec) {
     const compLayoutStatusBar = spec.Fl32_Leana_Realm_Desk_Layout_StatusBar$;
     const compRouteCalendar = spec.Fl32_Leana_Realm_Desk_Route_Calendar$;
     const compRouteClients = spec.Fl32_Leana_Realm_Desk_Route_Clients$;
+    const compRouteDev = spec.Fl32_Leana_Realm_Desk_Route_Dev$;
     const compRouteEmployees = spec.Fl32_Leana_Realm_Desk_Route_Employees$;
     const compRouteServices = spec.Fl32_Leana_Realm_Desk_Route_Services$;
     const compWidgetTaskPreview = spec.Fl32_Leana_Realm_Desk_Widget_Task_Preview$;
@@ -37,6 +38,7 @@ export default function Fl32_Leana_Realm_Desk_App(spec) {
     // router.addRoute({path: '/', component: routeAbout});
     router.addRoute({path: '/calendar', component: compRouteCalendar});
     router.addRoute({path: '/clients', component: compRouteClients});
+    router.addRoute({path: '/dev', component: compRouteDev});
     router.addRoute({path: '/employees', component: compRouteEmployees});
     router.addRoute({path: '/services', component: compRouteServices});
 

@@ -9,7 +9,6 @@ i18next.addResources('ru', 'calendarSetDate', {
 
 const template = `
 <div class="calendar_date_picker">
-    <div><button v-on:click="save">{{$t('calendarSetDate:actionSave')}}</button></div>
     <div title="date picker widget">
         <input type="text" name="datePicker" disabled>
     </div>
