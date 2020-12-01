@@ -1,6 +1,6 @@
 const template = `
 <div class="action_bar_item">
-    <div v-on:click="item.func">
+    <div v-on:click="onClick">
         <i :class="item.icon + ' fa-2x filter-top-fg'" :title="item.title"></i>  
     </div>
 </div>
@@ -21,6 +21,12 @@ export default function Fl32_Leana_Realm_Desk_Widget_Action_Item(spec) {
                 return this.params;
             }
         },
-        methods: {},
+        methods: {
+            onClick() {
+                if (!this.item.disabled) {
+                    this.item.func();
+                }
+            }
+        },
     };
 }

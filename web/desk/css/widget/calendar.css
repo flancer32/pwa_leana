@@ -13,3 +13,12 @@
 .calendar_date_picker INPUT {
     min-width: 250px;
 }
+
+.calendar_current_date {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    color: var(--color-bright);
+    margin-top: var(--table-gap);
+    margin-bottom: var(--table-gap);
+}

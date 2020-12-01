@@ -8,7 +8,7 @@ i18next.addResources('ru', 'route-about', {});
 const template = `
 <div>
     <action-bar></action-bar>
-    <div style="text-align: center">{{dateFormatted}}</div>
+    <div class="calendar_current_date">{{dateFormatted}}</div>
     <booking 
         :tasks="bookedTasks"
         :begin="'0900'"
@@ -51,9 +51,9 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
                 if (typeof this.dateSelected.toLocaleDateString === 'function') {
                     const locale = i18next.language;
                     result = this.dateSelected.toLocaleDateString(locale, {
-                        weekday: 'long',
+                        weekday: 'short',
                         year: 'numeric',
-                        month: 'long',
+                        month: 'short',
                         day: 'numeric'
                     });
                 }

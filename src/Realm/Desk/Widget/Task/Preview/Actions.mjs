@@ -32,10 +32,16 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview_Actions(spec) 
                 remove.func = this.actionRemove;
                 remove.icon = 'far fa-calendar-minus';
                 remove.title = 'removeTitle';
+                /** @type {Fl32_Leana_Realm_Desk_Widget_Action_Api_Item} */
+                const save = new Item();
+                save.code = 'save';
+                save.func = this.actionSave;
+                save.icon = 'fas fa-cloud-upload-alt';
+                save.title = 'saveTitle';
                 // compose result
                 /** @type {Fl32_Leana_Realm_Desk_Widget_Action_Api_Bar} */
                 const result = new Bar();
-                result.items = {remove};
+                result.items = {remove, save};
                 return result;
             },
             ...mapState({
@@ -75,6 +81,9 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview_Actions(spec) 
                 }
 
                 this.setOverlay({name: 'popupYesNo', params: {onYes, onNo}});
+            },
+            actionSave() {
+                console.log('Save action is fired.');
             },
             ...mapMutations('app', [
                 'setOverlay',

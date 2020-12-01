@@ -47,20 +47,21 @@ export default function Fl32_Leana_Realm_Desk_Widget_Calendar_SetDate(spec) {
                 // https://github.com/qodesmith/datepicker
                 if (datePicker && datePicker.remove) datePicker.remove();
                 // prepare date picker configuration options
-                const maxDate = utilDate.forwardDate(cfgConst.calendar.maxDate);
-                const minDate = utilDate.forwardDate(cfgConst.calendar.minDate);
+                // const maxDate = utilDate.forwardDate(cfgConst.calendar.maxDate);
+                // const minDate = utilDate.forwardDate(cfgConst.calendar.minDate);
                 // create calendar
                 datePicker = self.datepicker('.calendar_date_picker INPUT', {
                     alwaysShow: true,
                     dateSelected: this.dateSelected,
                     disabledDates: this.datesDisabled,
                     disableYearOverlay: true,
-                    maxDate,
-                    minDate,
+                    // maxDate,
+                    // minDate,
                     showAllDates: false,
                     startDay: 1,
                     onSelect: (inst) => {
                         this.dateSelected = inst.dateSelected;
+                        this.save();
                     }
                 });
             },

@@ -1,14 +1,14 @@
+const i18next = self.teqfw.i18next;
 const mapMutations = self.teqfw.lib.Vuex.mapMutations;
 
-const i18next = self.teqfw.i18next;
 i18next.addResources('lv', 'taskPreview', {});
 i18next.addResources('ru', 'taskPreview', {
-    actionClose: 'Закрыть',
-    actionEdit: 'Изменить',
     customer: 'Клиент',
+    date: 'Дата',
     email: 'Email',
     phone: 'Телефон',
     task: 'Задача',
+    time: 'Время',
 });
 
 const template = `
@@ -21,7 +21,7 @@ const template = `
                 <span>{{ $t('taskPreview:customer') }}:</span>
             </div>
             <div class="field">
-                <span>{{ customer.name }}:</span>
+                <span>{{ customer.name }}</span>
             </div>
         </div>
         <div class="row" v-show="customer.email">
@@ -38,6 +38,24 @@ const template = `
             </div>
             <div class="field">
                 <a href="tel:{{ customer.phone }}">{{ customer.phone }}</a>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="label">
+                <span>{{ $t('taskPreview:date') }}:</span>
+            </div>
+            <div class="field editable">
+                <div class="value">{{ dateSchedule }}</div>
+                <div class="action"><button v-on:click="actionEditDate">...</button></div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="label">
+                <span>{{ $t('taskPreview:time') }}:</span>
+            </div>
+            <div class="field editable">
+                <div class="value">{{ timeSchedule }}</div>
+                <div class="action"><button v-on:click="actionEditTime">...</button></div>
             </div>
         </div>
     </form>
@@ -76,16 +94,49 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview(spec) {
                 } else {
                     return {};
                 }
+            },
+            dateSchedule() {
+                let result = '';
+                if (
+                    this.item.dateBook &&
+                    (typeof this.item.dateBook.toLocaleDateString === 'function')
+                ) {
+                    const locale = i18next.language;
+                    result = this.item.dateBook.toLocaleDateString(locale, {
+                        weekday: 'short',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                }
+                return result;
+            },
+            timeSchedule() {
+                let result = '';
+                if (
+                    this.item.dateBook &&
+                    (typeof this.item.dateBook.toLocaleDateString === 'function')
+                ) {
+                    const locale = i18next.language;
+                    result = this.item.dateBook.toLocaleTimeString(locale, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    });
+                }
+                return result;
             }
         },
         methods: {
             actionClose() {
-                this.setOverlay({name: null, params: {}});
+                this.resetOverlay();
+            },
+            actionEditDate() {
+                console.log(`Edit date for task #'${this.item.id}'.`);
+            },
+            actionEditTime() {
+                console.log(`Edit time for task #'${this.item.id}'.`);
             },
             ...mapMutations({
                 resetOverlay: 'app/resetOverlay',
-                setOverlay: 'app/setOverlay',
-                setTaskSelected: 'calendar/setTaskSelected',
             }),
         }
     };

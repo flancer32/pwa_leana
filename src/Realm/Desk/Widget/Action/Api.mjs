@@ -1,5 +1,6 @@
 class Fl32_Leana_Realm_Desk_Widget_Action_Api_Item {
     code
+    disabled
     func
     icon
     title
