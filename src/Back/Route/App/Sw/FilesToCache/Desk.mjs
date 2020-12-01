@@ -55,7 +55,7 @@ export default class Fl32_Leana_Back_Route_App_Sw_FilesToCache_Desk {
             }
 
             // define paths to scan
-            const pathWeb = $path.join(pathRoot, 'web/pub');
+            const pathWeb = $path.join(pathRoot, 'web/desk');
             const pathSrcRealm = $path.join(pathRoot, 'src/Realm/Desk');
             const pathSrcRealmShared = $path.join(pathRoot, 'src/Realm/Shared');
             const pathSrcShared = $path.join(pathRoot, 'src/Shared');

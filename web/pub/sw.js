@@ -75,12 +75,15 @@ function hndlEventFetch(evt) {
      * @returns {string}
      */
     function getRouteType(req) {
+        const API = /(.*)(\/api\/)(.*)/;
+        const API_APP = /(.*)(\/js\/app\/api\/)(.*)/;
+        const SW = /(.*)(\/sw\/)(.*)/;
         if (
-            req.url.match(/\/api\//) &&
-            !req.url.match(/\/js\/app\/api\//)
+            req.url.match(API) &&
+            !req.url.match(API_APP)
         ) {
             return ROUTE_API;
-        } else if (req.url.match(/\/sw\//)) {
+        } else if (req.url.match(SW)) {
             return ROUTE_WORKER;
         }
         return ROUTE_STATIC;
@@ -121,7 +124,8 @@ function hndlEventFetch(evt) {
             const dataOut = {};
             if (url.includes('/cache/clean')) {
                 await self.caches.delete(CACHE_STATIC);
-                dataOut.message = 'Cache is cleaned.';
+                _cacheEnabled = true;
+                dataOut.message = 'Cache is cleaned and enabled.';
             } else if (url.includes('/cache/disable')) {
                 _cacheEnabled = false;
                 dataOut.message = 'Cache is disabled.';
