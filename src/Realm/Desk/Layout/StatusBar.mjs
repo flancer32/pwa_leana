@@ -26,6 +26,9 @@ const template = `
     <div v-on:click="$router.push('/employees')">
         <i class="fas fa-user-tie fa-3x filter-top-fg" :title="$t('statusBar:employees')"></i> 
     </div>
+    <div v-on:click="$router.push('/dev')">
+        <i class="fas fa-tools fa-3x filter-top-fg" :title="$t('statusBar:dev')"></i> 
+    </div>
 </div>
 `;
 

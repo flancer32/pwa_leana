@@ -6,22 +6,44 @@ i18next.addResources('lv', 'route-about', {});
 i18next.addResources('ru', 'route-about', {});
 
 const template = `
-<div>
-    <task-edit :params="params"></task-edit>
+<div style="max-width: 100px; margin: auto; height: 300px;">
+<!--    <task-edit :params="params"></task-edit>-->
+<!--    <date-time-picker-->
+<!--        :params="params"-->
+<!--    ></date-time-picker>-->
+    <scroller-vertical
+        :items="getScrollerItems()"
+    ></scroller-vertical>
 </div>`;
 
 export default function Fl32_Leana_Realm_Desk_Route_Dev(spec) {
-    const wgTaskEdit = spec.Fl32_Leana_Realm_Desk_Widget_Task_Edit$;
+    // inject dependencies first
     const Task = spec['Fl32_Leana_Realm_Desk_Widget_Api_Task#'];
+    const wgDateTimePicker = spec.Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker$;
+    const wgScrollerVertical = spec.Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical$;
+    const wgTaskEdit = spec.Fl32_Leana_Realm_Desk_Widget_Task_Edit$;
+
+    // other activity
     return {
         template,
         components: {
-            taskEdit: wgTaskEdit
+            dateTimePicker: wgDateTimePicker,
+            scrollerVertical: wgScrollerVertical,
+            taskEdit: wgTaskEdit,
         },
         data: function () {
             return {
                 params: new Task()
             };
+        },
+        methods: {
+            getScrollerItems() {
+                const items = [];
+                for (let i = 2020; i <= 2030; i++) {
+                    items.push({key: i, value: i});
+                }
+                return items;
+            },
         },
     };
 }

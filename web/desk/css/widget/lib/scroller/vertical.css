@@ -1,0 +1,50 @@
+.teq_ui_scroller_v {
+    /*background-color: #c1433b;*/
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    --value-height: 40px;
+}
+
+.teq_ui_scroller_v_mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.teq_ui_scroller_v_mask {
+    background-image: linear-gradient(white 5%, transparent, white 95%);
+    height: 100%;
+    margin: auto;
+    z-index: 3;
+}
+
+.teq_ui_scroller_v_display {
+    height: var(--value-height);
+    margin: 0 auto;
+    position: absolute;
+    top: calc((100% - var(--value-height)) / 2);
+    width: 100%;
+    z-index: 3;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+
+.teq_ui_scroller_v_values {
+    position: absolute;
+    left: 0;
+    top: calc((100% - var(--value-height)) / 2);
+    width: 100%;
+}
+
+.teq_ui_scroller_v_value {
+    height: var(--value-height);
+    /*width: 100%;*/
+    text-align: center;
+    line-height: var(--value-height);
+    vertical-align: middle;
+    margin: auto;
+}
