@@ -4,6 +4,7 @@
 const CLASS_DISPLAY = 'teq_ui_scroller_v_display';
 const CLASS_ITEMS = 'teq_ui_scroller_v_values';
 const CSS_VAR_HEIGHT = '--value-height';
+const SCROLL_DURATION = 2000;   // animation duration (in msec.)
 
 const template = `
 <div class="teq_ui_scroller_v" >
@@ -29,6 +30,7 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
         props: {
             items: Array,  // [key, value] pairs
         },
+        emits: ['selected'],
         data: function () {
             return {
                 initTop: 0,             // initial position of the top of the values DIV on movements
@@ -68,7 +70,8 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
                 const fixedIdx = (tail >= (rowHeight / 2)) ? idx + 1 : idx;
                 const newTop = displayTop - (fixedIdx * rowHeight);
                 elValues.style.top = `${newTop}px`;
-                this.selectedKey = this.items[fixedIdx]['key'];
+                this.selectedKey = (this.items[fixedIdx]) ? this.items[fixedIdx]['key'] : null;
+                this.$emit('selected', this.selectedKey);
             },
 
             /**
@@ -87,8 +90,8 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
                     {top: `${targetTop}px`}
                 ], {
                     direction: 'alternate',
-                    duration: 2000,
-                    easing: 'ease-out',
+                    duration: SCROLL_DURATION,
+                    // easing: 'ease-out',
                     iterations: 1,
                 });
                 const anime = element.getAnimations()[0];
@@ -166,7 +169,7 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
                 elValues.getAnimations().forEach(anime => anime.cancel());
                 elValues.style.top = `${topPinned}px`;
                 // freeze position and save new top
-                // me.freezePosition();
+                me.freezePosition();
                 me.initTop = elValues.offsetTop;
             }
 
@@ -218,6 +221,9 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
             handler.setOnMove(onMove);      // move scroller with touch movement
             handler.setOnUp(onUp);          // swipe scroller upward
             handler.setOnDown(onDown);      // swipe scroller downward
+
+            // emit event for initial positions
+            this.freezePosition();
         },
     };
 }

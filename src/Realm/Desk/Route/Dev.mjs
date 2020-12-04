@@ -6,14 +6,18 @@ i18next.addResources('lv', 'route-about', {});
 i18next.addResources('ru', 'route-about', {});
 
 const template = `
-<div style="max-width: 100px; margin: auto; height: 300px;">
+<div style="min-width: 80%; margin: auto; height: 300px;">
 <!--    <task-edit :params="params"></task-edit>-->
-<!--    <date-time-picker-->
-<!--        :params="params"-->
-<!--    ></date-time-picker>-->
-    <scroller-vertical
-        :items="getScrollerItems()"
-    ></scroller-vertical>
+    <date-time-picker
+        :yearMin="2020"
+        :yearMax="2021"
+        :hourMin="9"
+        :hourMax="20"
+        :minsStep="30"
+    ></date-time-picker>
+<!--    <scroller-vertical-->
+<!--        :items="getScrollerItems()"-->
+<!--    ></scroller-vertical>-->
 </div>`;
 
 export default function Fl32_Leana_Realm_Desk_Route_Dev(spec) {
