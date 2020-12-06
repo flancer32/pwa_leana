@@ -5,20 +5,20 @@ const template = `
         <div v-on:click="emitDateSelected()"><i class="far fa-check-circle fa-2x filter-top-fg"></i></div>
     </div>
     <div class="teq_ui_dtp_content">
-        <scroller :items="getYears" @selected="yearIsSelected"></scroller>
+        <scroller :items="getYears" :initValue="getInitYear" @selected="yearIsSelected"></scroller>
         <div>/</div>
-        <scroller :items="getMonths" @selected="monthIsSelected"></scroller>
+        <scroller :items="getMonths" :initValue="getInitMonth" @selected="monthIsSelected"></scroller>
         <div>/</div>
-        <scroller :items="getDays" @selected="dayIsSelected"></scroller>
+        <scroller :items="getDays" :initValue="getInitDay" @selected="dayIsSelected"></scroller>
         <div>&nbsp;&nbsp;</div>
-        <scroller :items="getHours" @selected="hourIsSelected"></scroller>
+        <scroller :items="getHours" :initValue="getInitHour" @selected="hourIsSelected"></scroller>
         <div>:</div>
-        <scroller :items="getMins" @selected="minIsSelected"></scroller>
+        <scroller :items="getMins" :initValue="getInitMinute" @selected="minIsSelected"></scroller>
     </div>
 </div>
 `;
 
-export default function Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker(spec) {
+export default function Fl32_Leana_Realm_Shared_Widget_DateTimePicker(spec) {
     const wgScrollerV = spec.Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical$;    // singleton
 
     return {
@@ -27,11 +27,12 @@ export default function Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker(spec) {
             scroller: wgScrollerV
         },
         props: {
-            yearMin: Number,    // YYYY: 2020
-            yearMax: Number,    // YYYY: 9999
-            hourMin: Number,    // HH: 9
             hourMax: Number,    // HH: 20
+            hourMin: Number,    // HH: 9
+            initDate: Date,     // initial date-time
             minsStep: Number,   // 1, 5, 15, 30
+            yearMax: Number,    // YYYY: 9999
+            yearMin: Number,    // YYYY: 2020
         },
         emits: ['selected'],
         data: function () {
@@ -95,7 +96,32 @@ export default function Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker(spec) {
                 }
                 return result;
             },
-
+            /**
+             * Get initial date from properties or now.
+             * @return {Date}
+             */
+            getInitDate() {
+                if (this.initDate instanceof Date) {
+                    return this.initDate;
+                } else {
+                    return new Date();
+                }
+            },
+            getInitDay() {
+                return String(this.getInitDate.getDate());
+            },
+            getInitHour() {
+                return String(this.getInitDate.getHours());
+            },
+            getInitMinute() {
+                return String(this.getInitDate.getMinutes());
+            },
+            getInitMonth() {
+                return String(this.getInitDate.getMonth() + 1);
+            },
+            getInitYear() {
+                return String(this.getInitDate.getFullYear());
+            },
         },
         methods: {
             yearIsSelected(key) {
@@ -121,6 +147,9 @@ export default function Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker(spec) {
             }
         },
         mounted() {
+            if (this.initDate) {
+                // debugger
+            }
         }
     };
 }

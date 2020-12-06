@@ -28,7 +28,8 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
     return {
         template,
         props: {
-            items: Array,  // [key, value] pairs
+            items: Array,       // [key, value] pairs
+            initValue: String   // initial position of the scroller
         },
         emits: ['selected'],
         data: function () {
@@ -68,6 +69,23 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
                 const idx = Math.floor(deltaTops / rowHeight); // number of items
                 const tail = deltaTops % rowHeight;
                 const fixedIdx = (tail >= (rowHeight / 2)) ? idx + 1 : idx;
+                const newTop = displayTop - (fixedIdx * rowHeight);
+                elValues.style.top = `${newTop}px`;
+                this.selectedKey = (this.items[fixedIdx]) ? this.items[fixedIdx]['key'] : null;
+                this.$emit('selected', this.selectedKey);
+            },
+
+            /**
+             * Set scroller to initial position.
+             */
+            initPosition() {
+                const init = this.initValue;
+                const values = this.items;
+                const idx = values.findIndex((item) => String(item.key) === String(init));
+                const fixedIdx = (idx >= 0) ? idx : 0;
+                const elValues = this.$el.querySelector(`.${CLASS_ITEMS}`);
+                const displayTop = this.getDisplayTop();
+                const rowHeight = this.getItemHeight();
                 const newTop = displayTop - (fixedIdx * rowHeight);
                 elValues.style.top = `${newTop}px`;
                 this.selectedKey = (this.items[fixedIdx]) ? this.items[fixedIdx]['key'] : null;
@@ -223,7 +241,7 @@ export default function Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical(spec) {
             handler.setOnDown(onDown);      // swipe scroller downward
 
             // emit event for initial positions
-            this.freezePosition();
+            this.initPosition();
         },
     };
 }

@@ -1,9 +1,9 @@
 /* base rules according to SMACSS (http://smacss.com/) */
 HTML, BODY {
-    width: 100%;
+    box-sizing: border-box;
     height: 100%;
     margin: 0;
-    box-sizing: border-box;
+    width: 100%;
 }
 
 INPUT, TEXTAREA, BUTTON {

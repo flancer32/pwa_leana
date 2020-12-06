@@ -23,7 +23,7 @@ const template = `
 export default function Fl32_Leana_Realm_Desk_Route_Dev(spec) {
     // inject dependencies first
     const Task = spec['Fl32_Leana_Realm_Desk_Widget_Api_Task#'];
-    const wgDateTimePicker = spec.Fl32_Leana_Realm_Desk_Widget_Lib_DateTimePicker$;
+    const wgDateTimePicker = spec.Fl32_Leana_Realm_Shared_Widget_DateTimePicker$;
     const wgScrollerVertical = spec.Fl32_Leana_Realm_Shared_Widget_Scroller_Vertical$;
     const wgTaskEdit = spec.Fl32_Leana_Realm_Desk_Widget_Task_Edit$;
 

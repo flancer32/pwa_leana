@@ -56,8 +56,14 @@ export default function Fl32_Leana_Realm_Desk_Layout_Overlay() {
                     elOverlay.style.visibility = 'hidden';
                     elOverlay.style.opacity = '0';
                 }
+                const elBase = self.document.querySelector('#layer_base');
+                if (elBase) {
+                    elBase.style.overflow = 'scroll';
+                }
             },
             show() {
+                const elBase = self.document.querySelector('#layer_base');
+                elBase.style.overflow = 'hidden';
                 const elOverlay = self.document.querySelector('#layer_overlay');
                 elOverlay.style.visibility = 'visible';
                 elOverlay.style.opacity = '1';
