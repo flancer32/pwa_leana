@@ -11,13 +11,15 @@ import Container from '@teqfw/di';
 const {path: currentScript} = $url.parse(import.meta.url);
 const pathScript = $path.dirname(currentScript);
 const pathRoot = $path.join(pathScript, '..');
-const pathSrc = $path.join(pathRoot, 'node_modules/@flancer32/pwa_leana_app/src');
+const pathSrcLeana = $path.join(pathRoot, 'node_modules/@flancer32/pwa_leana_app/src');
+const pathSrcCoreApp = $path.join(pathRoot, 'node_modules/@teqfw/core-app/src');
 
 /* Create and setup DI container */
 /** @type {TeqFw_Di_Container} */
 const container = new Container();
 // add backend sources to map
-container.addSourceMapping('Fl32_Leana', pathSrc, true, 'mjs');
+container.addSourceMapping('TeqFw_Core_App', pathSrcCoreApp, true, 'mjs');
+container.addSourceMapping('Fl32_Leana', pathSrcLeana, true, 'mjs');
 // Manually create bootstrap configuration object (used in constructor of 'Fl32_Leana_App')
 /** @type {Fl32_Leana_App.Bootstrap} */
 const bootstrap = {version: '0.1.0', root: pathRoot};
