@@ -11,7 +11,7 @@ import Container from '@teqfw/di';
 const {path: currentScript} = $url.parse(import.meta.url);
 const pathScript = $path.dirname(currentScript);
 const pathRoot = $path.join(pathScript, '..');
-const pathSrc = $path.join(pathRoot, 'src');
+const pathSrc = $path.join(pathRoot, 'node_modules/@flancer32/pwa_leana_app/src');
 
 /* Create and setup DI container */
 /** @type {TeqFw_Di_Container} */

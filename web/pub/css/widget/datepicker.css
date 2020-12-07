@@ -1,7 +1,0 @@
-
-.datepicker {
-    /* define grid */
-    display: grid;
-    grid-template-columns: auto  1fr;
-    grid-gap: var(--grid-gap);
-}
