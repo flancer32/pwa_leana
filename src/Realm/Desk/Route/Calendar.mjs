@@ -108,6 +108,8 @@ export default function Fl32_Leana_Realm_Desk_Route_Calendar(spec) {
                     result.dateBook = utilDate.unformatDate(taskApi.bookedDate, taskApi.bookedBegin);
                     result.dateCreated = taskApi.dateCreated;
                     result.duration = duration;
+                    result.note = taskApi.note;
+                    result.lang = taskApi.lang;
                     /** @type {Fl32_Leana_Realm_Desk_Widget_Api_Customer} */
                     const customer = new CustomerUi();
                     customer.name = taskApi.customerName;

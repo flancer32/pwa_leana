@@ -1,5 +1,5 @@
 /**
- * Save single booking.
+ * Save single task.
  */
 export default class Fl32_Leana_Back_Route_Book_Save {
 
@@ -9,6 +9,7 @@ export default class Fl32_Leana_Back_Route_Book_Save {
         const _db = spec.Fl32_Leana_App_Db_Connector$;
         /** @type {Fl32_Leana_Back_Service_Book_Save} */
         const _srvSave = spec.Fl32_Leana_Back_Service_Book_Save$;
+        const ServiceRequest = spec['Fl32_Leana_Shared_Api_Route_Book_Save_Request#'];  // class
 
         // DEFINE THIS INSTANCE METHODS (NOT IN PROTOTYPE)
         /**
@@ -30,7 +31,8 @@ export default class Fl32_Leana_Back_Route_Book_Save {
 
             const trx = await _db.startTransaction();
             try {
-                await _srvSave.exec({trx, req: dataIn});
+                const req = Object.assign(new ServiceRequest(), dataIn);
+                await _srvSave.exec({trx, req});
                 trx.commit();
                 res.setHeader('Content-Type', 'application/json; charset=UTF-8');
                 res.end(JSON.stringify({data}));

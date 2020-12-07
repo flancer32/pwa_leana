@@ -15,7 +15,9 @@ i18next.addResources('ru', 'taskPreview', {
 
 const template = `
 <div class="">
-    <actions></actions>
+    <actions
+        @actionSave="onTaskSave"
+    ></actions>
 <!--    <h1>{{ $t('taskPreview:task') }} {{ params.id }}</h1>-->
     <h1>{{ params.customer.name }}</h1>
     <form class="preview" onsubmit="return false">
@@ -75,13 +77,7 @@ const template = `
                 <span>{{ $t('taskPreview:notes') }}:</span>
             </div>
             <div class="field">
-                <span>
-                    Проверка на сворачиваемость текста. Проверка на сворачиваемость текста. 
-                    Проверка на сворачиваемость текста. Проверка на сворачиваемость текста. 
-                    Проверка на сворачиваемость текста. Проверка на сворачиваемость текста. 
-                    Проверка на сворачиваемость текста. Проверка на сворачиваемость текста. 
-                    Проверка на сворачиваемость текста. Проверка на сворачиваемость текста. 
-                </span>
+                <span>{{item.note}}</span>
             </div>
         </div>
         <div class="controls dtp_widget">
@@ -92,6 +88,8 @@ const template = `
                 :hourMax="20"
                 :minsStep="15"
                 :initDate="item.dateBook"
+                @cancelled="onDtpCancelled"
+                @selected="onDtpSelected"
             ></date-time-picker>
         </div>
     </form>
@@ -104,6 +102,10 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview(spec) {
     const actions = spec.Fl32_Leana_Realm_Desk_Widget_Task_Preview_Actions$$;    // new instance
     const wgDateTimePicker = spec.Fl32_Leana_Realm_Shared_Widget_DateTimePicker$; // singleton
     const Task = spec['Fl32_Leana_Realm_Desk_Widget_Api_Task#'];    // class
+    const SaveRequest = spec['Fl32_Leana_Shared_Api_Route_Book_Save_Request#']; // class
+    /** @type {Fl32_Leana_Shared_Util_DateTime} */
+    const utilDate = spec.Fl32_Leana_Shared_Util_DateTime$; // singleton
+
     return {
         template,
         components: {
@@ -189,6 +191,47 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview(spec) {
                 console.log(`Edit date for task #'${this.item.id}'.`);
                 const elControl = this.$el.querySelector('.controls.dtp_widget');
                 elControl.style.visibility = 'visible';
+                elControl.style.opacity = 1;
+            },
+            onDtpCancelled() {
+                const elControl = this.$el.querySelector('.controls.dtp_widget');
+                elControl.style.visibility = 'hidden';
+                elControl.style.opacity = 0;
+            },
+            onDtpSelected(data) {
+                this.item.dateBook = data;
+                const elControl = this.$el.querySelector('.controls.dtp_widget');
+                elControl.style.visibility = 'hidden';
+                elControl.style.opacity = 0;
+            },
+            async onTaskSave() {
+                // get local variable with 'date' value
+                // const date = new Date(this.item.dateBook.getTime());
+                // const hm = utilDate.convertMinsToHrsMins(this.item.dateBook);
+                // const [hours, minutes] = hm.split(':');
+                // date.setHours(Number.parseInt(hours), Number.parseInt(minutes));
+                /** @type {Fl32_Leana_Shared_Api_Route_Book_Save_Request} */
+                const data = new SaveRequest();
+                data.id = this.item.id;
+                data.date = this.item.dateBook;
+                data.duration = this.item.duration;
+                data.email = this.item.customer.email;
+                data.masterId = this.employee.id;
+                data.name = this.customer.name;
+                data.phone = this.customer.phone;
+                data.serviceId = this.service.id;
+                data.note = this.item.note;
+                data.lang = this.item.lang;
+                const res = await fetch('../api/book/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({data})
+                });
+                const result = await res.json();
+                console.log('Saved: ' + JSON.stringify(result));
+                this.resetOverlay();
             },
             ...mapMutations({
                 resetOverlay: 'app/resetOverlay',

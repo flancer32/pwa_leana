@@ -25,6 +25,32 @@ export default class Fl32_Leana_Back_Service_Book_Save {
 
         // DEFINE INNER FUNCTIONS
 
+        async function addToDb() {
+            const date = me.#utilDate.formatDate(apiDate);
+            const hh = `${apiDate.getHours()}`.padStart(2, 0);
+            const mm = `${apiDate.getMinutes()}`.padStart(2, 0);
+            const from = `${hh}${mm}`;
+            const fromMin = me.#utilDate.convertDbHrsMinsToMins(from);
+            const toMin = fromMin + Number.parseInt(req.duration);
+            const to = me.#utilDate.convertMinsToDbHrsMins(toMin);
+            const customer = req.name ?? undefined;
+            const email = req.email ?? undefined;
+            const phone = req.phone ?? undefined;
+            const note = req.note ?? undefined;
+            const lang = req.lang ?? undefined;
+            // register ID for entity
+            const rs = await trx('book').insert({});
+            const bookId = rs[0];
+            // add details for new entity
+            await trx('book_detail').insert({
+                book_ref: bookId,
+                employee_ref: req.masterId,
+                service_ref: req.serviceId,
+                date, from, to, customer, email, phone, note, lang,
+            });
+            return bookId;
+        }
+
         async function saveToDb() {
             const date = me.#utilDate.formatDate(apiDate);
             const hh = `${apiDate.getHours()}`.padStart(2, 0);
@@ -36,17 +62,17 @@ export default class Fl32_Leana_Back_Service_Book_Save {
             const customer = req.name ?? undefined;
             const email = req.email ?? undefined;
             const phone = req.phone ?? undefined;
-            // register ID for entity
-            const rs = await trx('book').insert({});
-            const bookId = rs[0];
-            // add details for new entity
-            await trx('book_detail').insert({
-                book_ref: bookId,
-                employee_ref: req.masterId,
-                service_ref: req.serviceId,
-                date, from, to, customer, email, phone
-            });
-            return bookId;
+            const note = req.note ?? undefined;
+            const lang = req.lang ?? undefined;
+            // update details for existing entity
+            await trx('book_detail')
+                .update({
+                    employee_ref: req.masterId,
+                    service_ref: req.serviceId,
+                    date, from, to, customer, email, phone, note, lang,
+                })
+                .where({book_ref: req.id,});
+            return req.id;
         }
 
         async function getEmployeeName(employeeId) {
@@ -83,7 +109,12 @@ Service: ${service}
         }
 
         // MAIN FUNCTIONALITY
-        const bookId = await saveToDb();
+        if (typeof req.id === 'number') {
+            await saveToDb();
+        } else {
+            const bookId = await addToDb();
+        }
+
         const master = await getEmployeeName(req.masterId);
         const service = await getServiceName(req.serviceId);
         // await saveToGoogle(bookId, master, service);

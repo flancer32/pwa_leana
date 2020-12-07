@@ -1,8 +1,12 @@
 const template = `
 <div class="teq_ui_dtp">
     <div class="teq_ui_dtp_actions">
-        <div><i class="far fa-times-circle fa-2x filter-top-fg"></i></div>
-        <div v-on:click="emitDateSelected()"><i class="far fa-check-circle fa-2x filter-top-fg"></i></div>
+        <div v-on:click="actionCancel()">
+            <i class="far fa-times-circle fa-2x filter-top-fg"></i>
+        </div>
+        <div v-on:click="actionDateSelected()">
+            <i class="far fa-check-circle fa-2x filter-top-fg"></i>
+        </div>
     </div>
     <div class="teq_ui_dtp_content">
         <scroller :items="getYears" :initValue="getInitYear" @selected="yearIsSelected"></scroller>
@@ -34,7 +38,7 @@ export default function Fl32_Leana_Realm_Shared_Widget_DateTimePicker(spec) {
             yearMax: Number,    // YYYY: 9999
             yearMin: Number,    // YYYY: 2020
         },
-        emits: ['selected'],
+        emits: ['cancelled', 'selected'],
         data: function () {
             return {
                 scrolled: {
@@ -124,11 +128,14 @@ export default function Fl32_Leana_Realm_Shared_Widget_DateTimePicker(spec) {
             },
         },
         methods: {
-            yearIsSelected(key) {
-                this.scrolled.year = key;
+            actionCancel() {
+                this.$emit('cancelled');
             },
-            monthIsSelected(key) {
-                this.scrolled.month = key;
+            actionDateSelected() {
+                const dt = this.scrolled;
+                const source = `${dt.year}-${dt.month}-${dt.day} ${dt.hour}:${dt.min}`;
+                const result = new Date(source);
+                this.$emit('selected', result);
             },
             dayIsSelected(key) {
                 this.scrolled.day = key;
@@ -139,17 +146,12 @@ export default function Fl32_Leana_Realm_Shared_Widget_DateTimePicker(spec) {
             minIsSelected(key) {
                 this.scrolled.min = key;
             },
-            emitDateSelected() {
-                const dt = this.scrolled;
-                const source = `${dt.year}-${dt.month}-${dt.day} ${dt.hour}:${dt.min}`;
-                const result = new Date(source);
-                this.$emit('selected', result);
-            }
+            monthIsSelected(key) {
+                this.scrolled.month = key;
+            },
+            yearIsSelected(key) {
+                this.scrolled.year = key;
+            },
         },
-        mounted() {
-            if (this.initDate) {
-                // debugger
-            }
-        }
     };
 }

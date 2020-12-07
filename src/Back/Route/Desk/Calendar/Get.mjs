@@ -4,10 +4,12 @@
 export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
 
     constructor(spec) {
-        /** @type {TeqFw_Di_Container} */
-        const _container = spec.TeqFw_Di_Container$;
         /** @type {Fl32_Leana_App_Db_Connector} */
         const _db = spec.Fl32_Leana_App_Db_Connector$;
+        const Employee = spec['Fl32_Leana_Shared_Api_Data_Desk_Employee#'];
+        const Response = spec['Fl32_Leana_Shared_Api_Route_Desk_Calendar_Get_Response#'];
+        const Service = spec['Fl32_Leana_Shared_Api_Data_Service#'];
+        const Task = spec['Fl32_Leana_Shared_Api_Data_Desk_Task#'];
 
         // DEFINE THIS INSTANCE METHODS (NOT IN PROTOTYPE)
         /**
@@ -35,7 +37,7 @@ export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
                 query.from('employee');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Desk_Employee$$');
+                    const target = new Employee();
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -53,7 +55,7 @@ export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
                 query.from('service');
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Service$$');
+                    const target = new Service();
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -85,13 +87,15 @@ export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
                     {customerName: 'd.customer'},
                     {customerPhone: 'd.phone'},
                     {customerEmail: 'd.email'},
+                    {lang: 'd.lang'},
+                    {note: 'd.note'},
                 ]);
                 // const sql = query.toString();
                 // console.log(sql);
                 // COMPOSE RESULTS
                 const rs = await query;
                 for (const one of rs) {
-                    const target = await _container.get('Fl32_Leana_Shared_Api_Data_Desk_Task$$');
+                    const target = new Task();
                     result[one.id] = Object.assign(target, one);
                 }
                 return result;
@@ -99,7 +103,7 @@ export default class Fl32_Leana_Back_Route_Desk_Calendar_Get {
 
             // MAIN FUNCTIONALITY
             /** @type {Fl32_Leana_Shared_Api_Route_Book_State_Get_Response} */
-            const data = await _container.get('Fl32_Leana_Shared_Api_Route_Desk_Calendar_Get_Response$$');
+            const data = new Response();
             const trx = await _db.startTransaction();
             try {
                 const employees = await _getEmployees(trx);

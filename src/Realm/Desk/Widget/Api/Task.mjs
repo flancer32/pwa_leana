@@ -28,4 +28,8 @@ export default class Fl32_Leana_Realm_Desk_Widget_Api_Task {
     service
     /** @type {Fl32_Leana_Realm_Desk_Widget_Api_Customer} */
     customer
+    /** @type {String} */
+    note
+    /** @type {String} */
+    lang
 }

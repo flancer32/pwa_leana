@@ -121,6 +121,8 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     table.string('customer', 255).notNullable().comment('Customer name.');
                     table.string('phone', 255).nullable().comment('Customer phone.');
                     table.string('email', 255).nullable().comment('Customer email.');
+                    table.string('lang', 255).nullable().comment('Customer language (locale).');
+                    table.string('note', 255).nullable().comment('Task notes.');
                     table.primary(['book_ref']);
                     table.foreign('book_ref').references('id').inTable('book')
                         .onDelete('CASCADE').onUpdate('CASCADE')
@@ -200,33 +202,43 @@ export default class Fl32_Leana_Back_Cli_Db_Schema_Upgrade {
                     {
                         book_ref: 1, employee_ref: 1, service_ref: 1, date: date0, from: '0900', to: '1115',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 2, employee_ref: 1, service_ref: 2, date: date0, from: '0930', to: '1045',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 3, employee_ref: 1, service_ref: 3, date: date0, from: '1030', to: '1130',
                         customer: 'John Doe', email: 'john@inter.net', phone: '2912312312',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 4, employee_ref: 1, service_ref: 4, date: date0, from: '1215', to: '1330',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 5, employee_ref: 1, service_ref: 5, date: date0, from: '1630', to: '1730',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 6, employee_ref: 1, service_ref: 5, date: date2, from: '0915', to: '1130',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 7, employee_ref: 1, service_ref: 5, date: date2, from: '1230', to: '1730',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 8, employee_ref: 2, service_ref: 5, date: date1, from: '0900', to: '1030',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 9, employee_ref: 2, service_ref: 5, date: date1, from: '1030', to: '1130',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     }, {
                         book_ref: 10, employee_ref: 2, service_ref: 5, date: date3, from: '1030', to: '1730',
                         customer: 'Jane Doe', email: 'jane@inter.net', phone: '2932132132',
+                        lang: 'en_US', note: 'some notes related to the task.',
                     },
                 ]);
             }

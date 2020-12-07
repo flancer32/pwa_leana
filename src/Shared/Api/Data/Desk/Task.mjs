@@ -46,4 +46,8 @@ export default class Fl32_Leana_Shared_Api_Data_Desk_Task {
     customerName
     /** @type {String} */
     customerPhone
+    /** @type {String} */
+    note
+    /** @type {String} */
+    lang
 }

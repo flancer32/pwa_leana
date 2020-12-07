@@ -2,6 +2,8 @@ const app = self.teqfw.app;
 const mapMutations = self.teqfw.lib.Vuex.mapMutations;
 const mapState = self.teqfw.lib.Vuex.mapState;
 
+const EVENT_SAVE = 'actionSave';
+
 const template = `
 <div class="task_preview_action_bar">
     <action-bar :params="actions"></action-bar>
@@ -23,6 +25,7 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview_Actions(spec) 
         components: {
             actionBar
         },
+        emits: ['actionSave', 'actionRemove'],
         computed: {
 
             actions() {
@@ -83,7 +86,7 @@ export default function Fl32_Leana_Realm_Desk_Widget_Task_Preview_Actions(spec) 
                 this.setOverlay({name: 'popupYesNo', params: {onYes, onNo}});
             },
             actionSave() {
-                console.log('Save action is fired.');
+                this.$emit(EVENT_SAVE);
             },
             ...mapMutations('app', [
                 'setOverlay',
