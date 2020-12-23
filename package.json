@@ -23,6 +23,8 @@
     "test": "./node_modules/mocha/bin/mocha --require esm --recursive './test/**/*.test.js'"
   },
   "dependencies": {
+    "@flancer32/pwa_leana_app": "github:flancer32/pwa_leana_app",
+    "@flancer32/teq_user": "github:flancer32/teq_user",
     "@teqfw/di": "^0.4.0",
     "commander": "^6.2.0",
     "cookie-parser": "^1.4.5",
@@ -40,7 +42,6 @@
     "serve-static": "^1.14.1",
     "vue": "^3.0.1",
     "vue-router": "^4.0.0-rc.3",
-    "@flancer32/pwa_leana_app": "github:flancer32/pwa_leana_app",
     "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {

@@ -19,6 +19,7 @@ const pathSrcCoreApp = $path.join(pathRoot, 'node_modules/@teqfw/core-app/src');
 const container = new Container();
 // add backend sources to map
 container.addSourceMapping('TeqFw_Core_App', pathSrcCoreApp, true, 'mjs');
+container.addSourceMapping('Teq_User', pathSrcCoreApp, true, 'mjs');
 container.addSourceMapping('Fl32_Leana', pathSrcLeana, true, 'mjs');
 // Manually create bootstrap configuration object (used in constructor of 'Fl32_Leana_App')
 /** @type {Fl32_Leana_App.Bootstrap} */
