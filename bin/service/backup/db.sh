@@ -57,6 +57,7 @@ if test ! -d "${DIR_BAK_DB}/old"; then
   mkdir -p "${DIR_BAK_DB}/old"
 fi
 
+info "Rotate images using '${PATH_LR_TARGET}'."
 /usr/sbin/logrotate -s "${DIR_BAK_DB}/old/status" "${PATH_LR_TARGET}"
 
 # TMP: remove logrotate config to re-generate it
