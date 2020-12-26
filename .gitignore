@@ -3,8 +3,9 @@
 /**/ttttest.*
 /.idea/
 /atlassian-ide-plugin.xml
-/cfg/local.json
+/cfg/local.*
 /composer.lock
 /own_modules/
 /tmp/
 /var/server.pid
+/var/store/**
