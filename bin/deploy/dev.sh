@@ -13,8 +13,8 @@ cd "${DIR_ROOT}" || exit 255
 npm install
 
 echo "Remove cloned dependencies (sources)."
-rm -fr "${DIR_ROOT}/own_modules/@teqfw"
-rm -fr "${DIR_ROOT}/own_modules/@flancer32"
+#rm -fr "${DIR_ROOT}/own_modules/@teqfw"
+#rm -fr "${DIR_ROOT}/own_modules/@flancer32"
 
 echo "Clone dependencies from github to inner folders."
 mkdir -p "${DIR_ROOT}/own_modules/@teqfw/"
