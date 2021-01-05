@@ -15,18 +15,18 @@ fi
 
 
 info "Copy local configuration to the project:"
-SRC="${DIR_ROOT}../cfg/leana.sh"
+SRC="${DIR_ROOT}/../local.sh"
 TRG="${DIR_ROOT}/cfg/local.sh"
-if test -f ! "${SRC}"; then
+if test ! -f "${SRC}"; then
   err "Configuration file ${SRC} is missed. Exiting."
   exit 255
 fi
 info "  '${SRC}' to '${TRG}'"
 cp "${SRC}" "${TRG}"
 
-SRC="${DIR_ROOT}../cfg/leana.json"
+SRC="${DIR_ROOT}/../local.json"
 TRG="${DIR_ROOT}/cfg/local.json"
-if test -f ! "${SRC}"; then
+if test ! -f "${SRC}"; then
   err "Configuration file ${SRC} is missed. Exiting."
   exit 255
 fi
