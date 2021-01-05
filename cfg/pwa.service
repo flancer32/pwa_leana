@@ -1,0 +1,13 @@
+[Unit]
+Description=Leana PWA (leanafrizetava.lv).
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+PIDFile=/run/pwa_leana.pid
+WorkingDirectory=/home/live/inst/leana
+ExecStart=/usr/bin/node /home/live/inst/leana/bin/tequila.mjs start
+
+[Install]
+WantedBy=multi-user.target
