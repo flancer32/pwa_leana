@@ -65,3 +65,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/pwa-leana.service â†
 $ cd ~/inst/leana/
 $ unlink live && ln -s leana_YYYYMMDD live
 ```
+
+Update `systemctl` and re-run service `pwa-leana` (as `root` user):
+
+```shell
+# systemctl daemon-reload
+# service pwa-leana stop
+# service pwa-leana start
+```
