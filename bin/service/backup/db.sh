@@ -15,8 +15,9 @@ DIR_THIS=$(cd "$(dirname "$0")" && pwd)
 : "${DB_NAME:?}"
 : "${DB_PASS:?}"
 : "${DB_USER:?}"
+: "${DIR_STORE:?}"
 # locally used vars
-export DIR_BAK_DB="${DIR_ROOT}/var/store/db"
+export DIR_BAK_DB="${DIR_STORE}/db"
 FILE_DUMP="leana_db"
 PATH_DUMP=${DIR_BAK_DB}/${FILE_DUMP}
 PATH_DUMP_ZIP=${DIR_BAK_DB}/${FILE_DUMP}.tar.gz

@@ -8,11 +8,19 @@ DIR_THIS=$(cd "$(dirname "$0")" && pwd)
 # include commons for standalone running
 . "${DIR_ROOT}/bin/commons.sh"
 
+## =========================================================================
+#   Setup working environment
+## =========================================================================
+# check external vars used in this script (see cfg.work.sh)
+: "${DIR_STORE:?}"
+
+## =========================================================================
+#   Perform processing
+## =========================================================================
 if test -d "${DIR_ROOT}/node_modules"; then
   err "Project is already installed. Exiting."
   exit 255
 fi
-
 
 info "Copy local configuration to the project:"
 SRC="${DIR_ROOT}/../local.sh"
@@ -32,6 +40,10 @@ if test ! -f "${SRC}"; then
 fi
 info "  '${SRC}' to '${TRG}'"
 cp "${SRC}" "${TRG}"
+
+info "Link external folders"
+cd "${DIR_ROOT}/var/"
+ln -s "${DIR_STORE}" store
 
 info "Install NodeJS application."
 cd "${DIR_ROOT}" || exit 255
