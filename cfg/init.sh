@@ -13,3 +13,6 @@ export DB_HOST="localhost"
 export DB_NAME="..."
 export DB_PASS="..."
 export DB_USER="..."
+
+# Paths to link folders for persistent data
+export DIR_STORE="/mnt/store/work/leana"
