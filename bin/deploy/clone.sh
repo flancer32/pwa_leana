@@ -20,3 +20,5 @@ cp local.json "${DIR_PRJ}/cfg/"
 cp local.sh "${DIR_PRJ}/cfg/"
 cd "${DIR_PRJ}"
 bash ./bin/deploy/live.sh
+cd ..
+unlink live && ln -s "${DIR_PRJ}" live
